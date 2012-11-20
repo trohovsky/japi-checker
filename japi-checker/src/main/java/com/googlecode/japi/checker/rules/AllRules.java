@@ -30,18 +30,22 @@ public class AllRules implements Rule {
         rules.add(new CheckChangeOfScope());
         rules.add(new CheckClassVersion());
         rules.add(new CheckFieldChangeOfType());
+        rules.add(new CheckFieldChangeToFinal());
         rules.add(new CheckFieldChangeToStatic());
+        rules.add(new CheckFieldChangeToTransient());
         rules.add(new CheckInheritanceChanges());
+        rules.add(new CheckMethodChangedToAbstract());
+        rules.add(new CheckMethodChangedToFinal());
+        rules.add(new CheckMethodChangedToStatic());
         rules.add(new CheckMethodExceptions());
         rules.add(new CheckRemovedField());
         rules.add(new CheckRemovedMethod());
+        rules.add(new CheckSerialVersionUIDField());
+        rules.add(new CheckSuperClass());
         rules.add(new ClassChangedToAbstract());
         rules.add(new ClassChangedToFinal());
         rules.add(new ClassChangedToInterface());
-        rules.add(new CheckMethodChangedToFinal());
-        rules.add(new ClassChangedToInterface());
         rules.add(new InterfaceChangedToClass());
-        rules.add(new CheckSuperClass());
     }
     
     @Override

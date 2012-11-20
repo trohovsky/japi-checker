@@ -24,4 +24,13 @@ public enum Scope {
     public int getValue() {
         return scope;
     }
+    
+    public boolean isMoreVisibleThan(Scope v)
+    {
+        return this.scope > v.scope;
+    }
+    
+    public boolean isLessVisibleThan(Scope v) {
+        return this.scope < v.scope;
+    }
 }
