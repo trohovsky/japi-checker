@@ -23,13 +23,16 @@ import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Scope;
 
+// FIELD
 public class CheckFieldChangeToStatic implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
-        if (reference instanceof FieldData && reference.getVisibility() != Scope.PRIVATE) {
-            if (reference.getOwner().getVisibility() == Scope.PUBLIC || reference.getOwner().getVisibility() == Scope.PROTECTED) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
+    	// changed: from Scope.PRIVATE to Scope.PACKAGE
+        if (reference instanceof FieldData && reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+            if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+            	
                 if (reference.isStatic() && !newItem.isStatic()) {
                     reporter.report(new Report(Level.ERROR, "The " + reference.getType() + " " + reference.getName() + " is not static anymore.", reference, newItem));
                 }

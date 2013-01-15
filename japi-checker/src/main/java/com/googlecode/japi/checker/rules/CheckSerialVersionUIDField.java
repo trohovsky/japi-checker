@@ -27,11 +27,11 @@ import com.googlecode.japi.checker.model.JavaItem;
  * This field is used by the serialized interface to identify the class
  * so changing its value is not a good idea from BC prospective. 
  */
+// FIELD
 public class CheckSerialVersionUIDField implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
         // private static final long serialVersionUID = 338331310737246989L;
         if (reference instanceof FieldData) {
             FieldData referenceField = (FieldData)reference;

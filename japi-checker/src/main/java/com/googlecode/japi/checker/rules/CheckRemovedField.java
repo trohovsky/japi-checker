@@ -23,12 +23,13 @@ import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 
+// CLASS
 public class CheckRemovedField implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
-        if (reference instanceof ClassData) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+        
+    	if (reference instanceof ClassData) {
             ClassData referenceClass = (ClassData)reference;
             ClassData newClass = (ClassData)newItem;
             for (FieldData oldField : referenceClass.getFields()) {

@@ -23,16 +23,21 @@ import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
 
-// Tomas Rohovsky
+/**
+ * 
+ * @author Tomas Rohovsky
+ *
+ */
+// METHOD
 public class CheckMethodChangedToAbstract implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
         if (reference instanceof MethodData) {
-        	// TODO visibility of both referebce abd newItem should be tested in every check
-            if (reference.getVisibility().isMoreVisibleThan(Scope.NO_SCOPE) && 
-            		newItem.getVisibility().isMoreVisibleThan(Scope.NO_SCOPE)) {
+            if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) && 
+            	newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+            	
                 if (!reference.isAbstract() && newItem.isAbstract()) {
                     reporter.report(new Report(Level.ERROR, "The method " + reference.getName() + " has been made abstract.", reference, newItem));
                 }

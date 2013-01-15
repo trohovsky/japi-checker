@@ -22,15 +22,15 @@ import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 
+// CLASS
 public class CheckClassVersion implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
         if (reference instanceof ClassData) {
             if (((ClassData) reference).getVersion() != ((ClassData) newItem).getVersion()) {
-                reporter.report(new Report(Level.ERROR, "The Java version has changed from " +
-                        ((ClassData) reference).getVersion() + " to " + ((ClassData) newItem).getVersion() + ", check your compiler target.", reference, newItem));
+                reporter.report(new Report(Level.ERROR, "The Java version has changed from " + ((ClassData) reference).getVersion() + " to " + ((ClassData) newItem).getVersion() + ", check your compiler target.", reference, newItem));
             }
         }
     }

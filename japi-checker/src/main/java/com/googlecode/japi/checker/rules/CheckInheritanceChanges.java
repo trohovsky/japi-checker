@@ -22,11 +22,12 @@ import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 
+// CLASS
 public class CheckInheritanceChanges implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
         if (reference instanceof ClassData) {
             // Check extends...
             if (!((ClassData) reference).getSuperName().equals(((ClassData) newItem).getSuperName())) {

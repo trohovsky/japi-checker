@@ -54,6 +54,31 @@ public class ClassData extends JavaItem {
         fields.add(field);
     }
     
+    public void checkFieldsBackwardCompatibility(Reporter reporter, ClassData clazz, Rule rules) {
+    	
+    	for (FieldData oldField : clazz.fields) {
+            for (FieldData newField: this.fields) {
+                if (oldField.isSame(newField)) {
+                    //newField.checkBackwardCompatibility(reporter, oldField, rules);
+                    rules.checkBackwardCompatibility(reporter, oldField, newField);
+                    break;
+                }
+            }
+        }
+    }
+    
+    public void checkMethodsBackwardCompatibility(Reporter reporter, ClassData clazz, Rule rules) {
+         for (MethodData oldMethod : clazz.methods) {
+            for (MethodData newMethod: this.methods) {
+                if (oldMethod.isSame(newMethod)) {
+                    //newMethod.checkBackwardCompatibility(reporter, oldMethod, rules);
+                    rules.checkBackwardCompatibility(reporter, oldMethod, newMethod);
+                    break;
+                }
+            }
+        }
+    }
+    
     public void checkBackwardCompatibility(Reporter reporter, ClassData clazz, List<Rule> rules) {
         for (FieldData oldField : clazz.fields) {
             for (FieldData newField: this.fields) {

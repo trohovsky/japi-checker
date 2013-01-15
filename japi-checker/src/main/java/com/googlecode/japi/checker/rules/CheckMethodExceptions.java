@@ -33,16 +33,17 @@ import com.googlecode.japi.checker.model.MethodData;
  * The check is not occurring for private scope.
  * '
  */
+// METHOD
 public class CheckMethodExceptions implements Rule {
-
 
     /**
      * Implementation of the check.
      */
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
-        if (reference instanceof MethodData && reference.getVisibility() != Scope.PRIVATE) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
+    	// change: from Scope.PRIVATE to Scope.PACKAGE
+        if (reference instanceof MethodData && reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
             MethodData referenceMethod = (MethodData)reference;
             MethodData newMethod = (MethodData)newItem;
             for (String exception : referenceMethod.getExceptions()) {

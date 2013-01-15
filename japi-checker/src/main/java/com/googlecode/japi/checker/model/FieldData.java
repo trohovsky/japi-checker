@@ -22,22 +22,15 @@ import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 
 public class FieldData extends JavaItem {
-    private String descriptor;
-    private String signature;
-    private Object value;
+    private final String descriptor;
+    private final String signature;
+    private final Object value;
 
     public FieldData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String signature, Object value) {
         super(loader, owner, access, name);
-        this.setDescriptor(descriptor);
-        this.setSignature(signature);
-        this.setValue(value);
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescriptor(String descriptor) {
         this.descriptor = descriptor;
+        this.signature = signature;
+        this.value = value;
     }
 
     /**
@@ -48,13 +41,6 @@ public class FieldData extends JavaItem {
     }
 
     /**
-     * @param signature the signature to set
-     */
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    /**
      * @return the signature
      */
     public String getSignature() {
@@ -62,17 +48,21 @@ public class FieldData extends JavaItem {
     }
 
     /**
-     * @param value the value to set
-     */
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    /**
      * @return the value
      */
     public Object getValue() {
         return value;
+    }
+    
+    /**
+     * Finds out whether the field is compile-time constant.
+     * @return
+     */
+    public boolean isCompileTimeConstant() {
+    	return this.isFinal() && this.getValue() != null;
+    	// TODO compile-time constant checking
+    			/*(this.getValue().getClass().isPrimitive() || 
+    			this.getValue().getClass().getName().equals("java.lang.String"));*/
     }
     
     public boolean isSame(FieldData reference) {

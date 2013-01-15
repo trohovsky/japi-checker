@@ -59,7 +59,7 @@ public abstract class JavaItem {
         } if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
             return Scope.PUBLIC;
         } else {
-            return Scope.NO_SCOPE;
+            return Scope.PACKAGE;
         }
     }
 

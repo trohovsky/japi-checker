@@ -25,6 +25,9 @@ import java.util.zip.ZipFile;
 import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.rules.ClassRules;
+import com.googlecode.japi.checker.rules.FieldRules;
+import com.googlecode.japi.checker.rules.MethodRules;
 import com.googlecode.japi.checker.utils.AntPatternMatcher;
 
 public class BCChecker {
@@ -69,6 +72,40 @@ public class BCChecker {
 
     public void addExclude(String exclude) {
         excludes.add(new AntPatternMatcher(exclude));
+    }
+    
+    public void checkBackwardCompatibility(Reporter reporter) throws IOException {
+    	ClassDataLoader referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
+        referenceDataLoader.read(reference.toURI());
+        for (File file : this.referenceClasspath) {
+            referenceDataLoader.read(file.toURI());
+        }
+        List<ClassData> referenceData = referenceDataLoader.getClasses(reference.toURI(), includes, excludes);
+        ClassDataLoader newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
+        newArtifactDataLoader.read(newArtifact.toURI());
+        for (File file : this.newArtifactClasspath) {
+            newArtifactDataLoader.read(file.toURI());
+        }
+        List<ClassData> newData = newArtifactDataLoader.getClasses(newArtifact.toURI(), includes, excludes);
+        
+        ClassRules rules = new ClassRules();
+    	FieldRules fieldRules = new FieldRules();
+        MethodRules methodRules = new MethodRules();
+        for (ClassData clazz : referenceData) {
+            boolean found = false;
+            for (ClassData newClazz : newData) {
+                if (clazz.isSame(newClazz)) {
+                    rules.checkBackwardCompatibility(reporter, clazz, newClazz);
+                    newClazz.checkFieldsBackwardCompatibility(reporter, clazz, fieldRules);
+                    newClazz.checkMethodsBackwardCompatibility(reporter, clazz, methodRules);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && clazz.getVisibility() == Scope.PUBLIC) {
+                reporter.report(new Report(Level.ERROR, "Public class " + clazz.getName() + " has been removed.", clazz, null));
+            }
+        }
     }
     
     public void checkBacwardCompatibility(Reporter reporter, List<Rule> rules) throws IOException {

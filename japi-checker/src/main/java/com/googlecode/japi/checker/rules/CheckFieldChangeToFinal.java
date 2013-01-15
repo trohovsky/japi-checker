@@ -23,21 +23,28 @@ import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Scope;
 
-// Tomas Rohovsky
+/**
+ * 
+ * @author Tomas Rohovsky
+ *
+ */
+// FIELD
 public class CheckFieldChangeToFinal implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
         if (reference instanceof FieldData) {
-            if (reference.getVisibility().isMoreVisibleThan(Scope.NO_SCOPE) &&
-            		newItem.getVisibility().isMoreVisibleThan(Scope.NO_SCOPE)) {
+            if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+            	newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+            	
                 if (!reference.isFinal() && newItem.isFinal()) {
                     reporter.report(new Report(Level.ERROR, "The field " + reference.getName() + " has been made final.", reference, newItem));
                 } else if (reference.isFinal() && !newItem.isFinal() 
-                		&& reference.isStatic() && newItem.isStatic()) {
-                	// TODO If field is static with COMPILE-TIME CONSTANT VALUE
-                    reporter.report(new Report(Level.ERROR, "The field " + reference.getName() + " has been made non-final.", reference, newItem));
+                		&& reference.isStatic() && newItem.isStatic()
+                		&& ((FieldData) reference).isCompileTimeConstant()) {
+                	// if field is static with compile-time constant value
+                    reporter.report(new Report(Level.ERROR, "The field " + reference.getName() + " has been made non-final. (it has compile-time constant value)", reference, newItem));
                 }
             }
         }

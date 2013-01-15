@@ -22,11 +22,12 @@ import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
 
+// FIELD
 public class CheckFieldChangeToTransient implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
         if (reference instanceof FieldData) {
             if (reference.isTransient() && !newItem.isTransient()) {
                 reporter.report(new Report(Level.ERROR, "The " + reference.getType() + " " + reference.getName() + " is not transient anymore.", reference, newItem));

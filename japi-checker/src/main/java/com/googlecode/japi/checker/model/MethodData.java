@@ -19,23 +19,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.objectweb.asm.Type;
+
 import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 
 public class MethodData extends JavaItem {
-    private String signature;
-    private String descriptor;
-    private List<String> exceptions = new ArrayList<String>();
+    private final String signature;
+    private final String descriptor;
+    private final Type[] argumentTypes;
+    private final Type returnType;
+	private List<String> exceptions = new ArrayList<String>();
     private int line;
     
     public MethodData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String signature, String[] exceptions) {
         super(loader, owner, access, name);
-        this.setSignature(signature);
-        this.setDescriptor(descriptor);
+        this.signature = signature;
+        this.descriptor = descriptor;
+        this.argumentTypes = Type.getArgumentTypes(descriptor);
+        this.returnType = Type.getReturnType(descriptor);
         if (exceptions != null) {
             Collections.addAll(this.exceptions, exceptions);
         }
+        this.exceptions = Collections.unmodifiableList(this.exceptions);
     }
 
     public void checkBackwardCompatibility(Reporter reporter, MethodData method, List<Rule> rules) {
@@ -47,6 +54,11 @@ public class MethodData extends JavaItem {
         }
         return this.getName().equals(method.getName()) && this.getDescriptor().equals(method.getDescriptor());
     }
+    
+    @Override
+    public String getType() {
+        return "method";
+    }
 
     /**
      * @return the signature
@@ -56,37 +68,25 @@ public class MethodData extends JavaItem {
     }
 
     /**
-     * @param signature the signature to set
-     */
-    protected void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    @Override
-    public String getType() {
-        return "method";
-    }
-
-    /**
-     * @param descriptor the descriptor to set
-     */
-    protected void setDescriptor(String descriptor) {
-        this.descriptor = descriptor;
-    }
-
-    /**
      * @return the descriptor
      */
     public String getDescriptor() {
         return descriptor;
     }
+    
+    /**
+     * @return types of the arguments
+     */
+    public Type[] getArgumentTypes() {
+		return argumentTypes;
+	}
 
     /**
-     * @param exceptions the exceptions to set
+     * @return return type
      */
-    protected void setExceptions(List<String> exceptions) {
-        this.exceptions = exceptions;
-    }
+	public Type getReturnType() {
+		return returnType;
+	}
 
     /**
      * @return the exceptions

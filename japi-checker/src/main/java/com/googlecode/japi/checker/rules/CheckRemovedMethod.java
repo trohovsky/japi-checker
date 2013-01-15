@@ -24,12 +24,13 @@ import com.googlecode.japi.checker.model.MethodData;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Scope;
 
+// CLASS
 public class CheckRemovedMethod implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
-        if (reference instanceof ClassData) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+        
+    	if (reference instanceof ClassData) {
             ClassData referenceClass = (ClassData)reference;
             ClassData newClass = (ClassData)newItem;
             for (MethodData oldMethod : referenceClass.getMethods()) {

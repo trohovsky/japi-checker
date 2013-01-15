@@ -27,6 +27,7 @@ public class AllRules implements Rule {
     private List<Rule> rules = new ArrayList<Rule>();
     
     public AllRules() {
+    	rules.add(new ChangeKindOfAPIType());
         rules.add(new CheckChangeOfScope());
         rules.add(new CheckClassVersion());
         rules.add(new CheckFieldChangeOfType());
@@ -44,8 +45,6 @@ public class AllRules implements Rule {
         rules.add(new CheckSuperClass());
         rules.add(new ClassChangedToAbstract());
         rules.add(new ClassChangedToFinal());
-        rules.add(new ClassChangedToInterface());
-        rules.add(new InterfaceChangedToClass());
     }
     
     @Override

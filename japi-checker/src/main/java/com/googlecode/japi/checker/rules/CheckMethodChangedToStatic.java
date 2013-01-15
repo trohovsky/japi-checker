@@ -23,13 +23,17 @@ import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
 
+// METHOD
 public class CheckMethodChangedToStatic implements Rule {
 
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+    	
         if (reference instanceof MethodData) {
-            if (Scope.PUBLIC == reference.getVisibility() || Scope.PROTECTED == reference.getVisibility()) {
+        	// change: added visibility check of newItem
+            if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+            	newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+            	
                 if (!reference.isStatic() && newItem.isStatic()) {
                     reporter.report(new Report(Level.ERROR, "The method " + reference.getName() + " has been made static.", reference, newItem));
                 } else if (reference.isStatic() && !newItem.isStatic()) {

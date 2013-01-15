@@ -16,7 +16,7 @@
 package com.googlecode.japi.checker;
 
 public enum Scope {
-    PUBLIC(3), PROTECTED(2), NO_SCOPE(1), PRIVATE(0);
+    PUBLIC(3), PROTECTED(2), PACKAGE(1), PRIVATE(0);
     int scope;
     Scope(int scope) {
         this.scope = scope;

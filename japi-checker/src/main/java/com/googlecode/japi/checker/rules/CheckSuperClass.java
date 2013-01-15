@@ -37,11 +37,11 @@ import com.googlecode.japi.checker.model.JavaItem;
  * inherits from B or A in the new version. 
  *
  */
+// CLASS
 public class CheckSuperClass implements Rule {
     
     @Override
-    public void checkBackwardCompatibility(Reporter reporter,
-            JavaItem reference, JavaItem newItem) {
+    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
         // this check only applies on public class (and not interface).
         if (reference instanceof ClassData && !reference.isInterface() 
                 && reference.getVisibility() == Scope.PUBLIC) {
