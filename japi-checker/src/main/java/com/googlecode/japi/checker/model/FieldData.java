@@ -60,9 +60,6 @@ public class FieldData extends JavaItem {
      */
     public boolean isCompileTimeConstant() {
     	return this.isFinal() && this.getValue() != null;
-    	// TODO compile-time constant checking
-    			/*(this.getValue().getClass().isPrimitive() || 
-    			this.getValue().getClass().getName().equals("java.lang.String"));*/
     }
     
     public boolean isSame(FieldData reference) {

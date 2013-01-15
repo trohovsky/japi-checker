@@ -17,6 +17,7 @@ public class FieldRules implements Rule {
 		rules.add(new CheckFieldChangeToFinal());
 		rules.add(new CheckFieldChangeToStatic());
 		rules.add(new CheckFieldChangeToTransient());
+		rules.add(new CheckFieldChangeValue());
 		rules.add(new CheckSerialVersionUIDField());
 	}
 
