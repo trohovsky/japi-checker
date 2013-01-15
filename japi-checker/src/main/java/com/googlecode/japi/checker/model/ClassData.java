@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.objectweb.asm.Opcodes;
+
 import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -33,25 +35,35 @@ public class ClassData extends JavaItem {
     private List<String> interfaces = new ArrayList<String>();
     private int version;
     private String source;
+    private boolean isInterface;
+    private boolean isEnum;
+	private boolean isAnnotation;
 
     public ClassData(ClassDataLoader loader, ClassData owner, int access, String name, String signature, String superName, String[] interfaces, int version) {
         super(loader, owner, access, name);
-        this.setSignature(signature);
+        this.signature = signature;
         this.superName = superName;
         Collections.addAll(this.interfaces, interfaces);
         this.version = version;
+        this.isInterface = (access & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE;
+        this.isEnum = (access & Opcodes.ACC_ENUM) == Opcodes.ACC_ENUM;
+        this.isAnnotation = (access & Opcodes.ACC_ANNOTATION) == Opcodes.ACC_ANNOTATION;
     }
     
     public void add(MethodData method) {
         methods.add(method);
     }
     
+    public void add(FieldData field) {
+        fields.add(field);
+    }
+    
     public void add(AttributeData attribute) {
         attributes.add(attribute);
     }
     
-    public void add(FieldData field) {
-        fields.add(field);
+    public void add(InnerClassData clazz) {
+        innerClasses.add(clazz);
     }
     
     public void checkFieldsBackwardCompatibility(Reporter reporter, ClassData clazz, Rule rules) {
@@ -108,6 +120,18 @@ public class ClassData extends JavaItem {
         return this.getName().equals(newClazz.getName());
     }
     
+    @Override
+    public String getType() {
+        if (this.isInterface()) {
+        	return "interface";
+        } else if (this.isEnum) {
+        	return "enum";
+        } else if (this.isAnnotation) {
+        	return "annotation";
+        } else {
+        	return "class";
+        }
+    }
 
     /**
      * @param signature the signature to set
@@ -121,11 +145,6 @@ public class ClassData extends JavaItem {
      */
     public String getSignature() {
         return signature;
-    }
-
-    @Override
-    public String getType() {
-        return this.isInterface() ? "interface" : "class";
     }
 
     /**
@@ -212,11 +231,6 @@ public class ClassData extends JavaItem {
         this.attributes = attributes;
     }
 
-
-    public void add(InnerClassData clazz) {
-        innerClasses.add(clazz);
-    }
-
     /**
      * @param source the source to set
      */
@@ -231,7 +245,31 @@ public class ClassData extends JavaItem {
         return source;
     }
     
-    public String getFilename() {
+    public boolean isInterface() {
+		return isInterface;
+	}
+
+	protected void setInterface(boolean isInterface) {
+		this.isInterface = isInterface;
+	}
+	
+	public boolean isEnum() {
+		return isEnum;
+	}
+
+	protected void setEnum(boolean isEnum) {
+		this.isEnum = isEnum;
+	}
+	
+	public boolean isAnnotation() {
+		return isAnnotation;
+	}
+
+	protected void setAnnotation(boolean isAnnotation) {
+		this.isAnnotation = isAnnotation;
+	}
+
+	public String getFilename() {
         if (this.getName().lastIndexOf('/') != -1) {
             return this.getName().substring(0, this.getName().lastIndexOf('/') + 1) + getSource();
         }

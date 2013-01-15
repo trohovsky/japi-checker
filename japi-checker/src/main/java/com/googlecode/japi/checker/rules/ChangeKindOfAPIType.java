@@ -27,11 +27,9 @@ public class ChangeKindOfAPIType implements Rule {
 
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        if (reference instanceof ClassData) {
-            if (!reference.isInterface() && newItem.isInterface()) {
-                reporter.report(new Report(Level.ERROR, "The interface " + reference.getName() + " has been changed into an class.", reference, newItem));
-            } else if (reference.isInterface() && !newItem.isInterface()) {
-                reporter.report(new Report(Level.ERROR, "The class " + reference.getName() + " has been change into an interface.", reference, newItem));
+        if (reference instanceof ClassData) {        	
+            if (!reference.getType().equals(newItem.getType())) {
+                reporter.report(new Report(Level.ERROR, "The " + reference.getType() + " " + reference.getName() + " has been changed into an " + newItem.getType() + ".", reference, newItem));
             }
         }
     }

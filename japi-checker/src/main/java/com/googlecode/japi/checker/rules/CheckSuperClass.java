@@ -43,7 +43,7 @@ public class CheckSuperClass implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
         // this check only applies on public class (and not interface).
-        if (reference instanceof ClassData && !reference.isInterface() 
+        if (reference instanceof ClassData && !((ClassData) reference).isInterface() 
                 && reference.getVisibility() == Scope.PUBLIC) {
             ClassData referenceClass = (ClassData)reference;
             ClassData newClass = (ClassData)newItem;

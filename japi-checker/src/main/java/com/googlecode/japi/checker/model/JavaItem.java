@@ -25,7 +25,6 @@ public abstract class JavaItem {
     private ClassData owner;
     private String name;
     private boolean isAbstract;
-    private boolean isInterface;
     private boolean isFinal;
     private boolean isStatic;
     private boolean isTransient;
@@ -36,7 +35,6 @@ public abstract class JavaItem {
         this.setName(name);
         this.setVisibility(toScope(access));
         this.setAbstract((access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT);
-        this.setInterface((access & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE);
         this.setFinal((access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL);
         this.setStatic((access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC);
         this.setTransient((access & Opcodes.ACC_TRANSIENT) == Opcodes.ACC_TRANSIENT);
@@ -75,20 +73,6 @@ public abstract class JavaItem {
      */
     public boolean isAbstract() {
         return isAbstract;
-    }
-
-    /**
-     * @param isInterface the isInterface to set
-     */
-    protected void setInterface(boolean isInterface) {
-        this.isInterface = isInterface;
-    }
-
-    /**
-     * @return the isInterface
-     */
-    public boolean isInterface() {
-        return isInterface;
     }
 
     /**
@@ -146,8 +130,6 @@ public abstract class JavaItem {
     protected void setName(String name) {
         this.name = name;
     }
-
-    
     
     /**
      * @return the owner
