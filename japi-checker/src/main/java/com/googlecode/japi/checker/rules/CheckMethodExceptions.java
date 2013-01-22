@@ -42,19 +42,35 @@ public class CheckMethodExceptions implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-    	// change: from Scope.PRIVATE to Scope.PACKAGE
-        if (reference instanceof MethodData && reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            MethodData referenceMethod = (MethodData)reference;
-            MethodData newMethod = (MethodData)newItem;
-            for (String exception : referenceMethod.getExceptions()) {
-                if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
-                    reporter.report(new Report(Level.ERROR, referenceMethod.getName() + " is not throwing " + exception + " anymore.", reference, newItem));
-                }
-            }
-            for (String exception : newMethod.getExceptions()) {
-                if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
-                    reporter.report(new Report(Level.ERROR, referenceMethod.getName() + " is now throwing " + exception + ".", reference, newItem));
-                }
+    	if (reference instanceof MethodData) {
+        	
+           	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+           		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+            		
+           		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+           			newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+           			
+					MethodData referenceMethod = (MethodData) reference;
+					MethodData newMethod = (MethodData) newItem;
+					for (String exception : referenceMethod.getExceptions()) {
+						if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
+							reporter.report(new Report(Level.ERROR, "The "
+									+ referenceMethod.getType() + " "
+									+ referenceMethod.getName()
+									+ " is not throwing " + exception
+									+ " anymore.", reference, newItem));
+						}
+					}
+					for (String exception : newMethod.getExceptions()) {
+						if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
+							reporter.report(new Report(Level.ERROR, "The "
+									+ referenceMethod.getType() + " "
+									+ referenceMethod.getName()
+									+ " is now throwing " + exception
+									+ ".", reference, newItem));
+						}
+					}
+				}
             }
         }
     }

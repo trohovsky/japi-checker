@@ -29,16 +29,27 @@ public class CheckFieldChangeToStatic implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-    	// changed: from Scope.PRIVATE to Scope.PACKAGE
-        if (reference instanceof FieldData && reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            	
-                if (reference.isStatic() && !newItem.isStatic()) {
-                    reporter.report(new Report(Level.ERROR, "The " + reference.getType() + " " + reference.getName() + " is not static anymore.", reference, newItem));
-                }
-                if (!reference.isStatic() && newItem.isStatic()) {
-                    reporter.report(new Report(Level.ERROR, "The " + reference.getType() + " " + reference.getName() + " is now static.", reference, newItem));
-                }
+    	if (reference instanceof FieldData) {
+        	
+        	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+        		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+
+				if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) && 
+					newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+
+					if (reference.isStatic() && !newItem.isStatic()) {
+						reporter.report(new Report(Level.ERROR, "The "
+								+ reference.getType() + " "
+								+ reference.getName()
+								+ " is not static anymore.", reference, newItem));
+					}
+					if (!reference.isStatic() && newItem.isStatic()) {
+						reporter.report(new Report(Level.ERROR, "The "
+								+ reference.getType() + " "
+								+ reference.getName() + " is now static.",
+								reference, newItem));
+					}
+        		}
             }
         }
     }

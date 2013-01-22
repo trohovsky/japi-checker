@@ -17,6 +17,7 @@ package com.googlecode.japi.checker.rules;
 
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
+import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
@@ -27,10 +28,25 @@ public class ChangeKindOfAPIType implements Rule {
 
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        if (reference instanceof ClassData) {        	
-            if (!reference.getType().equals(newItem.getType())) {
-                reporter.report(new Report(Level.ERROR, "The " + reference.getType() + " " + reference.getName() + " has been changed into an " + newItem.getType() + ".", reference, newItem));
-            }
+    	
+        if (reference instanceof ClassData) {
+        	
+        	if ((reference.getOwner() == null && newItem.getOwner() == null) || 
+                (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+                reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE))) {
+                	
+                if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+                	newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+				
+                	if (!reference.getType().equals(newItem.getType())) {
+						reporter.report(new Report(Level.ERROR, "The "
+								+ reference.getType() + " "
+								+ reference.getName()
+								+ " has been changed into an "
+								+ newItem.getType() + ".", reference, newItem));
+					}
+				}
+			}
         }
     }
 

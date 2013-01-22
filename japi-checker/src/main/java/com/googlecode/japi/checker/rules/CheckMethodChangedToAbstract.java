@@ -35,12 +35,21 @@ public class CheckMethodChangedToAbstract implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
         if (reference instanceof MethodData) {
-            if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) && 
-            	newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+        	
+        	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+            	newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+            		
+        		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+        			newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
             	
-                if (!reference.isAbstract() && newItem.isAbstract()) {
-                    reporter.report(new Report(Level.ERROR, "The method " + reference.getName() + " has been made abstract.", reference, newItem));
-                }
+					if (!reference.isAbstract() && newItem.isAbstract()) {
+						reporter.report(new Report(Level.ERROR, "The "
+								+ reference.getType() + " "
+								+ reference.getName()
+								+ " has been made abstract.", 
+								reference, newItem));
+					}
+        		}
             }
         }
     }

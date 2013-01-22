@@ -30,14 +30,22 @@ public class CheckMethodChangedToFinal implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
         if (reference instanceof MethodData) {
-        	// change: added visibility check of newItem
-            if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-            	newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+        	
+        	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+        		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+        		
+        		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+        			newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
             	
-                if (!reference.isFinal() && newItem.isFinal()) {
-                    reporter.report(new Report(Level.ERROR, "The method " + reference.getName() + " has been made final, this now prevents overriding.", reference, newItem));
-                }
-            }
+					if (!reference.isFinal() && newItem.isFinal()) {
+						reporter.report(new Report(Level.ERROR,	"The "
+								+ reference.getType() + " "
+								+ reference.getName()
+								+ " has been made final, this now prevents overriding.",
+								reference, newItem));
+					}
+				}
+			}
         }
     }
 

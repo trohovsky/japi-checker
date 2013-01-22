@@ -19,7 +19,6 @@ import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 
 // GENERAL
@@ -29,19 +28,41 @@ public class CheckChangeOfScope implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
     	// API type or public or protected member
-        if (reference.getOwner() == null || 
-        	reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) { 	
+        if ((reference.getOwner() == null && newItem.getOwner() == null) || 
+        	(reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+        	reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE))) {
         	
-        	if (newItem.getVisibility().getValue() < reference.getVisibility().getValue()) {
-                // lower visibility
-                reporter.report(new Report(Reporter.Level.ERROR, "The visibility of the " + newItem.getName() + " " + newItem.getType() + " has been changed from " + reference.getVisibility() + " to " + newItem.getVisibility(), reference, newItem));
-            } else if (newItem.getVisibility().getValue() == reference.getVisibility().getValue()) {
-                // same visibility
-            	reporter.report(new Report(Reporter.Level.INFO, "The visibility of the " + newItem.getName() + " " + newItem.getType() + " has not changed", reference, newItem));
-            } else {
-            	// higher visibility
-                reporter.report(new Report(Reporter.Level.WARNING, "The visibility of the " + newItem.getName() + " " + newItem.getType() + " has been changed from " + reference.getVisibility() + " to " + newItem.getVisibility(), reference, newItem));
-            }
+        	if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+        		// TODO this condition prevents to detect following incompatible change in this rule
+        		// http://wiki.apidesign.org/wiki/InvisibleAbstractMethod
+        		// It will be better to create a special rule for this change
+        	
+        		if (newItem.getVisibility().getValue() < reference.getVisibility().getValue()) {
+        			// lower visibility
+					reporter.report(new Report(Reporter.Level.ERROR,
+							"The visibility of the " + newItem.getName() + " "
+							+ newItem.getType()
+							+ " has been changed from "
+							+ reference.getVisibility() + " to "
+							+ newItem.getVisibility(),
+							reference, newItem));
+        		} else if (newItem.getVisibility().getValue() == reference.getVisibility().getValue()) {
+        			// same visibility
+					reporter.report(new Report(Reporter.Level.INFO,
+							"The visibility of the " + newItem.getName() + " "
+							+ newItem.getType() + " has not changed",
+							reference, newItem));
+        		} else {
+        			// higher visibility
+					reporter.report(new Report(Reporter.Level.WARNING,
+							"The visibility of the " + newItem.getName() + " "
+							+ newItem.getType()
+							+ " has been changed from "
+							+ reference.getVisibility() + " to "
+							+ newItem.getVisibility(), 
+							reference, newItem));
+        		}
+        	}
         }
     }
 }
