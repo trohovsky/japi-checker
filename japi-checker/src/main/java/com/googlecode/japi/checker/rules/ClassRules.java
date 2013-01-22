@@ -7,6 +7,11 @@ import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.model.JavaItem;
 
+/**
+ * 
+ * @author Tomas Rohovsky
+ *
+ */
 public class ClassRules implements Rule {
 	
 	private List<Rule> rules = new ArrayList<Rule>();

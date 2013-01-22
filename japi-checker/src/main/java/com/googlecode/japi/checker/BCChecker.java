@@ -25,6 +25,8 @@ import java.util.zip.ZipFile;
 import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.FieldData;
+import com.googlecode.japi.checker.model.MethodData;
 import com.googlecode.japi.checker.rules.ClassRules;
 import com.googlecode.japi.checker.rules.FieldRules;
 import com.googlecode.japi.checker.rules.MethodRules;
@@ -91,19 +93,37 @@ public class BCChecker {
         ClassRules rules = new ClassRules();
     	FieldRules fieldRules = new FieldRules();
         MethodRules methodRules = new MethodRules();
-        for (ClassData clazz : referenceData) {
+        for (ClassData referenceClass : referenceData) {
             boolean found = false;
-            for (ClassData newClazz : newData) {
-                if (clazz.isSame(newClazz)) {
-                    rules.checkBackwardCompatibility(reporter, clazz, newClazz);
-                    newClazz.checkFieldsBackwardCompatibility(reporter, clazz, fieldRules);
-                    newClazz.checkMethodsBackwardCompatibility(reporter, clazz, methodRules);
+            for (ClassData newClass : newData) {
+                if (referenceClass.isSame(newClass)) {
+                	// checking class rules
+                    rules.checkBackwardCompatibility(reporter, referenceClass, newClass);
+                    
+                    // checking field rules
+                    for (FieldData referenceField : referenceClass.getFields()) {
+                        for (FieldData newField: newClass.getFields()) {
+                            if (referenceField.isSame(newField)) {
+                            	fieldRules.checkBackwardCompatibility(reporter, referenceField, newField);
+                            }
+                        }
+                    }
+                    
+                    // checking method rules
+                    for (MethodData referenceMethod : referenceClass.getMethods()) {
+                        for (MethodData newMethod: newClass.getMethods()) {
+                            if (referenceMethod.isSame(newMethod)) {
+                            	methodRules.checkBackwardCompatibility(reporter, referenceMethod, newMethod);
+                            }
+                        }
+                    }
+                    
                     found = true;
                     break;
                 }
             }
-            if (!found && clazz.getVisibility() == Scope.PUBLIC) {
-                reporter.report(new Report(Level.ERROR, "Public class " + clazz.getName() + " has been removed.", clazz, null));
+            if (!found && referenceClass.getVisibility() == Scope.PUBLIC) {
+                reporter.report(new Report(Level.ERROR, "Public class " + referenceClass.getName() + " has been removed.", referenceClass, null));
             }
         }
     }

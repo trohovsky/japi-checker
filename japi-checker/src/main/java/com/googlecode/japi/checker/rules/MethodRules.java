@@ -7,6 +7,11 @@ import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.model.JavaItem;
 
+/**
+ * 
+ * @author Tomas Rohovsky
+ *
+ */
 public class MethodRules implements Rule {
 	
 	private List<Rule> rules = new ArrayList<Rule>();;
@@ -20,8 +25,7 @@ public class MethodRules implements Rule {
 	}
 	
 	@Override
-	public void checkBackwardCompatibility(Reporter reporter,
-			JavaItem reference, JavaItem newItem) {
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
 		for (Rule rule : rules) {
             rule.checkBackwardCompatibility(reporter, reference, newItem);
         }
