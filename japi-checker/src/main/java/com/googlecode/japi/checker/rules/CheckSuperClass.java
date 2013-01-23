@@ -20,7 +20,6 @@ import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.RuleHelpers;
-import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 
@@ -42,9 +41,8 @@ public class CheckSuperClass implements Rule {
     
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        // this check only applies on public class (and not interface).
-        if (reference instanceof ClassData && !((ClassData) reference).isInterface() 
-                && reference.getVisibility() == Scope.PUBLIC) {
+        // this check only applies on public (changed: and protected) class (and not interface).
+        if (!((ClassData) reference).isInterface()) {
             ClassData referenceClass = (ClassData)reference;
             ClassData newClass = (ClassData)newItem;
             if (!RuleHelpers.isClassPartOfClassTree(newClass.getClassDataLoader(), referenceClass.getSuperName(), newClass.getSuperName())) {

@@ -30,20 +30,18 @@ public class CheckRemovedMethod implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
         
-    	if (reference instanceof ClassData) {
-            ClassData referenceClass = (ClassData)reference;
-            ClassData newClass = (ClassData)newItem;
-            for (MethodData oldMethod : referenceClass.getMethods()) {
-                boolean found = false;
-                for (MethodData newMethod: newClass.getMethods()) {
-                    if (oldMethod.isSame(newMethod)) {
-                        found = true;
-                        break;
-                    }
+    	ClassData referenceClass = (ClassData)reference;
+        ClassData newClass = (ClassData)newItem;
+        for (MethodData oldMethod : referenceClass.getMethods()) {
+            boolean found = false;
+            for (MethodData newMethod: newClass.getMethods()) {
+                if (oldMethod.isSame(newMethod)) {
+                    found = true;
+                    break;
                 }
-                if (!found && oldMethod.getVisibility() != Scope.PRIVATE) {
-                    reporter.report(new Report(Level.ERROR, "Could not find " + oldMethod.getType() + " " + oldMethod.getName() + " in newer version.", reference, newItem));
-                }
+            }
+            if (!found && oldMethod.getVisibility() != Scope.PRIVATE) {
+                reporter.report(new Report(Level.ERROR, "Could not find " + oldMethod.getType() + " " + oldMethod.getName() + " in newer version.", reference, newItem));
             }
         }
     }

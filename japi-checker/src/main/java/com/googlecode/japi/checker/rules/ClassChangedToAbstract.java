@@ -19,7 +19,6 @@ import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
-import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 
 // CLASS
@@ -27,10 +26,9 @@ public class ClassChangedToAbstract implements Rule {
 
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        if (reference instanceof ClassData) {
-            if (!reference.isAbstract() && newItem.isAbstract()) {
-                reporter.report(new Report(Level.ERROR, "The class " + reference.getName() + " has been made abstract.", reference, newItem));
-            }
+
+        if (!reference.isAbstract() && newItem.isAbstract()) {
+            reporter.report(new Report(Level.ERROR, "The class " + reference.getName() + " has been made abstract.", reference, newItem));
         }
     }
 

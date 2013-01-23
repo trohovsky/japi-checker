@@ -28,20 +28,17 @@ public class CheckInheritanceChanges implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-        if (reference instanceof ClassData) {
-            // Check extends...
-            if (!((ClassData) reference).getSuperName().equals(((ClassData) newItem).getSuperName())) {
-                reporter.report(new Report(Level.ERROR, reference.getName() + " extends " + ((ClassData) newItem).getSuperName() +
-                        " and not " + ((ClassData) reference).getSuperName() + " anymore.", reference, newItem));
-            }
-            // Check interfaces
-            for (String ifaceRef : ((ClassData) reference).getInterfaces()) {
-                if (!((ClassData) newItem).getInterfaces().contains(ifaceRef)) {
-                    reporter.report(new Report(Level.ERROR, reference.getName() + " is not implementing " + ifaceRef + " anymore.", reference, newItem));
-                }
+        // Check extends...
+        if (!((ClassData) reference).getSuperName().equals(((ClassData) newItem).getSuperName())) {
+            reporter.report(new Report(Level.ERROR, reference.getName() + " extends " + ((ClassData) newItem).getSuperName() +
+                   " and not " + ((ClassData) reference).getSuperName() + " anymore.", reference, newItem));
+        }
+        // Check interfaces
+        for (String ifaceRef : ((ClassData) reference).getInterfaces()) {
+            if (!((ClassData) newItem).getInterfaces().contains(ifaceRef)) {
+                reporter.report(new Report(Level.ERROR, reference.getName() + " is not implementing " + ifaceRef + " anymore.", reference, newItem));
             }
         }
-        
     }
 
 }

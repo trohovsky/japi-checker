@@ -29,20 +29,18 @@ public class CheckRemovedField implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
         
-    	if (reference instanceof ClassData) {
-            ClassData referenceClass = (ClassData)reference;
-            ClassData newClass = (ClassData)newItem;
-            for (FieldData oldField : referenceClass.getFields()) {
-                boolean found = false;
-                for (FieldData newField: newClass.getFields()) {
-                    if (oldField.isSame(newField)) {
-                        found = true;
-                        break;
-                    }
+    	ClassData referenceClass = (ClassData)reference;
+        ClassData newClass = (ClassData)newItem;
+        for (FieldData oldField : referenceClass.getFields()) {
+            boolean found = false;
+            for (FieldData newField: newClass.getFields()) {
+                if (oldField.isSame(newField)) {
+                    found = true;
+                    break;
                 }
-                if (!found && oldField.getVisibility() != Scope.PRIVATE) {
-                    reporter.report(new Report(Reporter.Level.ERROR, "Could not find " + oldField.getType() + " " + oldField.getName() + " in newer version.", reference, newItem));
-                }
+            }
+            if (!found && oldField.getVisibility() != Scope.PRIVATE) {
+                reporter.report(new Report(Reporter.Level.ERROR, "Could not find " + oldField.getType() + " " + oldField.getName() + " in newer version.", reference, newItem));
             }
         }
     }
