@@ -34,33 +34,21 @@ public class CheckFieldChangeToFinal implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-        if (reference instanceof FieldData) {
-        	
-        	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-        		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-                
-        		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-                    newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            	
-					if (!reference.isFinal() && newItem.isFinal()) {
-						reporter.report(new Report(Level.ERROR, "The "
-								+ reference.getType() + " "
-								+ reference.getName()
-								+ " has been made final.", 
-								reference, newItem));
-					} else if (reference.isFinal() && !newItem.isFinal() 
-                		&& reference.isStatic() && newItem.isStatic()
-                		&& ((FieldData) reference).isCompileTimeConstant()) {
-						// if field is static with compile-time constant value
-						reporter.report(new Report(Level.ERROR, "The "
-								+ reference.getType() + " "
-								+ reference.getName()
-								+ " has been made non-final. (it has compile-time constant value)",
-								reference, newItem));
-					}
-        		}
-            }
-        }
+        if (!reference.isFinal() && newItem.isFinal()) {
+			reporter.report(new Report(Level.ERROR, "The "
+					+ reference.getType() + " "
+					+ reference.getName()
+					+ " has been made final.", 
+					reference, newItem));
+		} else if (reference.isFinal() && !newItem.isFinal() 
+        	&& reference.isStatic() && newItem.isStatic()
+        	&& ((FieldData) reference).isCompileTimeConstant()) {
+			// if field is static with compile-time constant value
+			reporter.report(new Report(Level.ERROR, "The "
+					+ reference.getType() + " "
+					+ reference.getName()
+					+ " has been made non-final. (it has compile-time constant value)",
+					reference, newItem));
+		}
     }
-
 }

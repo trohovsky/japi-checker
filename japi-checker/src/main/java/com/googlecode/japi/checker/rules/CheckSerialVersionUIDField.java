@@ -33,24 +33,22 @@ public class CheckSerialVersionUIDField implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
         // private static final long serialVersionUID = 338331310737246989L;
-        if (reference instanceof FieldData) {
-            FieldData referenceField = (FieldData)reference;
-            FieldData newField = (FieldData)newItem;
-            if ("serialVersionUID".equals(referenceField.getName())) {
-                // J means long.
-                if (!"J".equals(referenceField.getDescriptor())) {
-                    reporter.report(new Report(Level.ERROR, "The type for field serialVersionUID is invalid, it must be a long.", reference, newItem));
-                    return;
-                }
-                if (!"J".equals(newField.getDescriptor())) {
-                    reporter.report(new Report(Level.ERROR, "The type for field serialVersionUID is invalid, it must be a long.", reference, newItem));
-                    return;
-                }
-                System.out.println(referenceField.getValue().getClass().getName());
-                if (((Long)referenceField.getValue()).longValue() != ((Long)newField.getValue()).longValue()) {
-                    reporter.report(new Report(Level.ERROR, "The value of the serialVersionUID" +
-                            " field has changed from " + toHex(referenceField) + " to "  + toHex(newField) + ".", reference, newItem));
-                }
+        FieldData referenceField = (FieldData)reference;
+        FieldData newField = (FieldData)newItem;
+        if ("serialVersionUID".equals(referenceField.getName())) {
+            // J means long.
+            if (!"J".equals(referenceField.getDescriptor())) {
+                reporter.report(new Report(Level.ERROR, "The type for field serialVersionUID is invalid, it must be a long.", reference, newItem));
+                return;
+            }
+            if (!"J".equals(newField.getDescriptor())) {
+                reporter.report(new Report(Level.ERROR, "The type for field serialVersionUID is invalid, it must be a long.", reference, newItem));
+                return;
+            }
+            System.out.println(referenceField.getValue().getClass().getName());
+            if (((Long)referenceField.getValue()).longValue() != ((Long)newField.getValue()).longValue()) {
+                reporter.report(new Report(Level.ERROR, "The value of the serialVersionUID" +
+                        " field has changed from " + toHex(referenceField) + " to "  + toHex(newField) + ".", reference, newItem));
             }
         }
     }

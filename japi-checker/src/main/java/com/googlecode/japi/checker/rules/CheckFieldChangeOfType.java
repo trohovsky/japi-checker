@@ -21,35 +21,19 @@ import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Scope;
 
 // FIELD
 public class CheckFieldChangeOfType implements Rule {
 
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        
-        if (reference instanceof FieldData) {
-        	
-        	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-        		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-                
-        		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-                    newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            	            	
-					if (!((FieldData) reference).hasSameType((FieldData) newItem)) {
-						reporter.report(new Report(Level.ERROR, "The "
-								+ reference.getType() + " "
-								+ reference.getName()
-								+ " has been modified from "
-								+ ((FieldData) reference).getDescriptor()
-								+ " to "
-								+ ((FieldData) newItem).getDescriptor(),
-								reference, newItem));
-					}
-        		}
-            }
-        }
+               	
+		if (!((FieldData) reference).hasSameType((FieldData) newItem)) {
+			reporter.report(new Report(Level.ERROR, "The "
+					+ reference.getType() + " " + reference.getName()
+					+ " has been modified from "
+					+ ((FieldData) reference).getDescriptor() + " to "
+					+ ((FieldData) newItem).getDescriptor(), reference, newItem));
+		}
     }
-
 }

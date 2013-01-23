@@ -33,28 +33,16 @@ public class CheckFieldChangeValue implements Rule {
 
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        
-    	if (reference instanceof FieldData) {
-        	
-        	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-        		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-                
-        		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-                    newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) { 
-        			
-					if (isValueOfCompileTimeConstantChanged((FieldData) reference, (FieldData) newItem)) {
-						reporter.report(new Report(Level.ERROR, "The value of "
-								+ reference.getType() + " "
-								+ reference.getName()
-								+ " has been changed from "
-								+ ((FieldData) reference).getValue() + " to "
-								+ ((FieldData) newItem).getValue(), reference,
-								newItem));
-					}
-        		}
-            }
-        }
-    }
+            			
+		if (isValueOfCompileTimeConstantChanged((FieldData) reference, (FieldData) newItem)) {
+			reporter.report(new Report(Level.ERROR, "The value of "
+					+ reference.getType() + " "
+					+ reference.getName()
+					+ " has been changed from "
+					+ ((FieldData) reference).getValue() + " to "
+					+ ((FieldData) newItem).getValue(), reference, newItem));
+		}
+	}
 
 	private boolean isValueOfCompileTimeConstantChanged(FieldData reference, FieldData newItem) {
 				
