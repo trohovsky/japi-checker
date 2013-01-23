@@ -17,11 +17,9 @@ package com.googlecode.japi.checker.rules;
 
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
-import com.googlecode.japi.checker.model.MethodData;
 
 // METHOD
 public class CheckMethodChangedToStatic implements Rule {
@@ -29,28 +27,17 @@ public class CheckMethodChangedToStatic implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-        if (reference instanceof MethodData) {
-        	
-           	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-           		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            		
-           		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-           			newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            	
-           			if (!reference.isStatic() && newItem.isStatic()) {
-						reporter.report(new Report(Level.ERROR, "The "
-								+ reference.getType() + " "
-								+ reference.getName()
-								+ " has been made static.", reference, newItem));
-					} else if (reference.isStatic() && !newItem.isStatic()) {
-						reporter.report(new Report(Level.ERROR, "The "
-								+ reference.getType() + " "
-								+ reference.getName()
-								+ " is not static anymore.", reference, newItem));
-					}
-				}
-           	}
-        }
+		if (!reference.isStatic() && newItem.isStatic()) {
+			reporter.report(new Report(Level.ERROR, "The "
+					+ reference.getType() + " "
+					+ reference.getName()
+					+ " has been made static.", reference, newItem));
+		} else if (reference.isStatic() && !newItem.isStatic()) {
+			reporter.report(new Report(Level.ERROR, "The "
+					+ reference.getType() + " "
+					+ reference.getName()
+					+ " is not static anymore.", reference, newItem));
+		}
     }
 
 }

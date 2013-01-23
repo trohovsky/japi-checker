@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
+import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.JavaItem;
 
 /**
@@ -14,10 +15,12 @@ import com.googlecode.japi.checker.model.JavaItem;
  */
 public class MethodRules implements Rule {
 	
-	private List<Rule> rules = new ArrayList<Rule>();;
+	private List<Rule> rules = new ArrayList<Rule>();
+	private List<Rule> nonAPIrules = new ArrayList<Rule>();
 
 	public MethodRules() {
-		rules.add(new CheckChangeOfScope());
+		nonAPIrules.add(new CheckChangeOfScope());
+		
 		rules.add(new CheckMethodChangedToAbstract());
 		rules.add(new CheckMethodChangedToFinal());
 		rules.add(new CheckMethodChangedToStatic());
@@ -26,8 +29,24 @@ public class MethodRules implements Rule {
 	
 	@Override
 	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-		for (Rule rule : rules) {
-            rule.checkBackwardCompatibility(reporter, reference, newItem);
-        }
+		
+		// rules where methods do not have to be API
+		for (Rule rule : nonAPIrules) {
+			rule.checkBackwardCompatibility(reporter, reference, newItem);
+		}
+				
+		// rules where methods have to be API
+		if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) && 
+			newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+
+			if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+				newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+
+				for (Rule rule : rules) {
+					rule.checkBackwardCompatibility(reporter, reference, newItem);
+				}
+			}
+		}
 	}
+
 }

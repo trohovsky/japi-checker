@@ -19,9 +19,7 @@ import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
-import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.JavaItem;
-import com.googlecode.japi.checker.model.MethodData;
 
 // METHOD
 public class CheckMethodChangedToFinal implements Rule {
@@ -29,23 +27,12 @@ public class CheckMethodChangedToFinal implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-        if (reference instanceof MethodData) {
-        	
-        	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-        		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-        		
-        		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-        			newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            	
-					if (!reference.isFinal() && newItem.isFinal()) {
-						reporter.report(new Report(Level.ERROR,	"The "
-								+ reference.getType() + " "
-								+ reference.getName()
-								+ " has been made final, this now prevents overriding.",
-								reference, newItem));
-					}
-				}
-			}
+		if (!reference.isFinal() && newItem.isFinal()) {
+			reporter.report(new Report(Level.ERROR,	"The "
+					+ reference.getType() + " "
+					+ reference.getName()
+					+ " has been made final, this now prevents overriding.",
+					reference, newItem));
         }
     }
 

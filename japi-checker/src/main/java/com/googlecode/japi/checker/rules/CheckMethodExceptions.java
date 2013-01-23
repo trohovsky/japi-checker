@@ -21,7 +21,6 @@ import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.RuleHelpers;
-import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
@@ -42,36 +41,25 @@ public class CheckMethodExceptions implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-    	if (reference instanceof MethodData) {
-        	
-           	if (reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-           		newItem.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-            		
-           		if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-           			newItem.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-           			
-					MethodData referenceMethod = (MethodData) reference;
-					MethodData newMethod = (MethodData) newItem;
-					for (String exception : referenceMethod.getExceptions()) {
-						if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
-							reporter.report(new Report(Level.ERROR, "The "
-									+ referenceMethod.getType() + " "
-									+ referenceMethod.getName()
-									+ " is not throwing " + exception
-									+ " anymore.", reference, newItem));
-						}
-					}
-					for (String exception : newMethod.getExceptions()) {
-						if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
-							reporter.report(new Report(Level.ERROR, "The "
-									+ referenceMethod.getType() + " "
-									+ referenceMethod.getName()
-									+ " is now throwing " + exception
-									+ ".", reference, newItem));
-						}
-					}
-				}
-            }
+    	MethodData referenceMethod = (MethodData) reference;
+		MethodData newMethod = (MethodData) newItem;
+		for (String exception : referenceMethod.getExceptions()) {
+			if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
+				reporter.report(new Report(Level.ERROR, "The "
+						+ referenceMethod.getType() + " "
+						+ referenceMethod.getName()
+						+ " is not throwing " + exception
+						+ " anymore.", reference, newItem));
+			}
+		}
+		for (String exception : newMethod.getExceptions()) {
+			if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
+				reporter.report(new Report(Level.ERROR, "The "
+						+ referenceMethod.getType() + " "
+						+ referenceMethod.getName()
+						+ " is now throwing " + exception
+						+ ".", reference, newItem));
+			}
         }
     }
     
