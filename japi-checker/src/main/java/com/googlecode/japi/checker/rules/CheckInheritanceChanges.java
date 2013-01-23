@@ -30,13 +30,17 @@ public class CheckInheritanceChanges implements Rule {
     	
         // Check extends...
         if (!((ClassData) reference).getSuperName().equals(((ClassData) newItem).getSuperName())) {
-            reporter.report(new Report(Level.ERROR, reference.getName() + " extends " + ((ClassData) newItem).getSuperName() +
-                   " and not " + ((ClassData) reference).getSuperName() + " anymore.", reference, newItem));
+			reporter.report(new Report(Level.ERROR, reference.getName()
+					+ " extends " + ((ClassData) newItem).getSuperName()
+					+ " and not " + ((ClassData) reference).getSuperName()
+					+ " anymore.", reference, newItem));
         }
         // Check interfaces
         for (String ifaceRef : ((ClassData) reference).getInterfaces()) {
             if (!((ClassData) newItem).getInterfaces().contains(ifaceRef)) {
-                reporter.report(new Report(Level.ERROR, reference.getName() + " is not implementing " + ifaceRef + " anymore.", reference, newItem));
+				reporter.report(new Report(Level.ERROR, reference.getName()
+						+ " is not implementing " + ifaceRef + " anymore.",
+						reference, newItem));
             }
         }
     }

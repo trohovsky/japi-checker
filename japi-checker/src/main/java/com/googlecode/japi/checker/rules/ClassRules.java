@@ -22,6 +22,7 @@ public class ClassRules implements Rule {
 		nonAPIrules.add(new CheckChangeOfScope());
 		
 		rules.add(new ChangeKindOfAPIType());
+		rules.add(new CheckAddedMethod());
 		rules.add(new CheckClassVersion());
 		rules.add(new CheckInheritanceChanges());
 		rules.add(new CheckRemovedField());

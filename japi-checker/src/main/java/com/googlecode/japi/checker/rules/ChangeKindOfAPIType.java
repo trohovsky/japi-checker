@@ -21,6 +21,11 @@ import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 
+/**
+ * 
+ * @author Tomas Rohovsky
+ *
+ */
 // CLASS
 public class ChangeKindOfAPIType implements Rule {
 

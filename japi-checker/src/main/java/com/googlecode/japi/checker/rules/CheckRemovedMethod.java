@@ -32,6 +32,7 @@ public class CheckRemovedMethod implements Rule {
         
     	ClassData referenceClass = (ClassData)reference;
         ClassData newClass = (ClassData)newItem;
+        
         for (MethodData oldMethod : referenceClass.getMethods()) {
             boolean found = false;
             for (MethodData newMethod: newClass.getMethods()) {
@@ -40,8 +41,10 @@ public class CheckRemovedMethod implements Rule {
                     break;
                 }
             }
-            if (!found && oldMethod.getVisibility() != Scope.PRIVATE) {
-                reporter.report(new Report(Level.ERROR, "Could not find " + oldMethod.getType() + " " + oldMethod.getName() + " in newer version.", reference, newItem));
+            if (!found && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+				reporter.report(new Report(Level.ERROR, "Could not find "
+						+ oldMethod.getType() + " " + oldMethod.getName()
+						+ " in newer version.", reference, newItem));
             }
         }
     }

@@ -29,8 +29,12 @@ public class CheckClassVersion implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
         if (((ClassData) reference).getVersion() != ((ClassData) newItem).getVersion()) {
-            reporter.report(new Report(Level.ERROR, "The Java version has changed from " + ((ClassData) reference).getVersion() + " to " + ((ClassData) newItem).getVersion() + ", check your compiler target.", reference, newItem));
-        }
+			reporter.report(new Report(Level.ERROR,
+					"The Java version has changed from "
+					+ ((ClassData) reference).getVersion() + " to "
+					+ ((ClassData) newItem).getVersion()
+					+ ", check your compiler target.", reference, newItem));
+		}
     }
 
 }
