@@ -41,7 +41,7 @@ public class CheckRemovedField implements Rule {
             }
             if (!found && oldField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
 				reporter.report(new Report(Reporter.Level.ERROR,
-						"Could not find " + oldField.getType() + " "
+						"Could not find " + oldField.getItemType() + " "
 						+ oldField.getName() + " in newer version.",
 						reference, newItem));
             }

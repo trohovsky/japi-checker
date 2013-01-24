@@ -28,8 +28,6 @@ import com.googlecode.japi.checker.Rule;
 public class MethodData extends JavaItem {
     private final String signature;
     private final String descriptor;
-    private final Type[] argumentTypes;
-    private final Type returnType;
 	private List<String> exceptions = new ArrayList<String>();
     private int line;
     
@@ -37,8 +35,6 @@ public class MethodData extends JavaItem {
         super(loader, owner, access, name);
         this.signature = signature;
         this.descriptor = descriptor;
-        this.argumentTypes = Type.getArgumentTypes(descriptor);
-        this.returnType = Type.getReturnType(descriptor);
         if (exceptions != null) {
             Collections.addAll(this.exceptions, exceptions);
         }
@@ -56,8 +52,8 @@ public class MethodData extends JavaItem {
     }
     
     @Override
-    public String getType() {
-        return "method";
+    public String getItemType() {
+        return this.isConstructor() ? "constructor" : "method";
     }
 
     /**
@@ -78,14 +74,14 @@ public class MethodData extends JavaItem {
      * @return types of the arguments
      */
     public Type[] getArgumentTypes() {
-		return argumentTypes;
+		return Type.getArgumentTypes(descriptor);
 	}
 
     /**
      * @return return type
      */
 	public Type getReturnType() {
-		return returnType;
+		return Type.getReturnType(descriptor);
 	}
 
     /**
@@ -102,9 +98,28 @@ public class MethodData extends JavaItem {
     public int getLineNumber() {
         return line;
     }
-
+    
 	public boolean isConstructor() {
 		return this.getName().equals("<init>");
 	}
-
+	
+	private String getArgumentTypesString() {
+		StringBuffer buffer = new StringBuffer();
+		boolean first = true;
+		for (Type parameterType : this.getArgumentTypes()) {
+			if (first) {
+				first = false;
+			} else {
+				buffer.append(", ");
+			}
+			buffer.append(parameterType.getClassName());
+		}
+		return buffer.toString();
+	}
+	
+	@Override
+	public String toString() {
+		return this.getName() + "(" + getArgumentTypesString() + ")";
+	}
+	
 }

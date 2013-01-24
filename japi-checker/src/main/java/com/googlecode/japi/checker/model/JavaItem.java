@@ -145,7 +145,7 @@ public abstract class JavaItem {
         this.owner = owner;
     }
 
-    public abstract String getType();
+    public abstract String getItemType();
     
     /**
      * Display the item name.

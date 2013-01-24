@@ -96,7 +96,7 @@ public class ClassData extends JavaItem {
     }
     
     @Override
-    public String getType() {
+    public String getItemType() {
         if (this.isInterface()) {
         	return "interface";
         } else if (this.isEnum) {

@@ -31,7 +31,7 @@ public class InnerClassData extends JavaItem {
     }
 
     @Override
-    public String getType() {
+    public String getItemType() {
         return "class";
     }
 

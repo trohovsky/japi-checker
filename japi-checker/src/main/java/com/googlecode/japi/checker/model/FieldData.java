@@ -17,6 +17,8 @@ package com.googlecode.japi.checker.model;
 
 import java.util.List;
 
+import org.objectweb.asm.Type;
+
 import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -54,6 +56,10 @@ public class FieldData extends JavaItem {
         return value;
     }
     
+    public Type getType() {
+    	return Type.getType(getDescriptor());
+    }
+    
     /**
      * Finds out whether the field is compile-time constant.
      * @return
@@ -77,7 +83,8 @@ public class FieldData extends JavaItem {
     }
 
     @Override
-    public String getType() {
+    public String getItemType() {
         return "field";
     }
+    
 }

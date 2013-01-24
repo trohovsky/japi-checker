@@ -30,10 +30,10 @@ public class CheckFieldChangeOfType implements Rule {
                	
 		if (!((FieldData) reference).hasSameType((FieldData) newItem)) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getType() + " " + reference.getName()
+					+ reference.getItemType() + " " + reference.getName()
 					+ " has been modified from "
-					+ ((FieldData) reference).getDescriptor() + " to "
-					+ ((FieldData) newItem).getDescriptor(), reference, newItem));
+					+ ((FieldData) reference).getType().getClassName() + " to "
+					+ ((FieldData) newItem).getType().getClassName(), reference, newItem));
 		}
     }
 }

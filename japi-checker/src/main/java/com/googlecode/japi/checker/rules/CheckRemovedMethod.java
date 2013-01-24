@@ -43,7 +43,7 @@ public class CheckRemovedMethod implements Rule {
             }
             if (!found && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
 				reporter.report(new Report(Level.ERROR, "Could not find "
-						+ oldMethod.getType() + " " + oldMethod.getName()
+						+ oldMethod.getItemType() + " " + oldMethod.getName()
 						+ " in newer version.", reference, newItem));
             }
         }

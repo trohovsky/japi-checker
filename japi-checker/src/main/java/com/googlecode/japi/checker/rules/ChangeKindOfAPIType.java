@@ -32,12 +32,12 @@ public class ChangeKindOfAPIType implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
-    	if (!reference.getType().equals(newItem.getType())) {
+    	if (!reference.getItemType().equals(newItem.getItemType())) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getType() + " "
+					+ reference.getItemType() + " "
 					+ reference.getName()
 					+ " has been changed into an "
-					+ newItem.getType() + ".", reference, newItem));
+					+ newItem.getItemType() + ".", reference, newItem));
         }
     }
 

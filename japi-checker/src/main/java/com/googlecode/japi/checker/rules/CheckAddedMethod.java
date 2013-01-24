@@ -41,18 +41,18 @@ public class CheckAddedMethod implements Rule {
 
 							if (newMethod.isAbstract()) {
 								reporter.report(new Report(Level.ERROR, "Added abstract " 
-										+ newMethod.getType() + " "
-										+ newMethod.getName() + ".",
+										+ newMethod.getItemType() + " "
+										+ newMethod + ".",
 										reference, newItem));
 							} else if (newMethod.isStatic()) {
 								reporter.report(new Report(Level.WARNING, "Added static "
-										+ newMethod.getType() + " "
-										+ newMethod.getName() + ".",
+										+ newMethod.getItemType() + " "
+										+ newMethod + ".",
 										reference, newItem));
 							} else {
 								reporter.report(new Report(Level.WARNING, "Added non-abstract and non-static "
-										+ newMethod.getType() + " "
-										+ newMethod.getName() + ".",
+										+ newMethod.getItemType() + " "
+										+ newMethod + ".",
 										reference, newItem));
 							}
 						}

@@ -25,7 +25,7 @@ public class AttributeData extends JavaItem {
     }
 
     @Override
-    public String getType() {
+    public String getItemType() {
         return "attribute";
     }
 }

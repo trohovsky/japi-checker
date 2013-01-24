@@ -35,7 +35,7 @@ public class CheckMethodChangedToAbstract implements Rule {
 
     	if (!reference.isAbstract() && newItem.isAbstract()) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getType() + " "
+					+ reference.getItemType() + " "
 					+ reference.getName()
 					+ " has been made abstract.", 
 					reference, newItem));

@@ -35,7 +35,7 @@ public class CheckFieldChangeValue implements Rule {
             			
 		if (isValueOfCompileTimeConstantChanged((FieldData) reference, (FieldData) newItem)) {
 			reporter.report(new Report(Level.ERROR, "The value of "
-					+ reference.getType() + " "
+					+ reference.getItemType() + " "
 					+ reference.getName()
 					+ " has been changed from "
 					+ ((FieldData) reference).getValue() + " to "
