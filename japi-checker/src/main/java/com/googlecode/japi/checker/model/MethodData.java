@@ -102,4 +102,9 @@ public class MethodData extends JavaItem {
     public int getLineNumber() {
         return line;
     }
+
+	public boolean isConstructor() {
+		return this.getName().equals("<init>");
+	}
+
 }

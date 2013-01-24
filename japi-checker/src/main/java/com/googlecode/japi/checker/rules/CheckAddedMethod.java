@@ -25,7 +25,7 @@ public class CheckAddedMethod implements Rule {
 		
 		if (!referenceClass.isInterface() && !newClass.isInterface()) {
 			for (MethodData newMethod: newClass.getMethods()) {
-				if (newMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+				if (newMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE) && !newMethod.isConstructor()) {
 				
 					boolean found = false;
 					for (MethodData oldMethod : referenceClass.getMethods()) {
