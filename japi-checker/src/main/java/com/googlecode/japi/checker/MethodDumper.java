@@ -41,7 +41,7 @@ public class MethodDumper extends MethodVisitor {
 
     @Override
     public AnnotationVisitor visitAnnotationDefault() {
-        return null;
+        return new AnnotationDumper(method);
     }
 
     @Override

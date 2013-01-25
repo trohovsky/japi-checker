@@ -59,6 +59,35 @@ public class CheckAddedMethod implements Rule {
 					}
 				}
 			}
+		} else if (referenceClass.isInterface() && newClass.isInterface()) {
+			for (MethodData newMethod: newClass.getMethods()) {
+				// all interface methods are implicitly public and abstract - no need to check if are API
+				boolean found = false;
+				
+				for (MethodData oldMethod : referenceClass.getMethods()) {
+					if (oldMethod.isSame(newMethod) && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+						found = true;
+						break;
+					}
+				}
+				
+				if (!found) {
+					if (referenceClass.isAnnotation() && newClass.isAnnotation()) {
+						if (newMethod.getDefaultValue() == null) {
+							reporter.report(new Report(Level.ERROR, "Added " 
+									+ newMethod.getItemType() + " "
+									+ newMethod + " with no default value.",
+									reference, newItem));
+						}
+					} else {
+						reporter.report(new Report(Level.ERROR, "Added " 
+								+ newMethod.getItemType() + " "
+								+ newMethod + ".",
+								reference, newItem));
+					}
+				}
+			}
+			
 		}
 	}
 	

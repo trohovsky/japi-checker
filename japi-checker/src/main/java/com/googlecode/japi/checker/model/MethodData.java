@@ -28,6 +28,7 @@ public class MethodData extends JavaItem {
     private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
     private int line;
+    private Object defaultValue;
     
     public MethodData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String signature, String[] exceptions) {
         super(loader, owner, access, name);
@@ -65,7 +66,7 @@ public class MethodData extends JavaItem {
     /**
      * @return types of the arguments
      */
-    public Type[] getArgumentTypes() {
+    public Type[] getParameterTypes() {
 		return Type.getArgumentTypes(descriptor);
 	}
 
@@ -83,22 +84,50 @@ public class MethodData extends JavaItem {
         return exceptions;
     }
 
+    /**
+     * Set the line number of appearance in the source file.
+     * @param line
+     */
     public void setLineNumber(int line) {
         this.line = line;
     }
     
+    /**
+     * @return the line number of appearance in the source file.
+     */
     public int getLineNumber() {
         return line;
     }
-    
+	
+	/**
+	 * Set the default value for the annotation member represented by this method.
+	 * @param value
+	 */
+	public void setDefaultValue(Object value) {
+		this.defaultValue = value;
+	}
+	
+	/**
+	 * @return the default value for the annotation member represented by this method.
+	 */
+	public Object getDefaultValue() {
+		return defaultValue;
+	}
+	
+	/**
+     * @return true if this method is constructor; false otherwise.
+     */
 	public boolean isConstructor() {
 		return this.getName().equals("<init>");
 	}
 	
-	private String getArgumentTypesString() {
+	/**
+	 * @return the parameter types as a string.
+	 */
+	private String getParameterTypesString() {
 		StringBuffer buffer = new StringBuffer();
 		boolean first = true;
-		for (Type parameterType : this.getArgumentTypes()) {
+		for (Type parameterType : this.getParameterTypes()) {
 			if (first) {
 				first = false;
 			} else {
@@ -111,7 +140,7 @@ public class MethodData extends JavaItem {
 	
 	@Override
 	public String toString() {
-		return this.getName() + "(" + getArgumentTypesString() + ")";
+		return this.getName() + "(" + getParameterTypesString() + ")";
 	}
 	
 }
