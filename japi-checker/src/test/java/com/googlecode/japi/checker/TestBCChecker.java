@@ -314,16 +314,12 @@ public class TestBCChecker {
     public BasicReporter check(Class<? extends Rule> clazz, String ... includes) throws InstantiationException, IllegalAccessException, IOException {
         BCChecker checker = new BCChecker(reference, newVersion);
         BasicReporter reporter = new BasicReporter();
-        List<Rule> rules = new ArrayList<Rule>();
-        if (clazz != null) {
-            rules.add(clazz.newInstance());
-        }
         if (includes != null) {
             for (String include : includes) {
                 checker.addInclude(include);
             }
         }
-        checker.checkBacwardCompatibility(reporter, rules);
+        checker.checkBackwardCompatibility(reporter);
         return reporter;
     }
     

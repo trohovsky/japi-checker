@@ -15,13 +15,9 @@
  */
 package com.googlecode.japi.checker.model;
 
-import java.util.List;
-
 import org.objectweb.asm.Type;
 
 import com.googlecode.japi.checker.ClassDataLoader;
-import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Rule;
 
 public class FieldData extends JavaItem {
     private final String descriptor;
@@ -56,6 +52,9 @@ public class FieldData extends JavaItem {
         return value;
     }
     
+    /**
+     * @return the type
+     */
     public Type getType() {
     	return Type.getType(getDescriptor());
     }
@@ -74,12 +73,6 @@ public class FieldData extends JavaItem {
     
     public boolean hasSameType(FieldData reference) {
         return this.getDescriptor().equals(reference.getDescriptor());
-    }
-
-    public void checkBackwardCompatibility(Reporter reporter,
-            FieldData oldField, List<Rule> rules) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override

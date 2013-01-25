@@ -22,8 +22,6 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 
 import com.googlecode.japi.checker.ClassDataLoader;
-import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Rule;
 
 public class ClassData extends JavaItem {
     private List<MethodData> methods = new ArrayList<MethodData>();
@@ -66,31 +64,6 @@ public class ClassData extends JavaItem {
         innerClasses.add(clazz);
     }
     
-    public void checkBackwardCompatibility(Reporter reporter, ClassData clazz, List<Rule> rules) {
-        for (FieldData oldField : clazz.fields) {
-            for (FieldData newField: this.fields) {
-                if (oldField.isSame(newField)) {
-                    newField.checkBackwardCompatibility(reporter, oldField, rules);
-                    for (Rule rule : rules) {
-                        rule.checkBackwardCompatibility(reporter, oldField, newField);
-                    }
-                    break;
-                }
-            }
-        }
-        for (MethodData oldMethod : clazz.methods) {
-            for (MethodData newMethod: this.methods) {
-                if (oldMethod.isSame(newMethod)) {
-                    newMethod.checkBackwardCompatibility(reporter, oldMethod, rules);
-                    for (Rule rule : rules) {
-                        rule.checkBackwardCompatibility(reporter, oldMethod, newMethod);
-                    }
-                    break;
-                }
-            }
-        }
-    }
-
     public boolean isSame(ClassData newClazz) {
         return this.getName().equals(newClazz.getName());
     }
@@ -99,9 +72,9 @@ public class ClassData extends JavaItem {
     public String getItemType() {
         if (this.isInterface()) {
         	return "interface";
-        } else if (this.isEnum) {
+        } else if (this.isEnum()) {
         	return "enum";
-        } else if (this.isAnnotation) {
+        } else if (this.isAnnotation()) {
         	return "annotation";
         } else {
         	return "class";

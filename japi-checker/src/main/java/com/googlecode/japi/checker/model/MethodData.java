@@ -22,8 +22,6 @@ import java.util.List;
 import org.objectweb.asm.Type;
 
 import com.googlecode.japi.checker.ClassDataLoader;
-import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Rule;
 
 public class MethodData extends JavaItem {
     private final String signature;
@@ -41,13 +39,7 @@ public class MethodData extends JavaItem {
         this.exceptions = Collections.unmodifiableList(this.exceptions);
     }
 
-    public void checkBackwardCompatibility(Reporter reporter, MethodData method, List<Rule> rules) {
-    }
-
     public boolean isSame(MethodData method) {
-        if (method == null) {
-            return false;
-        }
         return this.getName().equals(method.getName()) && this.getDescriptor().equals(method.getDescriptor());
     }
     

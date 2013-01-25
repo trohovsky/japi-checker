@@ -18,7 +18,6 @@ package com.googlecode.japi.checker;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipFile;
 
@@ -124,41 +123,6 @@ public class BCChecker {
             }
             if (!found && referenceClass.getVisibility() == Scope.PUBLIC) {
                 reporter.report(new Report(Level.ERROR, "Public class " + referenceClass.getName() + " has been removed.", referenceClass, null));
-            }
-        }
-    }
-    
-    public void checkBacwardCompatibility(Reporter reporter, List<Rule> rules) throws IOException {
-        if (rules == null) {
-            rules = Collections.emptyList();
-        }
-
-        ClassDataLoader referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
-        referenceDataLoader.read(reference.toURI());
-        for (File file : this.referenceClasspath) {
-            referenceDataLoader.read(file.toURI());
-        }
-        List<ClassData> referenceData = referenceDataLoader.getClasses(reference.toURI(), includes, excludes);
-        ClassDataLoader newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
-        newArtifactDataLoader.read(newArtifact.toURI());
-        for (File file : this.newArtifactClasspath) {
-            newArtifactDataLoader.read(file.toURI());
-        }
-        List<ClassData> newData = newArtifactDataLoader.getClasses(newArtifact.toURI(), includes, excludes);
-        for (ClassData clazz : referenceData) {
-            boolean found = false;
-            for (ClassData newClazz : newData) {
-                if (clazz.isSame(newClazz)) {
-                    for (Rule rule : rules) {
-                        rule.checkBackwardCompatibility(reporter, clazz, newClazz);
-                    }
-                    newClazz.checkBackwardCompatibility(reporter, clazz, rules);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && clazz.getVisibility() == Scope.PUBLIC) {
-                reporter.report(new Report(Level.ERROR, "Public class " + clazz.getName() + " has been removed.", clazz, null));
             }
         }
     }
