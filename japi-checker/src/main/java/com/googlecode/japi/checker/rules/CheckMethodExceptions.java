@@ -47,7 +47,7 @@ public class CheckMethodExceptions implements Rule {
 			if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
 				reporter.report(new Report(Level.ERROR, "The "
 						+ referenceMethod.getItemType() + " "
-						+ referenceMethod.getName()
+						+ referenceMethod
 						+ " is not throwing " + exception
 						+ " anymore.", reference, newItem));
 			}
@@ -56,7 +56,7 @@ public class CheckMethodExceptions implements Rule {
 			if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
 				reporter.report(new Report(Level.ERROR, "The "
 						+ referenceMethod.getItemType() + " "
-						+ referenceMethod.getName()
+						+ referenceMethod
 						+ " is now throwing " + exception
 						+ ".", reference, newItem));
 			}
