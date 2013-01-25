@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import com.googlecode.japi.checker.ClassDataLoader;
@@ -27,6 +28,7 @@ public class MethodData extends JavaItem {
     private final String signature;
     private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
+	private final boolean isVariableArity;
     private int line;
     private Object defaultValue;
     
@@ -38,6 +40,7 @@ public class MethodData extends JavaItem {
             Collections.addAll(this.exceptions, exceptions);
         }
         this.exceptions = Collections.unmodifiableList(this.exceptions);
+        this.isVariableArity = (access & Opcodes.ACC_VARARGS) == Opcodes.ACC_VARARGS;
     }
 
     public boolean isSame(MethodData method) {
@@ -83,6 +86,13 @@ public class MethodData extends JavaItem {
     public List<String> getExceptions() {
         return exceptions;
     }
+    
+	/**
+	 * @return the isVariableArity
+	 */
+	public boolean isVariableArity() {
+		return isVariableArity;
+	}
 
     /**
      * Set the line number of appearance in the source file.

@@ -21,6 +21,7 @@ public class MethodRules implements Rule {
 	public MethodRules() {
 		nonAPIrules.add(new CheckChangeOfScope());
 		
+		rules.add(new CheckMethodVariableArity());
 		rules.add(new CheckMethodDefaultValue());
 		rules.add(new CheckMethodChangedToAbstract());
 		rules.add(new CheckMethodChangedToFinal());
