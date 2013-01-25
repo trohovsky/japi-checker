@@ -23,6 +23,7 @@ public class ClassRules implements Rule {
 		
 		rules.add(new ChangeKindOfAPIType());
 		rules.add(new CheckAddedMethod());
+		rules.add(new CheckAddedField());
 		rules.add(new CheckClassVersion());
 		rules.add(new CheckInheritanceChanges());
 		rules.add(new CheckRemovedField());
