@@ -24,13 +24,14 @@ import org.objectweb.asm.Type;
 
 import com.googlecode.japi.checker.ClassDataLoader;
 
-public class MethodData extends JavaItem {
+public class MethodData extends JavaItem implements Parametrized {
     private final String signature;
     private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
 	private final boolean isVariableArity;
     private int line;
     private Object defaultValue;
+    private List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
     
     public MethodData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String signature, String[] exceptions) {
         super(loader, owner, access, name);
@@ -125,6 +126,22 @@ public class MethodData extends JavaItem {
 	}
 	
 	/**
+	 * Add the type parameter.
+	 */
+	@Override
+	public void add(TypeParameterData typeParameter) {
+		typeParameters.add(typeParameter);		
+	}
+
+    /**
+     * @return the type parameters
+     */
+	@Override
+	public List<TypeParameterData> getTypeParameters() {
+		return typeParameters;
+	}
+	
+	/**
      * @return true if this method is constructor; false otherwise.
      */
 	public boolean isConstructor() {
@@ -150,7 +167,21 @@ public class MethodData extends JavaItem {
 	
 	@Override
 	public String toString() {
-		return this.getName() + "(" + getParameterTypesString() + ")";
+		StringBuffer sb = new StringBuffer();
+		if (!this.getTypeParameters().isEmpty()) {
+			sb.append("<");
+			boolean first = true;
+			for (TypeParameterData typeParameter : this.getTypeParameters()) {
+				if (first) {
+					first = false;
+				} else {
+					sb.append(", ");
+				}	
+				sb.append(typeParameter);
+			}
+			sb.append("> ");
+		}
+		return sb.toString() + this.getName() + "(" + getParameterTypesString() + ")";
 	}
-	
+
 }

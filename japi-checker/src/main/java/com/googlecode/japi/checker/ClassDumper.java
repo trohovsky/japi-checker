@@ -28,6 +28,7 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.signature.SignatureReader;
 
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
@@ -56,6 +57,11 @@ class ClassDumper extends ClassVisitor {
             String superName, String[] interfaces) {
         logger.fine("class " + name + " extends " + superName + " {");
         clazz = new ClassData(loader, null, access, name, signature, superName, interfaces, version);
+        if (signature != null) {
+            //System.out.println("Class " + name + " signature:");
+            //System.out.println(" " + signature);
+            new SignatureReader(signature).accept(new TypeParameterDumper(clazz));
+        }
         classes.put(name, clazz);
     }
 
@@ -91,6 +97,11 @@ class ClassDumper extends ClassVisitor {
             String signature, String[] exceptions) {
         logger.fine("    +(m) " + name + " " + descriptor + " " + signature + " " + Arrays.toString(exceptions));
         MethodData method = new MethodData(loader, clazz, access, name, descriptor, signature, exceptions);
+        if (signature != null) {
+            //System.out.println("Method " + name + " signature:");
+            //System.out.println(" " + signature);
+            new SignatureReader(signature).accept(new TypeParameterDumper(method));
+        }
         clazz.add(method);
         return new MethodDumper(method);
     }

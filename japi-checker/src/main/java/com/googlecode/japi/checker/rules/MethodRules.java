@@ -27,6 +27,7 @@ public class MethodRules implements Rule {
 		rules.add(new CheckMethodChangedToFinal());
 		rules.add(new CheckMethodChangedToStatic());
 		rules.add(new CheckMethodExceptions());
+		rules.add(new CheckTypeParameters());
 	}
 	
 	@Override

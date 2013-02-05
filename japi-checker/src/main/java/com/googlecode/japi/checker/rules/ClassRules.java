@@ -31,6 +31,7 @@ public class ClassRules implements Rule {
 		rules.add(new CheckSuperClass());
 		rules.add(new ClassChangedToAbstract());
 		rules.add(new ClassChangedToFinal());
+		rules.add(new CheckTypeParameters());
 	}
 
 	@Override

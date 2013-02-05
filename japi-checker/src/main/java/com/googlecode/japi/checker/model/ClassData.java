@@ -23,19 +23,20 @@ import org.objectweb.asm.Opcodes;
 
 import com.googlecode.japi.checker.ClassDataLoader;
 
-public class ClassData extends JavaItem {
-    private List<MethodData> methods = new ArrayList<MethodData>();
-    private List<FieldData> fields = new ArrayList<FieldData>();
-    private List<AttributeData> attributes = new ArrayList<AttributeData>();
-    private List<InnerClassData> innerClasses = new ArrayList<InnerClassData>();
-    private String signature;
-    private String superName;
-    private List<String> interfaces = new ArrayList<String>();
-    private int version;
-    private String source;
-    private boolean isInterface;
-    private boolean isEnum;
-	private boolean isAnnotation;
+public class ClassData extends JavaItem implements Parametrized {
+    private final String signature;
+    private final String superName;
+    private final List<String> interfaces = new ArrayList<String>();
+    private final int version;
+    private final List<MethodData> methods = new ArrayList<MethodData>();
+    private final List<FieldData> fields = new ArrayList<FieldData>();
+    private final List<AttributeData> attributes = new ArrayList<AttributeData>();
+    private final List<InnerClassData> innerClasses = new ArrayList<InnerClassData>();
+    private final List<TypeParameterData> typeParameteres = new ArrayList<TypeParameterData>();
+    private final boolean isInterface;
+    private final boolean isEnum;
+	private final boolean isAnnotation;
+	private String source;
 
     public ClassData(ClassDataLoader loader, ClassData owner, int access, String name, String signature, String superName, String[] interfaces, int version) {
         super(loader, owner, access, name);
@@ -64,6 +65,11 @@ public class ClassData extends JavaItem {
         innerClasses.add(clazz);
     }
     
+    @Override
+    public void add(TypeParameterData typeParameter) {
+    	typeParameteres.add(typeParameter);
+    }
+    
     public boolean isSame(ClassData newClazz) {
         return this.getName().equals(newClazz.getName());
     }
@@ -82,31 +88,17 @@ public class ClassData extends JavaItem {
     }
 
     /**
-     * @param signature the signature to set
-     */
-    protected void setSignature(String signature) {
-        this.signature = signature;
-    }
-
-    /**
      * @return the signature
      */
     public String getSignature() {
         return signature;
     }
-
+    
     /**
      * @return the superName
      */
     public String getSuperName() {
-        return superName;
-    }
-
-    /**
-     * @param superName the superName to set
-     */
-    protected void setSuperName(String superName) {
-        this.superName = superName;
+    	return superName;
     }
 
     /**
@@ -117,24 +109,10 @@ public class ClassData extends JavaItem {
     }
 
     /**
-     * @param interfaces the interfaces to set
-     */
-    protected void setInterfaces(List<String> interfaces) {
-        this.interfaces = interfaces;
-    }
-
-    /**
      * @return the version
      */
     public int getVersion() {
         return version;
-    }
-
-    /**
-     * @param version the version to set
-     */
-    protected void setVersion(int version) {
-        this.version = version;
     }
 
     /**
@@ -145,24 +123,10 @@ public class ClassData extends JavaItem {
     }
 
     /**
-     * @param methods the methods to set
-     */
-    protected void setMethods(List<MethodData> methods) {
-        this.methods = methods;
-    }
-
-    /**
      * @return the fields
      */
     public List<FieldData> getFields() {
         return fields;
-    }
-
-    /**
-     * @param fields the fields to set
-     */
-    protected void setFields(List<FieldData> fields) {
-        this.fields = fields;
     }
 
     /**
@@ -171,14 +135,33 @@ public class ClassData extends JavaItem {
     public List<AttributeData> getAttributes() {
         return attributes;
     }
-
+    
     /**
-     * @param attributes the attributes to set
+     * @return the inner classes
      */
-    protected void setAttributes(List<AttributeData> attributes) {
-        this.attributes = attributes;
+    public List<InnerClassData> getInnerClasses() {
+    	return innerClasses;
+    }
+    
+    /**
+     * @return the type parameters
+     */
+    public List<TypeParameterData> getTypeParameters() {
+    	return typeParameteres;
     }
 
+    public boolean isInterface() {
+		return isInterface;
+	}
+	
+	public boolean isEnum() {
+		return isEnum;
+	}
+	
+	public boolean isAnnotation() {
+		return isAnnotation;
+	}
+	
     /**
      * @param source the source to set
      */
@@ -192,30 +175,6 @@ public class ClassData extends JavaItem {
     public String getSource() {
         return source;
     }
-    
-    public boolean isInterface() {
-		return isInterface;
-	}
-
-	protected void setInterface(boolean isInterface) {
-		this.isInterface = isInterface;
-	}
-	
-	public boolean isEnum() {
-		return isEnum;
-	}
-
-	protected void setEnum(boolean isEnum) {
-		this.isEnum = isEnum;
-	}
-	
-	public boolean isAnnotation() {
-		return isAnnotation;
-	}
-
-	protected void setAnnotation(boolean isAnnotation) {
-		this.isAnnotation = isAnnotation;
-	}
 
 	public String getFilename() {
         if (this.getName().lastIndexOf('/') != -1) {
@@ -223,4 +182,23 @@ public class ClassData extends JavaItem {
         }
         return this.getSource();
     }
+	
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		if (!this.getTypeParameters().isEmpty()) {
+			sb.append("<");
+			boolean first = true;
+			for (TypeParameterData typeParameter : this.getTypeParameters()) {
+				if (first) {
+					first = false;
+				} else {
+					sb.append(", ");
+				}	
+				sb.append(typeParameter);
+			}
+			sb.append(">");
+		}
+		return this.getName() + sb.toString();
+	}
 }
