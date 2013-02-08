@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.googlecode.japi.checker.BCChecker;
 import com.googlecode.japi.checker.Reporter;
+import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.model.MethodData;
 
 public class Main {
@@ -25,6 +26,8 @@ public class Main {
 		BasicReporter reporter = new BasicReporter();
         try {
 			checker.checkBackwardCompatibility(reporter);
+			System.out.println("Error count: " + reporter.getCount(Level.ERROR));
+			System.out.println("Warning count: " + reporter.getCount(Level.WARNING));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +56,7 @@ public class Main {
             return messages;
         }
 
-        public int count(Level level) {
+        public int getCount(Level level) {
             int count = 0;
             for (Report message : messages) {
                 if (message.level == level) {

@@ -37,13 +37,19 @@
             <timezone>+2</timezone>
             <name>William Bernardet</name>
         </developer>
+        <developer>
+            <id>tomas.rohovsky</id>
+            <email>trohovsk@redhat.com</email>
+            <timezone>+1</timezone>
+            <name>Tomas Rohovsky</name>
+        </developer>
     </developers>
     
     <modules>
         <module>japi-checker</module>
         <module>reference-test-jar</module>
         <module>new-test-jar</module>
-        <module>japi-checker-maven-plugin</module>
+        <!--<module>japi-checker-maven-plugin</module>-->
     </modules>
     
     <distributionManagement>

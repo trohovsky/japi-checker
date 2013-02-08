@@ -1,0 +1,23 @@
+Japi-checker
+============
+
+The tool detects API and ABI compatiblity of Java libraries.
+
+Building
+--------
+
+mvn package
+
+Running
+-------
+
+java -jar japi-checker-0.2.0-SNAPSHOT.jar REFERENCE_LIBRARY NEW_LIBRARY
+
+REFERENCE_LIBRARY - reference library, JAR archive or directory containing classes
+NEW_LIBRARY - new library, JAR archive or directory containing classes
+
+Important Notes
+---------------
+
+Module japi-checker-maven-plugin and tests are not updated.
+
