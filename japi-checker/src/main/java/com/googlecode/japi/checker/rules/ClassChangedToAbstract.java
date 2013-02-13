@@ -28,7 +28,7 @@ public class ClassChangedToAbstract implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
 
         if (!reference.isAbstract() && newItem.isAbstract()) {
-            reporter.report(new Report(Level.ERROR, "The class " + reference.getName() + " has been made abstract.", reference, newItem));
+            reporter.report(new Report(Level.ERROR, "The " + reference + " has been made abstract.", reference, newItem));
         }
     }
 

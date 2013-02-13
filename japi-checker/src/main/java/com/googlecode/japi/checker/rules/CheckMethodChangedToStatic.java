@@ -29,12 +29,10 @@ public class CheckMethodChangedToStatic implements Rule {
     	
 		if (!reference.isStatic() && newItem.isStatic()) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getItemType() + " "
 					+ reference
 					+ " has been made static.", reference, newItem));
 		} else if (reference.isStatic() && !newItem.isStatic()) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getItemType() + " "
 					+ reference
 					+ " is not static anymore.", reference, newItem));
 		}

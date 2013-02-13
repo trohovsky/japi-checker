@@ -35,8 +35,7 @@ public class CheckFieldChangeToFinal implements Rule {
     	
         if (!reference.isFinal() && newItem.isFinal()) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getItemType() + " "
-					+ reference.getName()
+					+ reference
 					+ " has been made final.", 
 					reference, newItem));
 		} else if (reference.isFinal() && !newItem.isFinal() 
@@ -44,8 +43,7 @@ public class CheckFieldChangeToFinal implements Rule {
         	&& ((FieldData) reference).isCompileTimeConstant()) {
 			// if field is static with compile-time constant value
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getItemType() + " "
-					+ reference.getName()
+					+ reference
 					+ " has been made non-final. (it has compile-time constant value)",
 					reference, newItem));
 		}

@@ -30,7 +30,7 @@ public class CheckTypeParameters implements Rule {
 					reporter.report(new Reporter.Report(Level.ERROR,
 							"The type parameter [" + newTypeParameters.get(i)
 									+ "] has been added to the "
-									+ reference.getItemType() + " " + reference
+									+ reference
 									+ ".", reference, newItem));
 				}
 			}
@@ -42,7 +42,7 @@ public class CheckTypeParameters implements Rule {
 				reporter.report(new Reporter.Report(Level.ERROR,
 						"The type parameter [" + referenceTypeParameters.get(i)
 								+ "] has been removed from the "
-								+ reference.getItemType() + " " + reference
+								+ reference
 								+ ".", reference, newItem));
 			}
 		}
@@ -55,7 +55,7 @@ public class CheckTypeParameters implements Rule {
 						"The bounds of the type parameter have been changed from ["
 								+ referenceTypeParameters.get(i) + "] to ["
 								+ newTypeParameters.get(i) + "] in the "
-								+ reference.getItemType() + " " + reference
+								+ reference
 								+ ".", reference, newItem));
 			}
 		}

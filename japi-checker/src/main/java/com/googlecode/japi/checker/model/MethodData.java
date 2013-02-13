@@ -168,6 +168,8 @@ public class MethodData extends JavaItem implements Parametrized {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
+		sb.append(this.getItemType());
+		sb.append(" ");
 		if (!this.getTypeParameters().isEmpty()) {
 			sb.append("<");
 			boolean first = true;
@@ -181,7 +183,11 @@ public class MethodData extends JavaItem implements Parametrized {
 			}
 			sb.append("> ");
 		}
-		return sb.toString() + this.getName() + "(" + getParameterTypesString() + ")";
+		sb.append(this.getName());
+		sb.append("(");
+		sb.append(getParameterTypesString());
+		sb.append(")");
+		return sb.toString();
 	}
 
 }

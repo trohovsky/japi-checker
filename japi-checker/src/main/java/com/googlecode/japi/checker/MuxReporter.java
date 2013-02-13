@@ -32,5 +32,11 @@ public class MuxReporter implements Reporter {
     public void add(Reporter reporter) {
         reporters.add(reporter);
     }
+
+	@Override
+	public void report(Difference difference) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

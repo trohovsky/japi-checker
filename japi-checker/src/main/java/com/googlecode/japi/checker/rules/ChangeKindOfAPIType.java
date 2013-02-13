@@ -15,10 +15,10 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 
 /**
@@ -33,11 +33,9 @@ public class ChangeKindOfAPIType implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
     	if (!reference.getItemType().equals(newItem.getItemType())) {
-			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getItemType() + " "
-					+ reference.getName()
-					+ " has been changed into an "
-					+ newItem.getItemType() + ".", reference, newItem));
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.DIFERENCE_CHANGE_KIND_OF_API_TYPE,
+					reference.toString(), newItem.getItemType()));
         }
     }
 

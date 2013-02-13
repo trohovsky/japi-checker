@@ -29,7 +29,6 @@ public class CheckMethodChangedToFinal implements Rule {
     	
 		if (!reference.isFinal() && newItem.isFinal()) {
 			reporter.report(new Report(Level.ERROR,	"The "
-					+ reference.getItemType() + " "
 					+ reference
 					+ " has been made final, this now prevents overriding.",
 					reference, newItem));

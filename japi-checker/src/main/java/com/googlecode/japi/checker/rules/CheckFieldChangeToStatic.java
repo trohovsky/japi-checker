@@ -29,13 +29,11 @@ public class CheckFieldChangeToStatic implements Rule {
     	
     	if (reference.isStatic() && !newItem.isStatic()) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getItemType() + " "
-					+ reference.getName()
+					+ reference
 					+ " is not static anymore.", reference, newItem));
 		} else if (!reference.isStatic() && newItem.isStatic()) {
 			reporter.report(new Report(Level.ERROR, "The "
-					+ reference.getItemType() + " "
-					+ reference.getName() + " is now static.",
+					+ reference + " is now static.",
 					reference, newItem));
 		}
     }

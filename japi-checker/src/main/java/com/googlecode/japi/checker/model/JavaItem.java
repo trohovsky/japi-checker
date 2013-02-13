@@ -152,7 +152,7 @@ public abstract class JavaItem {
      * {@inheritDoc}
      */
     public String toString() {
-        return name;
+        return this.getItemType() + " " + name;
     }
 
     /**

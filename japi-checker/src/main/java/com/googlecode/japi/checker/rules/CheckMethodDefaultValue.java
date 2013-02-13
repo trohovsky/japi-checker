@@ -19,7 +19,6 @@ public class CheckMethodDefaultValue implements Rule {
 
     	if (((MethodData) reference).getDefaultValue() != null && ((MethodData) newItem).getDefaultValue() == null) {
 			reporter.report(new Report(Level.ERROR, "The default value of the "
-					+ reference.getItemType() + " "
 					+ reference
 					+ " has been removed.", 
 					reference, newItem));

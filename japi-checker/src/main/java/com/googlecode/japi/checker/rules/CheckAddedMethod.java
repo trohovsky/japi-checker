@@ -40,18 +40,15 @@ public class CheckAddedMethod implements Rule {
 						if (!newClass.isFinal()) {
 
 							if (newMethod.isAbstract()) {
-								reporter.report(new Report(Level.ERROR, "Added abstract " 
-										+ newMethod.getItemType() + " "
+								reporter.report(new Report(Level.ERROR, "Added abstract "
 										+ newMethod + ".",
 										reference, newItem));
 							} else if (newMethod.isStatic()) {
 								reporter.report(new Report(Level.WARNING, "Added static "
-										+ newMethod.getItemType() + " "
 										+ newMethod + ".",
 										reference, newItem));
 							} else {
 								reporter.report(new Report(Level.WARNING, "Added non-abstract and non-static "
-										+ newMethod.getItemType() + " "
 										+ newMethod + ".",
 										reference, newItem));
 							}
@@ -74,14 +71,12 @@ public class CheckAddedMethod implements Rule {
 				if (!found) {
 					if (referenceClass.isAnnotation() && newClass.isAnnotation()) {
 						if (newMethod.getDefaultValue() == null) {
-							reporter.report(new Report(Level.ERROR, "Added " 
-									+ newMethod.getItemType() + " "
+							reporter.report(new Report(Level.ERROR, "Added "
 									+ newMethod + " with no default value.",
 									reference, newItem));
 						}
 					} else {
-						reporter.report(new Report(Level.ERROR, "Added " 
-								+ newMethod.getItemType() + " "
+						reporter.report(new Report(Level.ERROR, "Added "
 								+ newMethod + ".",
 								reference, newItem));
 					}

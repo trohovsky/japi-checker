@@ -31,6 +31,7 @@ public class CheckRemovedField implements Rule {
         
     	ClassData referenceClass = (ClassData)reference;
         ClassData newClass = (ClassData)newItem;
+        
         for (FieldData oldField : referenceClass.getFields()) {
             boolean found = false;
             for (FieldData newField: newClass.getFields()) {
@@ -41,8 +42,7 @@ public class CheckRemovedField implements Rule {
             }
             if (!found && oldField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
 				reporter.report(new Report(Reporter.Level.ERROR,
-						"Could not find " + oldField.getItemType() + " "
-						+ oldField.getName() + " in newer version.",
+						"Could not find " + oldField + " in newer version.",
 						reference, newItem));
             }
         }

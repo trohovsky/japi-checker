@@ -122,7 +122,7 @@ public class BCChecker {
                 }
             }
             if (!found && referenceClass.getVisibility() == Scope.PUBLIC) {
-                reporter.report(new Report(Level.ERROR, "Public class " + referenceClass.getName() + " has been removed.", referenceClass, null));
+                reporter.report(new Report(Level.ERROR, "Public " + referenceClass + " has been removed.", referenceClass, null));
             }
         }
     }

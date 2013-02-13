@@ -23,6 +23,8 @@ public interface Reporter {
     
     void report(Report report);
     
+    void report(Difference difference);
+    
     public static class Report {
         public final Level level;
         public final  JavaItem referenceItem;

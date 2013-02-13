@@ -186,6 +186,9 @@ public class ClassData extends JavaItem implements Parametrized {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
+		sb.append(this.getItemType());
+		sb.append(" ");
+		sb.append(this.getName());
 		if (!this.getTypeParameters().isEmpty()) {
 			sb.append("<");
 			boolean first = true;
@@ -199,6 +202,6 @@ public class ClassData extends JavaItem implements Parametrized {
 			}
 			sb.append(">");
 		}
-		return this.getName() + sb.toString();
+		return sb.toString();
 	}
 }

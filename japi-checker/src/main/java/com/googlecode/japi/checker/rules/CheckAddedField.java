@@ -37,8 +37,7 @@ public class CheckAddedField implements Rule {
 				if (!found) {
 					// class is subclassable, TODO maybe check public constructor
 					if (!newClass.isFinal()) {
-						reporter.report(new Report(Level.ERROR, "Added " 
-								+ newField.getItemType() + " "
+						reporter.report(new Report(Level.ERROR, "Added "
 								+ newField + ".",
 								reference, newItem));
 					}

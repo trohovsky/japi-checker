@@ -40,7 +40,7 @@ public class CheckChangeOfScope implements Rule {
         		if (newItem.getVisibility().getValue() < reference.getVisibility().getValue()) {
         			// lower visibility
 					reporter.report(new Report(Reporter.Level.ERROR,
-							"The visibility of the " + reference.getItemType() + " "
+							"The visibility of the "
 							+ reference
 							+ " has been changed from "
 							+ reference.getVisibility() + " to "
@@ -49,13 +49,13 @@ public class CheckChangeOfScope implements Rule {
         		} else if (newItem.getVisibility().getValue() == reference.getVisibility().getValue()) {
         			// same visibility
 					reporter.report(new Report(Reporter.Level.INFO,
-							"The visibility of the " + reference.getItemType() + " "
+							"The visibility of the "
 							+ reference + " has not changed",
 							reference, newItem));
         		} else {
         			// higher visibility
 					reporter.report(new Report(Reporter.Level.WARNING,
-							"The visibility of the " + reference.getItemType() + " "
+							"The visibility of the "
 							+ reference
 							+ " has been changed from "
 							+ reference.getVisibility() + " to "

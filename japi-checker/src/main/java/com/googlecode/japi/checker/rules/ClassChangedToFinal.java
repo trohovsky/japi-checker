@@ -28,7 +28,7 @@ public class ClassChangedToFinal implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
 
         if (!reference.isFinal() && newItem.isFinal()) {
-            reporter.report(new Report(Level.ERROR, "The class " + reference.getName() + " has been made final, this breaks inheritance.", reference, newItem));
+            reporter.report(new Report(Level.ERROR, "The " + reference + " has been made final, this breaks inheritance.", reference, newItem));
         }
     }
 

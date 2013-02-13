@@ -19,7 +19,6 @@ public class CheckMethodVariableArity implements Rule {
 
     	if (((MethodData) reference).isVariableArity() && !((MethodData) newItem).isVariableArity()) {
 			reporter.report(new Report(Level.ERROR, "The parameter of the "
-					+ reference.getItemType() + " "
 					+ reference
 					+ " has been changed from variable arity to array.", 
 					reference, newItem));

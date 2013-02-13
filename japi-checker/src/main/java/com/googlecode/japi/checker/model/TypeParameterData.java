@@ -3,6 +3,11 @@ package com.googlecode.japi.checker.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Tomas Rohovsky
+ *
+ */
 public class TypeParameterData {
 	
 	private final String name;
