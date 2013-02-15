@@ -18,11 +18,11 @@ package com.googlecode.japi.checker.rules;
 import java.util.List;
 
 import com.googlecode.japi.checker.ClassDataLoader;
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.RuleHelpers;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
 
@@ -45,18 +45,18 @@ public class CheckMethodExceptions implements Rule {
 		MethodData newMethod = (MethodData) newItem;
 		for (String exception : referenceMethod.getExceptions()) {
 			if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
-				reporter.report(new Report(Level.ERROR, "The "
-						+ referenceMethod
-						+ " is not throwing " + exception
-						+ " anymore.", reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.METHOD_REMOVED_EXCEPTION,
+						referenceMethod, 
+						exception));
 			}
 		}
 		for (String exception : newMethod.getExceptions()) {
 			if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
-				reporter.report(new Report(Level.ERROR, "The "
-						+ referenceMethod
-						+ " is now throwing " + exception
-						+ ".", reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.METHOD_ADDED_EXCEPTION, 
+						referenceMethod,
+						exception));
 			}
         }
     }

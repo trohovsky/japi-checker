@@ -15,9 +15,9 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
@@ -34,18 +34,14 @@ public class CheckFieldChangeToFinal implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
         if (!reference.isFinal() && newItem.isFinal()) {
-			reporter.report(new Report(Level.ERROR, "The "
-					+ reference
-					+ " has been made final.", 
-					reference, newItem));
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_FINAL, reference));
 		} else if (reference.isFinal() && !newItem.isFinal() 
         	&& reference.isStatic() && newItem.isStatic()
         	&& ((FieldData) reference).isCompileTimeConstant()) {
 			// if field is static with compile-time constant value
-			reporter.report(new Report(Level.ERROR, "The "
-					+ reference
-					+ " has been made non-final. (it has compile-time constant value)",
-					reference, newItem));
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_NON_FINAL, reference));
 		}
     }
 }

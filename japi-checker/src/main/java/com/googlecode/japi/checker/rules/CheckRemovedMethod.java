@@ -15,9 +15,9 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
@@ -42,8 +42,8 @@ public class CheckRemovedMethod implements Rule {
                 }
             }
             if (!found && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-				reporter.report(new Report(Level.ERROR, "Could not find "
-						+ oldMethod + " in newer version.", reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.CLASS_REMOVED_METHOD, oldMethod));
             }
         }
     }

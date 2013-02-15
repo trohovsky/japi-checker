@@ -15,9 +15,9 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
 
@@ -28,10 +28,11 @@ public class CheckFieldChangeToTransient implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
         if (reference.isTransient() && !newItem.isTransient()) {
-            reporter.report(new Report(Level.ERROR, "The " + reference + " is not transient anymore.", reference, newItem));
-        }
-        if (!reference.isTransient() && newItem.isTransient()) {
-            reporter.report(new Report(Level.WARNING, "The " + reference + " is now transient.", reference, newItem));
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_NON_TRANSIENT, reference));
+        } else if (!reference.isTransient() && newItem.isTransient()) {
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_TRANSIENT, reference));
         }
     }
 

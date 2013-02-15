@@ -15,9 +15,10 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Scope;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.model.JavaItem;
 
@@ -37,30 +38,17 @@ public class CheckChangeOfScope implements Rule {
         		// http://wiki.apidesign.org/wiki/InvisibleAbstractMethod
         		// It will be better to create a special rule for this change
         	
-        		if (newItem.getVisibility().getValue() < reference.getVisibility().getValue()) {
+        		if (newItem.getVisibility().isLessVisibleThan(reference.getVisibility())) {
         			// lower visibility
-					reporter.report(new Report(Reporter.Level.ERROR,
-							"The visibility of the "
-							+ reference
-							+ " has been changed from "
-							+ reference.getVisibility() + " to "
-							+ newItem.getVisibility(),
-							reference, newItem));
-        		} else if (newItem.getVisibility().getValue() == reference.getVisibility().getValue()) {
-        			// same visibility
-					reporter.report(new Report(Reporter.Level.INFO,
-							"The visibility of the "
-							+ reference + " has not changed",
-							reference, newItem));
-        		} else {
-        			// higher visibility
-					reporter.report(new Report(Reporter.Level.WARNING,
-							"The visibility of the "
-							+ reference
-							+ " has been changed from "
-							+ reference.getVisibility() + " to "
-							+ newItem.getVisibility(), 
-							reference, newItem));
+					reporter.report(new Difference(reference, newItem,
+							DifferenceType.GENERAL_DECREASED_VISIBILITY, reference,
+							reference.getVisibility(), newItem.getVisibility()));
+				} else if (newItem.getVisibility().isMoreVisibleThan(
+						reference.getVisibility())) {
+					// higher visibility
+					reporter.report(new Difference(reference, newItem,
+							DifferenceType.GENERAL_INCREASED_VISIBILITY, reference,
+							reference.getVisibility(), newItem.getVisibility()));
         		}
         	}
         }

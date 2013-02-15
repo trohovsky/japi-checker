@@ -15,9 +15,9 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.RuleHelpers;
 import com.googlecode.japi.checker.model.ClassData;
@@ -46,7 +46,9 @@ public class CheckSuperClass implements Rule {
             ClassData referenceClass = (ClassData)reference;
             ClassData newClass = (ClassData)newItem;
             if (!RuleHelpers.isClassPartOfClassTree(newClass.getClassDataLoader(), referenceClass.getSuperName(), newClass.getSuperName())) {
-                reporter.report(new Report(Level.ERROR, "The " + reference + " does not inherit from " + referenceClass.getSuperName() + " anymore.", reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.CLASS_CHANGED_SUPERCLASS, reference,
+						referenceClass.getSuperName()));
             }
         }
     }

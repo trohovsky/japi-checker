@@ -15,10 +15,11 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Scope;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
@@ -41,9 +42,8 @@ public class CheckRemovedField implements Rule {
                 }
             }
             if (!found && oldField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-				reporter.report(new Report(Reporter.Level.ERROR,
-						"Could not find " + oldField + " in newer version.",
-						reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.CLASS_REMOVED_FIELD, oldField));
             }
         }
     }

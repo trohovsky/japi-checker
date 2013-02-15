@@ -34,8 +34,9 @@ public class ChangeKindOfAPIType implements Rule {
     	
     	if (!reference.getItemType().equals(newItem.getItemType())) {
 			reporter.report(new Difference(reference, newItem,
-					DifferenceType.DIFERENCE_CHANGE_KIND_OF_API_TYPE,
-					reference.toString(), newItem.getItemType()));
+					DifferenceType.CLASS_CHANGED_KIND_OF_API_TYPE,
+					reference,
+					newItem.getItemType()));
         }
     }
 

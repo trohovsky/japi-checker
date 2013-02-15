@@ -1,10 +1,10 @@
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Scope;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
@@ -37,9 +37,11 @@ public class CheckAddedField implements Rule {
 				if (!found) {
 					// class is subclassable, TODO maybe check public constructor
 					if (!newClass.isFinal()) {
-						reporter.report(new Report(Level.ERROR, "Added "
-								+ newField + ".",
-								reference, newItem));
+						reporter.report(new Difference(
+								reference,
+								newItem,
+								DifferenceType.CLASS_ADDED_FIELD,
+								newField));
 					}
 				}
 			}

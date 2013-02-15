@@ -15,10 +15,10 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 
 // CLASS
@@ -28,7 +28,8 @@ public class ClassChangedToAbstract implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
 
         if (!reference.isAbstract() && newItem.isAbstract()) {
-            reporter.report(new Report(Level.ERROR, "The " + reference + " has been made abstract.", reference, newItem));
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.CLASS_CHANGED_TO_ABSTRACT, reference));
         }
     }
 

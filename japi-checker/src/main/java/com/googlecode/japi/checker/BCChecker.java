@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipFile;
 
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.MethodData;
@@ -122,7 +120,7 @@ public class BCChecker {
                 }
             }
             if (!found && referenceClass.getVisibility() == Scope.PUBLIC) {
-                reporter.report(new Report(Level.ERROR, "Public " + referenceClass + " has been removed.", referenceClass, null));
+                reporter.report(new Difference(referenceClass, null, DifferenceType.PACKAGE_REMOVED_CLASS, referenceClass));
             }
         }
     }

@@ -15,10 +15,10 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 
@@ -38,17 +38,20 @@ public class CheckSerialVersionUIDField implements Rule {
         if ("serialVersionUID".equals(referenceField.getName())) {
             // J means long.
             if (!"J".equals(referenceField.getDescriptor())) {
-                reporter.report(new Report(Level.ERROR, "The type for field serialVersionUID is invalid, it must be a long.", reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE));
                 return;
             }
             if (!"J".equals(newField.getDescriptor())) {
-                reporter.report(new Report(Level.ERROR, "The type for field serialVersionUID is invalid, it must be a long.", reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE));
                 return;
             }
             System.out.println(referenceField.getValue().getClass().getName());
             if (((Long)referenceField.getValue()).longValue() != ((Long)newField.getValue()).longValue()) {
-                reporter.report(new Report(Level.ERROR, "The value of the serialVersionUID" +
-                        " field has changed from " + toHex(referenceField) + " to "  + toHex(newField) + ".", reference, newItem));
+				reporter.report(new Difference(reference, newItem,
+						DifferenceType.CLASS_CHANGED_SERIAL_VERSION_VALUE,
+						toHex(referenceField), toHex(newField)));
             }
         }
     }

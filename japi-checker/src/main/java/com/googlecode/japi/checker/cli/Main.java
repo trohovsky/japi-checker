@@ -8,7 +8,6 @@ import java.util.List;
 import com.googlecode.japi.checker.BCChecker;
 import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Reporter.Level;
 import com.googlecode.japi.checker.Severity;
 import com.googlecode.japi.checker.model.MethodData;
 
@@ -33,8 +32,8 @@ public class Main {
 		BasicReporter reporter = new BasicReporter();
         try {
 			checker.checkBackwardCompatibility(reporter);
-			System.out.println("Error count: " + reporter.getCount(Level.ERROR));
-			System.out.println("Warning count: " + reporter.getCount(Level.WARNING));
+			System.out.println("Error count: " + reporter.getCount(Severity.ERROR));
+			System.out.println("Warning count: " + reporter.getCount(Severity.WARNING));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,29 +41,21 @@ public class Main {
 	}
 	
 	public static class BasicReporter implements Reporter {
-        List<Report> messages = new ArrayList<Report>();
+        List<Difference> differences = new ArrayList<Difference>();
         
-        @Override
-        public void report(Report report) {
-        	if (report.level == Level.ERROR || report.level == Level.WARNING) {
-        		System.out.println(report.level.toString() + ": " + report.source + getLine(report) + ": " + report.message);
-        		messages.add(report);
-        	}
-        }
+		@Override
+		public void report(Report report) {
+			// TODO Auto-generated method stub
+			
+		}
         
         @Override
         public void report(Difference difference) {
         	if (difference.getDifferenceType().getServerity() == Severity.ERROR || 
         			difference.getDifferenceType().getServerity() == Severity.WARNING) {
         		System.out.println(difference.getDifferenceType().getServerity() + ": " + difference.getSource() + getLine(difference) + ": " + difference.getMessage());
+        		differences.add(difference);
         	}
-        }
-        
-        private static String getLine(Report report) {
-            if (report.newItem instanceof MethodData) {
-                return "(" + ((MethodData)report.newItem).getLineNumber() + ")";
-            }
-            return "";
         }
         
         private static String getLine(Difference difference) {
@@ -74,14 +65,14 @@ public class Main {
             return "";
         }
         
-        public List<Report> getMessages() {
-            return messages;
+        public List<Difference> getDifferences() {
+            return differences;
         }
 
-        public int getCount(Level level) {
+        public int getCount(Severity severity) {
             int count = 0;
-            for (Report message : messages) {
-                if (message.level == level) {
+            for (Difference difference : differences) {
+                if (difference.getDifferenceType().getServerity() == severity) {
                     count++;
                 }
             }

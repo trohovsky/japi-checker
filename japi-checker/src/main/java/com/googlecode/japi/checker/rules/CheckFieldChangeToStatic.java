@@ -15,9 +15,9 @@
  */
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
 
@@ -28,13 +28,11 @@ public class CheckFieldChangeToStatic implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
     	if (reference.isStatic() && !newItem.isStatic()) {
-			reporter.report(new Report(Level.ERROR, "The "
-					+ reference
-					+ " is not static anymore.", reference, newItem));
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_NON_STATIC, reference));
 		} else if (!reference.isStatic() && newItem.isStatic()) {
-			reporter.report(new Report(Level.ERROR, "The "
-					+ reference + " is now static.",
-					reference, newItem));
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_STATIC, reference));
 		}
     }
 }

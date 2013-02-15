@@ -1,10 +1,10 @@
 package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.Scope;
-import com.googlecode.japi.checker.Reporter.Level;
-import com.googlecode.japi.checker.Reporter.Report;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
@@ -40,17 +40,21 @@ public class CheckAddedMethod implements Rule {
 						if (!newClass.isFinal()) {
 
 							if (newMethod.isAbstract()) {
-								reporter.report(new Report(Level.ERROR, "Added abstract "
-										+ newMethod + ".",
-										reference, newItem));
+								reporter.report(new Difference(reference,
+										newItem,
+										DifferenceType.CLASS_ADDED_ABSTRACT_METHOD,
+										newMethod));
 							} else if (newMethod.isStatic()) {
-								reporter.report(new Report(Level.WARNING, "Added static "
-										+ newMethod + ".",
-										reference, newItem));
+								reporter.report(new Difference(reference,
+										newItem,
+										DifferenceType.CLASS_ADDED_STATIC_METHOD,
+										newMethod));
 							} else {
-								reporter.report(new Report(Level.WARNING, "Added non-abstract and non-static "
-										+ newMethod + ".",
-										reference, newItem));
+								reporter.report(new Difference(
+										reference,
+										newItem,
+										DifferenceType.CLASS_ADDED_NON_ABSTRACT_NON_STATIC_METHOD,
+										newMethod));
 							}
 						}
 					}
@@ -71,14 +75,16 @@ public class CheckAddedMethod implements Rule {
 				if (!found) {
 					if (referenceClass.isAnnotation() && newClass.isAnnotation()) {
 						if (newMethod.getDefaultValue() == null) {
-							reporter.report(new Report(Level.ERROR, "Added "
-									+ newMethod + " with no default value.",
-									reference, newItem));
+							reporter.report(new Difference(
+									reference,
+									newItem,
+									DifferenceType.ANNOTATION_ADDED_METHOD_WITH_NO_DEFAULT_VALUE,
+									newMethod));
 						}
 					} else {
-						reporter.report(new Report(Level.ERROR, "Added "
-								+ newMethod + ".",
-								reference, newItem));
+						reporter.report(new Difference(reference, newItem,
+								DifferenceType.INTERFACE_ADDED_METHOD,
+								newMethod));
 					}
 				}
 			}
