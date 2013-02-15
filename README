@@ -11,10 +11,12 @@ mvn package
 Running
 -------
 
-java -jar japi-checker-0.2.0-SNAPSHOT.jar REFERENCE_LIBRARY NEW_LIBRARY
+java -jar japi-checker-cli.jar REFERENCE_LIBRARY NEW_LIBRARY [-bin]
 
 REFERENCE_LIBRARY - reference library, JAR archive or directory containing classes
 NEW_LIBRARY - new library, JAR archive or directory containing classes
+
+  -bin    check only binary compatibility (default - source and binary compatibility)
 
 Important Notes
 ---------------
