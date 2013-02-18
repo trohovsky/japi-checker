@@ -96,14 +96,17 @@ class ClassDumper extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor,
             String signature, String[] exceptions) {
         logger.fine("    +(m) " + name + " " + descriptor + " " + signature + " " + Arrays.toString(exceptions));
-        MethodData method = new MethodData(loader, clazz, access, name, descriptor, signature, exceptions);
-        if (signature != null) {
-            //System.out.println("Method " + name + " signature:");
-            //System.out.println(" " + signature);
-            new SignatureReader(signature).accept(new TypeParameterDumper(method));
+        if (!name.equals("<clinit>")) { // the method is a static initializer
+        	MethodData method = new MethodData(loader, clazz, access, name, descriptor, signature, exceptions);
+        	if (signature != null) {
+        		//System.out.println("Method " + name + " signature:");
+        		//System.out.println(" " + signature);
+        		new SignatureReader(signature).accept(new TypeParameterDumper(method));
+        	}
+        	clazz.add(method);
+            return new MethodDumper(method);
         }
-        clazz.add(method);
-        return new MethodDumper(method);
+        return null;
     }
 
     public void visitOuterClass(String owner, String name, String desc) {
