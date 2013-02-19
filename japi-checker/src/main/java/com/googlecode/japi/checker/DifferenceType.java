@@ -35,10 +35,8 @@ public class DifferenceType {
 	public final static DifferenceType ANNOTATION_ADDED_METHOD_WITH_NO_DEFAULT_VALUE = new DifferenceType(Severity.ERROR, true, "The %s without a default value has been added", "");
 	public final static DifferenceType INTERFACE_ADDED_METHOD = new DifferenceType(Severity.ERROR, false, "The %s has been added", "");
 	public final static DifferenceType CLASS_CHANGED_CLASS_VERSION = new DifferenceType(Severity.ERROR, false, "The Java version has changed from %s to %s, check you compiler target", "");
-	public final static DifferenceType CLASS_CONTRACTED_SUPERCLASS_SET2 = new DifferenceType(Severity.ERROR, false, "The %s extends %s and not %s anymore", "");
 	public final static DifferenceType CLASS_CONTRACTED_SUPERCLASS_SET = new DifferenceType(Severity.ERROR, false, "The superclass set of the %s has been contracted for %s", "");
 	public final static DifferenceType CLASS_CONTRACTED_SUPERINTERFACE_SET = new DifferenceType(Severity.ERROR, false, "The superinterface set of the %s has been contracted for %s", "");
-	public final static DifferenceType CLASS_CONTRACTED_SUPERINTERFACE_SET2 = new DifferenceType(Severity.ERROR, false, "The %s is not implementing %s anymore", "");
 	public final static DifferenceType CLASS_REMOVED_FIELD = new DifferenceType(Severity.ERROR, false, "The %s has been removed", "");
 	public final static DifferenceType CLASS_REMOVED_METHOD = new DifferenceType(Severity.ERROR, false, "The %s has been removed", "");
 	public final static DifferenceType CLASS_CHANGED_SUPERCLASS = new DifferenceType(Severity.ERROR, false, "The %s does not inherit from %s anymore", "");

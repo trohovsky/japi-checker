@@ -29,6 +29,11 @@ import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 
+/**
+ * 
+ * @author Tomas Rohovsky
+ *
+ */
 // CLASS
 public class CheckInheritanceChanges implements Rule {
 
@@ -38,41 +43,30 @@ public class CheckInheritanceChanges implements Rule {
     	ClassData referenceClass = (ClassData) reference;
     	ClassData newClass = (ClassData) newItem;
     	
-    	// TODO useless
-        // Check extends...
-        if (!((ClassData) reference).getSuperName().equals(((ClassData) newItem).getSuperName())) {
-			reporter.report(new Difference(reference, newItem,
-					DifferenceType.CLASS_CONTRACTED_SUPERCLASS_SET2, reference,
-					((ClassData) newItem).getSuperName(),
-					((ClassData) reference).getSuperName()));
-        }
-        
-        // TODO inherited interfaces are not included
-        // Check interfaces
-        for (String ifaceRef : ((ClassData) reference).getInterfaces()) {
-            if (!((ClassData) newItem).getInterfaces().contains(ifaceRef)) {
-				reporter.report(new Difference(reference, newItem,
-						DifferenceType.CLASS_CONTRACTED_SUPERINTERFACE_SET2,
-						reference, ifaceRef));
-            }
-        }
-        
         // contracted superclass set
         List<String> referenceAPISuperClasses = getAPITypes(referenceClass.getClassDataLoader(), referenceClass.getSuperClasses());
         List<String> newAPISuperClasses = getAPITypes(newClass.getClassDataLoader(), newClass.getSuperClasses());
         if (!newAPISuperClasses.containsAll(referenceAPISuperClasses)) {
+        	
         	List<String> subtractedClasses = new ArrayList<String>(referenceAPISuperClasses);
         	subtractedClasses.removeAll(newAPISuperClasses);
-        	reporter.report(new Difference(reference, newItem, DifferenceType.CLASS_CONTRACTED_SUPERCLASS_SET, referenceClass, join(subtractedClasses, ", ")));
+        	
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.CLASS_CONTRACTED_SUPERCLASS_SET,
+					referenceClass, join(subtractedClasses, ", ")));
         }
         
         // contracted interface set
         List<String> referenceAPIInterfaces = getAPITypes(referenceClass.getClassDataLoader(), referenceClass.getAllInterfaces());
         List<String> newAPIInterfaces = getAPITypes(newClass.getClassDataLoader(), newClass.getAllInterfaces());
         if (!newAPIInterfaces.containsAll(referenceAPIInterfaces)) {
+        	
         	List<String> subtractedInterfaces = new ArrayList<String>(referenceAPIInterfaces);
         	subtractedInterfaces.removeAll(newAPIInterfaces);
-        	reporter.report(new Difference(reference, newItem, DifferenceType.CLASS_CONTRACTED_SUPERINTERFACE_SET, referenceClass, join(subtractedInterfaces, ", ")));
+        	
+			reporter.report(new Difference(reference, newItem,
+					DifferenceType.CLASS_CONTRACTED_SUPERINTERFACE_SET,
+					referenceClass, join(subtractedInterfaces, ", ")));
         }
     }
     
