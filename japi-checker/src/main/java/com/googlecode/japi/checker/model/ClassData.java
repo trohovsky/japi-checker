@@ -17,7 +17,9 @@ package com.googlecode.japi.checker.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.objectweb.asm.Opcodes;
 
@@ -100,6 +102,22 @@ public class ClassData extends JavaItem implements Parametrized {
     public String getSuperName() {
     	return superName;
     }
+    
+    /**
+     * @return the names of all super classes
+     */
+    public List<String> getSuperClasses() {
+    	List<String> superClasses = new ArrayList<String>();
+    	superClasses.add(this.getSuperName());
+    	
+    	ClassData superClass = this.getClassDataLoader().fromName(this.getSuperName());
+    	while (superClass != null) {
+    		superClasses.add(superClass.getSuperName());
+    		superClass = this.getClassDataLoader().fromName(superClass.getSuperName());
+    	}
+    	
+    	return superClasses;
+    }
 
     /**
      * @return the interfaces
@@ -107,8 +125,51 @@ public class ClassData extends JavaItem implements Parametrized {
     public List<String> getInterfaces() {
         return interfaces;
     }
-
+    
     /**
+     * @return the names of alll interfaces 
+     */
+    public Set<String> getAllInterfaces() {
+    	Set<String> allInterfaces = new HashSet<String>();
+    	
+    	// my interfaces
+    	allInterfaces.addAll(this.getInterfaces());
+    	
+    	// interfaces implemented by super classes
+    	if (!this.isInterface()) {
+			List<String> superClassNames = this.getSuperClasses();
+			for (String superClassName : superClassNames) {
+				ClassData superClass = this.getClassDataLoader().fromName(
+						superClassName);
+				if (superClass != null) {
+					allInterfaces.addAll(superClass.getInterfaces());
+				}
+			}
+		}
+    	
+    	// interfaces extended by interfaces (my and super classes')
+    	Set<String> inputInterfaces = new HashSet<String>(allInterfaces);
+    	Set<String> outputInterfaces = new HashSet<String>();
+    	while (inputInterfaces.size() != 0) {
+    		for (String interfaceName : inputInterfaces) {
+    			ClassData iface = this.getClassDataLoader().fromName(interfaceName);
+    			if (iface != null) {
+    				outputInterfaces.addAll(iface.getInterfaces());
+    			}
+    		}
+    		// preparation for the next iteration
+    		// remove all interfaces, which have been already collected
+    		outputInterfaces.removeAll(allInterfaces);
+    		inputInterfaces.clear();
+    		inputInterfaces.addAll(outputInterfaces);
+    		allInterfaces.addAll(outputInterfaces);
+    		outputInterfaces.clear();
+    	}
+    	
+    	return allInterfaces;
+    }
+
+	/**
      * @return the version
      */
     public int getVersion() {
