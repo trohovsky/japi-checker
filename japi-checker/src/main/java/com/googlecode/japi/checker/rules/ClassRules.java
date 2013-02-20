@@ -28,7 +28,6 @@ public class ClassRules implements Rule {
 		rules.add(new CheckInheritanceChanges());
 		rules.add(new CheckRemovedField());
 		rules.add(new CheckRemovedMethod());
-		rules.add(new CheckSuperClass());
 		rules.add(new ClassChangedToAbstract());
 		rules.add(new ClassChangedToFinal());
 		rules.add(new CheckTypeParameters());

@@ -42,7 +42,6 @@ public class AllRules implements Rule {
         rules.add(new CheckRemovedField());
         rules.add(new CheckRemovedMethod());
         rules.add(new CheckSerialVersionUIDField());
-        rules.add(new CheckSuperClass());
         rules.add(new ClassChangedToAbstract());
         rules.add(new ClassChangedToFinal());
     }
