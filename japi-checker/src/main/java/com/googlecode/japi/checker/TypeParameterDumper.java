@@ -47,7 +47,8 @@ public class TypeParameterDumper extends SignatureVisitor {
 	public void visitClassType(String name) {
 		//System.out.println("    visitClassType(" + name + ")");
 		if (bounded) {
-			typeParameter.addBound(name);
+			String dottedName = Utils.toDottedClassName(name);
+			typeParameter.addBound(dottedName);
 			bounded = false;
 		}
 	}

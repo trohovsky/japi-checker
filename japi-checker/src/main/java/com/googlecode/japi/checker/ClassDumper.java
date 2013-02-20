@@ -50,19 +50,21 @@ class ClassDumper extends ClassVisitor {
         this.loader = loader;
     }
     
+    // TODO dotted name - signature
     /**
      * {@inheritDoc}
      */
     public void visit(int version, int access, String name, String signature,
             String superName, String[] interfaces) {
-        logger.fine("class " + name + " extends " + superName + " {");
-        clazz = new ClassData(loader, null, access, name, signature, superName, interfaces, version);
+        String dottedName = Utils.toDottedClassName(name);
+        String dottedSuperName = Utils.toDottedClassName(superName);
+        String[] dottedInterfaces = Utils.toDottedClassNames(interfaces);
+        logger.fine("class " + dottedName + " extends " + dottedSuperName + " {");
+        clazz = new ClassData(loader, null, access, dottedName, signature, dottedSuperName, dottedInterfaces, version);
         if (signature != null) {
-            //System.out.println("Class " + name + " signature:");
-            //System.out.println(" " + signature);
             new SignatureReader(signature).accept(new TypeParameterDumper(clazz));
         }
-        classes.put(name, clazz);
+        classes.put(dottedName, clazz);
     }
 
     /**
@@ -88,19 +90,22 @@ class ClassDumper extends ClassVisitor {
     }
 
     public void visitInnerClass(String name, String outerName, String innerName, int access) {
-        logger.fine("    +(ic) " + name + " " + outerName + " " + innerName + " " + access);
+    	String dottedName = Utils.toDottedClassName(name);
+    	String dottedOuterName = Utils.toDottedClassName(outerName);
+    	String dottedInnerName = Utils.toDottedClassName(innerName);
+        logger.fine("    +(ic) " + dottedName + " " + dottedOuterName + " " + dottedInnerName + " " + access);
         //clazz = new ClassData(access, name, innerName);
-        clazz.add(new InnerClassData(loader, clazz, access, name, outerName, innerName));
+        clazz.add(new InnerClassData(loader, clazz, access, dottedName, dottedOuterName, dottedInnerName));
     }
 
     public MethodVisitor visitMethod(int access, String name, String descriptor,
             String signature, String[] exceptions) {
         logger.fine("    +(m) " + name + " " + descriptor + " " + signature + " " + Arrays.toString(exceptions));
-        if (!name.equals("<clinit>")) { // the method is a static initializer
-        	MethodData method = new MethodData(loader, clazz, access, name, descriptor, signature, exceptions);
+        // the method is not a static initializer
+        if (!name.equals("<clinit>")) {
+        	String[] dottedExceptions = Utils.toDottedClassNames(exceptions);
+        	MethodData method = new MethodData(loader, clazz, access, name, descriptor, signature, dottedExceptions);
         	if (signature != null) {
-        		//System.out.println("Method " + name + " signature:");
-        		//System.out.println(" " + signature);
         		new SignatureReader(signature).accept(new TypeParameterDumper(method));
         	}
         	clazz.add(method);

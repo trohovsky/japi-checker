@@ -17,13 +17,15 @@ package com.googlecode.japi.checker.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.objectweb.asm.Opcodes;
 
 import com.googlecode.japi.checker.ClassDataLoader;
+import com.googlecode.japi.checker.Utils;
 
 public class ClassData extends JavaItem implements Parametrized {
     private final String signature;
@@ -130,7 +132,8 @@ public class ClassData extends JavaItem implements Parametrized {
      * @return the names of alll interfaces 
      */
     public Set<String> getAllInterfaces() {
-    	Set<String> allInterfaces = new HashSet<String>();
+    	// SortedSet provide immutable order of interfaces in the output
+    	SortedSet<String> allInterfaces = new TreeSet<String>();
     	
     	// my interfaces
     	allInterfaces.addAll(this.getInterfaces());
@@ -148,8 +151,8 @@ public class ClassData extends JavaItem implements Parametrized {
 		}
     	
     	// interfaces extended by interfaces (my and super classes')
-    	Set<String> inputInterfaces = new HashSet<String>(allInterfaces);
-    	Set<String> outputInterfaces = new HashSet<String>();
+    	SortedSet<String> inputInterfaces = new TreeSet<String>(allInterfaces);
+    	SortedSet<String> outputInterfaces = new TreeSet<String>();
     	while (inputInterfaces.size() != 0) {
     		for (String interfaceName : inputInterfaces) {
     			ClassData iface = this.getClassDataLoader().fromName(interfaceName);
@@ -238,8 +241,8 @@ public class ClassData extends JavaItem implements Parametrized {
     }
 
 	public String getFilename() {
-        if (this.getName().lastIndexOf('/') != -1) {
-            return this.getName().substring(0, this.getName().lastIndexOf('/') + 1) + getSource();
+        if (this.getName().lastIndexOf('.') != -1) {
+            return Utils.toSlashedClassName(this.getName().substring(0, this.getName().lastIndexOf('.') + 1)) + getSource();
         }
         return this.getSource();
     }

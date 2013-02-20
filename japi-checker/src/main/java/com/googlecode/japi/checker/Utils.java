@@ -32,4 +32,29 @@ public final class Utils {
         }
         return str;
     }
+    
+    public static String toDottedClassName(final String name) {
+        if (name == null) {
+            return null;
+        }
+        return name.replaceAll("/", ".");
+    }
+    
+    public static String[] toDottedClassNames(String[] names) {
+    	if (names == null) {
+    		return null;
+    	}
+        String[] ret = new String[names.length];
+        for (int i = 0; i < names.length; i++) {
+            ret[i] = toDottedClassName(names[i]);
+        }
+        return ret;
+    }
+    
+    public static String toSlashedClassName(final String name) {
+    	if (name == null) {
+    		return null;
+    	}
+    	return name.replaceAll("[.]", "/");
+    }
 }
