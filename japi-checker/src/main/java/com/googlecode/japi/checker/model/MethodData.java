@@ -29,7 +29,7 @@ public class MethodData extends JavaItem implements Parametrized {
     private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
 	private final boolean isVariableArity;
-    private int line;
+    private Integer line;
     private Object defaultValue;
     private List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
     
@@ -99,14 +99,14 @@ public class MethodData extends JavaItem implements Parametrized {
      * Set the line number of appearance in the source file.
      * @param line
      */
-    public void setLineNumber(int line) {
+    public void setLineNumber(Integer line) {
         this.line = line;
     }
     
     /**
      * @return the line number of appearance in the source file.
      */
-    public int getLineNumber() {
+    public Integer getLineNumber() {
         return line;
     }
 	

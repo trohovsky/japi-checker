@@ -34,7 +34,12 @@ public class CLIReporter implements Reporter {
     
     private String getLine(Difference difference) {
         if (difference.getNewItem() instanceof MethodData) {
-            return "(" + ((MethodData)difference.getNewItem()).getLineNumber() + ")";
+        	Integer lineNumber = ((MethodData)difference.getNewItem()).getLineNumber();
+        	if (lineNumber != null) {
+        		return "(" + lineNumber + ")";
+        	} else {
+        		return "";
+        	}
         }
         return "";
     }
