@@ -17,11 +17,6 @@ public class CLIReporter implements Reporter {
     	this.reportSourceAffectingDifferences = source;
     }
             
-	public void report(Report report) {
-		// TODO Auto-generated method stub
-		
-	}
-    
     public void report(Difference difference) {
     	if ((difference.getDifferenceType().getServerity() == Severity.ERROR || 
     			difference.getDifferenceType().getServerity() == Severity.WARNING)) {

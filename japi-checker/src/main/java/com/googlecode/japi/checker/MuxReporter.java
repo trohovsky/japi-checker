@@ -23,20 +23,14 @@ public class MuxReporter implements Reporter {
     private List<Reporter> reporters = new ArrayList<Reporter>();
     
     @Override
-    public void report(Report report) {
+    public void report(Difference difference) {
         for (Reporter reporter : reporters) {
-            reporter.report(report);
+            reporter.report(difference);
         }
     }
 
     public void add(Reporter reporter) {
         reporters.add(reporter);
     }
-
-	@Override
-	public void report(Difference difference) {
-		// TODO Auto-generated method stub
-		
-	}
     
 }

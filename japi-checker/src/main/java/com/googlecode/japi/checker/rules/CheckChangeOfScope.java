@@ -32,12 +32,7 @@ public class CheckChangeOfScope implements Rule {
         if ((reference.getOwner() == null && newItem.getOwner() == null) || 
         	(reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
         	reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE))) {
-        	
-        	if (reference.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-        		// TODO this condition prevents to detect following incompatible change in this rule
-        		// http://wiki.apidesign.org/wiki/InvisibleAbstractMethod
-        		// It will be better to create a special rule for this change
-        	
+        	        	
         		if (newItem.getVisibility().isLessVisibleThan(reference.getVisibility())) {
         			// lower visibility
 					reporter.report(new Difference(reference, newItem,
@@ -50,7 +45,6 @@ public class CheckChangeOfScope implements Rule {
 							DifferenceType.GENERAL_INCREASED_VISIBILITY, reference,
 							reference.getVisibility(), newItem.getVisibility()));
         		}
-        	}
         }
     }
 }

@@ -70,10 +70,6 @@ public class FieldData extends JavaItem {
     public boolean isSame(FieldData reference) {
         return this.getName().equals(reference.getName());
     }
-    
-    public boolean hasSameType(FieldData reference) {
-        return this.getDescriptor().equals(reference.getDescriptor());
-    }
 
     @Override
     public String getItemType() {

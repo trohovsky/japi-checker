@@ -28,7 +28,7 @@ public class CheckFieldChangeOfType implements Rule {
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
                	
-		if (!((FieldData) reference).hasSameType((FieldData) newItem)) {
+		if (!((FieldData) reference).getType().equals(((FieldData) newItem).getType())) {
 			reporter.report(new Difference(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TYPE, reference,
 					((FieldData) reference).getType().getClassName(),

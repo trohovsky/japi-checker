@@ -20,13 +20,13 @@ public class FieldRules implements Rule {
 	
 	public FieldRules() {
 		nonAPIrules.add(new CheckChangeOfScope());
+		nonAPIrules.add(new CheckSerialVersionUIDField());
+		nonAPIrules.add(new CheckFieldChangeToTransient());
 		
 		rules.add(new CheckFieldChangeOfType());
 		rules.add(new CheckFieldChangeToFinal());
 		rules.add(new CheckFieldChangeToStatic());
-		rules.add(new CheckFieldChangeToTransient()); // TODO not sure if it should check only API fields
 		rules.add(new CheckFieldChangeValue());
-		rules.add(new CheckSerialVersionUIDField()); // TODO not sure if it should check only API fields
 	}
 
 	@Override

@@ -49,8 +49,7 @@ class ClassDumper extends ClassVisitor {
         super(Opcodes.ASM4);
         this.loader = loader;
     }
-    
-    // TODO dotted name - signature
+
     /**
      * {@inheritDoc}
      */

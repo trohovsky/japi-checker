@@ -52,8 +52,8 @@ public class DifferenceType {
 	public final static DifferenceType FIELD_CHANGED_TO_FINAL = new DifferenceType(Severity.ERROR, false, "The %s has been made final", "");
 	public final static DifferenceType FIELD_CHANGED_TO_NON_FINAL = new DifferenceType(Severity.ERROR, false, "The %s has been made non-final (it has compile-time constant value)", "");
 	public final static DifferenceType FIELD_CHANGED_TO_STATIC = new DifferenceType(Severity.ERROR, false, "The %s has been made static", "");
-	public final static DifferenceType FIELD_CHANGED_TO_NON_STATIC = new DifferenceType(Severity.ERROR, false, "The %s has been made not-static", "");
-	public final static DifferenceType FIELD_CHANGED_TO_TRANSIENT = new DifferenceType(Severity.WARNING, false, "The %s has been made transient.", "");
+	public final static DifferenceType FIELD_CHANGED_TO_NON_STATIC = new DifferenceType(Severity.ERROR, false, "The %s has been made non-static", "");
+	public final static DifferenceType FIELD_CHANGED_TO_TRANSIENT = new DifferenceType(Severity.WARNING, false, "The %s has been made transient", "");
 	public final static DifferenceType FIELD_CHANGED_TO_NON_TRANSIENT = new DifferenceType(Severity.ERROR, false, "The %s has been made non-transient", "");
 	public final static DifferenceType FIELD_CHANGED_VALUE = new DifferenceType(Severity.ERROR, false, "The value of the %s has been changed from %s to %s", "");
 	
