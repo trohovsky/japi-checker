@@ -47,7 +47,6 @@ public class CheckSerialVersionUIDField implements Rule {
 						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE));
                 return;
             }
-            System.out.println(referenceField.getValue().getClass().getName());
             if (((Long)referenceField.getValue()).longValue() != ((Long)newField.getValue()).longValue()) {
 				reporter.report(new Difference(reference, newItem,
 						DifferenceType.CLASS_CHANGED_SERIAL_VERSION_VALUE,
