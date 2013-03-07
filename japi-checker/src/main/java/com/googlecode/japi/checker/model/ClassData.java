@@ -28,7 +28,7 @@ import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.Utils;
 
 public class ClassData extends JavaItem implements Parametrized {
-    private final String signature;
+
     private final String superName;
     private final List<String> interfaces = new ArrayList<String>();
     private final int version;
@@ -41,10 +41,17 @@ public class ClassData extends JavaItem implements Parametrized {
     private final boolean isEnum;
 	private final boolean isAnnotation;
 	private String source;
+	
+	protected ClassData() {
+		this.superName = null;
+		this.version = 0;
+		this.isInterface = false;
+		this.isEnum = false;
+		this.isAnnotation = false;
+	}
 
-    public ClassData(ClassDataLoader loader, ClassData owner, int access, String name, String signature, String superName, String[] interfaces, int version) {
+    public ClassData(ClassDataLoader loader, ClassData owner, int access, String name, String superName, String[] interfaces, int version) { 
         super(loader, owner, access, name);
-        this.signature = signature;
         this.superName = superName;
         Collections.addAll(this.interfaces, interfaces);
         this.version = version;
@@ -89,13 +96,6 @@ public class ClassData extends JavaItem implements Parametrized {
         } else {
         	return "class";
         }
-    }
-
-    /**
-     * @return the signature
-     */
-    public String getSignature() {
-        return signature;
     }
     
     /**

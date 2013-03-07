@@ -29,8 +29,14 @@ public abstract class JavaItem {
     private boolean isStatic;
     private boolean isTransient;
     private ClassDataLoader classDataLoader;
+    private int access;
+    
+	protected JavaItem() {
+    	
+    }
 
     protected JavaItem(ClassDataLoader loader, ClassData owner, int access, String name) {
+    	this.setAccess(access);
         this.setOwner(owner);
         this.setName(name);
         this.setVisibility(toScope(access));
@@ -170,4 +176,12 @@ public abstract class JavaItem {
     protected void setClassDataLoader(ClassDataLoader loader) {
         classDataLoader = loader;
     }
+    
+    public int getAccess() {
+		return access;
+	}
+
+	public void setAccess(int access) {
+		this.access = access;
+	}
 }

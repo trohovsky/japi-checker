@@ -25,7 +25,7 @@ import org.objectweb.asm.Type;
 import com.googlecode.japi.checker.ClassDataLoader;
 
 public class MethodData extends JavaItem implements Parametrized {
-    private final String signature;
+
     private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
 	private final boolean isVariableArity;
@@ -33,9 +33,13 @@ public class MethodData extends JavaItem implements Parametrized {
     private Object defaultValue;
     private List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
     
-    public MethodData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String signature, String[] exceptions) {
+    public MethodData() {
+    	this.descriptor = null;
+    	this.isVariableArity = false;
+    }
+    
+    public MethodData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
         super(loader, owner, access, name);
-        this.signature = signature;
         this.descriptor = descriptor;
         if (exceptions != null) {
             Collections.addAll(this.exceptions, exceptions);
@@ -51,13 +55,6 @@ public class MethodData extends JavaItem implements Parametrized {
     @Override
     public String getItemType() {
         return this.isConstructor() ? "constructor" : "method";
-    }
-
-    /**
-     * @return the signature
-     */
-    public String getSignature() {
-        return signature;
     }
 
     /**

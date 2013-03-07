@@ -20,14 +20,18 @@ import org.objectweb.asm.Type;
 import com.googlecode.japi.checker.ClassDataLoader;
 
 public class FieldData extends JavaItem {
+	
     private final String descriptor;
-    private final String signature;
     private final Object value;
 
-    public FieldData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String signature, Object value) {
+    public FieldData() {
+    	this.descriptor = null;
+    	this.value = null;
+    }
+    
+    public FieldData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, Object value) { // String signature,
         super(loader, owner, access, name);
         this.descriptor = descriptor;
-        this.signature = signature;
         this.value = value;
     }
 
@@ -36,13 +40,6 @@ public class FieldData extends JavaItem {
      */
     public String getDescriptor() {
         return descriptor;
-    }
-
-    /**
-     * @return the signature
-     */
-    public String getSignature() {
-        return signature;
     }
 
     /**
