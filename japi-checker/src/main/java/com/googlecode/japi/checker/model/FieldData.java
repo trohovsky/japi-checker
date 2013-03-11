@@ -24,7 +24,7 @@ public class FieldData extends JavaItem {
     private final String descriptor;
     private final Object value;
 
-    public FieldData() {
+    protected FieldData() {
     	this.descriptor = null;
     	this.value = null;
     }

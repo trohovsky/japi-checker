@@ -36,18 +36,12 @@ public class ClassData extends JavaItem implements Parametrized {
     private final List<FieldData> fields = new ArrayList<FieldData>();
     private final List<AttributeData> attributes = new ArrayList<AttributeData>();
     private final List<InnerClassData> innerClasses = new ArrayList<InnerClassData>();
-    private final List<TypeParameterData> typeParameteres = new ArrayList<TypeParameterData>();
-    private final boolean isInterface;
-    private final boolean isEnum;
-	private final boolean isAnnotation;
+    private final List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
 	private String source;
 	
 	protected ClassData() {
 		this.superName = null;
 		this.version = 0;
-		this.isInterface = false;
-		this.isEnum = false;
-		this.isAnnotation = false;
 	}
 
     public ClassData(ClassDataLoader loader, ClassData owner, int access, String name, String superName, String[] interfaces, int version) { 
@@ -55,9 +49,6 @@ public class ClassData extends JavaItem implements Parametrized {
         this.superName = superName;
         Collections.addAll(this.interfaces, interfaces);
         this.version = version;
-        this.isInterface = (access & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE;
-        this.isEnum = (access & Opcodes.ACC_ENUM) == Opcodes.ACC_ENUM;
-        this.isAnnotation = (access & Opcodes.ACC_ANNOTATION) == Opcodes.ACC_ANNOTATION;
     }
     
     public void add(MethodData method) {
@@ -78,7 +69,7 @@ public class ClassData extends JavaItem implements Parametrized {
     
     @Override
     public void add(TypeParameterData typeParameter) {
-    	typeParameteres.add(typeParameter);
+    	typeParameters.add(typeParameter);
     }
     
     public boolean isSame(ClassData newClazz) {
@@ -211,19 +202,19 @@ public class ClassData extends JavaItem implements Parametrized {
      * @return the type parameters
      */
     public List<TypeParameterData> getTypeParameters() {
-    	return typeParameteres;
+    	return typeParameters;
     }
 
     public boolean isInterface() {
-		return isInterface;
+		return (this.getAccess() & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE;
 	}
 	
 	public boolean isEnum() {
-		return isEnum;
+		return (this.getAccess() & Opcodes.ACC_ENUM) == Opcodes.ACC_ENUM;
 	}
 	
 	public boolean isAnnotation() {
-		return isAnnotation;
+		return (this.getAccess() & Opcodes.ACC_ANNOTATION) == Opcodes.ACC_ANNOTATION;
 	}
 	
     /**

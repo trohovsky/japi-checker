@@ -21,15 +21,12 @@ import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.Scope;
 
 public abstract class JavaItem {
-    private Scope visibility = Scope.PROTECTED;
+
+	private String name;
+	private int access;
+	private Scope visibility;
     private ClassData owner;
-    private String name;
-    private boolean isAbstract;
-    private boolean isFinal;
-    private boolean isStatic;
-    private boolean isTransient;
     private ClassDataLoader classDataLoader;
-    private int access;
     
 	protected JavaItem() {
     	
@@ -40,10 +37,6 @@ public abstract class JavaItem {
         this.setOwner(owner);
         this.setName(name);
         this.setVisibility(toScope(access));
-        this.setAbstract((access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT);
-        this.setFinal((access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL);
-        this.setStatic((access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC);
-        this.setTransient((access & Opcodes.ACC_TRANSIENT) == Opcodes.ACC_TRANSIENT);
         this.setClassDataLoader(loader);
     }
 
@@ -55,7 +48,7 @@ public abstract class JavaItem {
         return visibility;
     }
     
-    public static Scope toScope(int access) {
+    protected static Scope toScope(int access) {
         if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
             return Scope.PRIVATE;
         } else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
@@ -68,59 +61,31 @@ public abstract class JavaItem {
     }
 
     /**
-     * @param isAbstract the isAbstract to set
-     */
-    protected void setAbstract(boolean isAbstract) {
-        this.isAbstract = isAbstract;
-    }
-
-    /**
      * @return the isAbstract
      */
     public boolean isAbstract() {
-        return isAbstract;
-    }
-
-    /**
-     * @param isFinal the isFinal to set
-     */
-    protected void setFinal(boolean isFinal) {
-        this.isFinal = isFinal;
+        return (access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT;
     }
 
     /**
      * @return the isFinal
      */
     public boolean isFinal() {
-        return isFinal;
-    }
-
-    /**
-     * @param isStatic the isStatic to set
-     */
-    protected void setStatic(boolean isStatic) {
-        this.isStatic = isStatic;
+        return (access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL;
     }
 
     /**
      * @return the isStatic
      */
     public boolean isStatic() {
-        return isStatic;
-    }
-
-    /**
-     * @param isTransient the isTransient to set
-     */
-    protected void setTransient(boolean isTransient) {
-        this.isTransient = isTransient;
+        return (access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC;
     }
 
     /**
      * @return the isTransient
      */
     public boolean isTransient() {
-        return isTransient;
+        return (access & Opcodes.ACC_TRANSIENT) == Opcodes.ACC_TRANSIENT;
     }
     
     /**

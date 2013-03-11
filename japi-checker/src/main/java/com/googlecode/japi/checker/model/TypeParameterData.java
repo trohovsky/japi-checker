@@ -13,6 +13,11 @@ public class TypeParameterData {
 	private final String name;
 	private final List<String> bounds; // TODO structured parametrized type <T:Object;Comparable<Int>>
 	
+	protected TypeParameterData() {
+		this.name = null;
+		this.bounds = null;
+	}
+	
 	public TypeParameterData(String name) {
 		this.name = name;
 		this.bounds = new ArrayList<String>();

@@ -28,14 +28,12 @@ public class MethodData extends JavaItem implements Parametrized {
 
     private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
-	private final boolean isVariableArity;
     private Integer line;
     private Object defaultValue;
     private List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
     
-    public MethodData() {
+    protected MethodData() {
     	this.descriptor = null;
-    	this.isVariableArity = false;
     }
     
     public MethodData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
@@ -44,8 +42,6 @@ public class MethodData extends JavaItem implements Parametrized {
         if (exceptions != null) {
             Collections.addAll(this.exceptions, exceptions);
         }
-        this.exceptions = Collections.unmodifiableList(this.exceptions);
-        this.isVariableArity = (access & Opcodes.ACC_VARARGS) == Opcodes.ACC_VARARGS;
     }
 
     public boolean isSame(MethodData method) {
@@ -89,7 +85,7 @@ public class MethodData extends JavaItem implements Parametrized {
 	 * @return the isVariableArity
 	 */
 	public boolean isVariableArity() {
-		return isVariableArity;
+		return (this.getAccess() & Opcodes.ACC_VARARGS) == Opcodes.ACC_VARARGS;
 	}
 
     /**
