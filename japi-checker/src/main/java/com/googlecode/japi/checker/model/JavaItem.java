@@ -36,19 +36,14 @@ public abstract class JavaItem {
     	this.setAccess(access);
         this.setOwner(owner);
         this.setName(name);
-        this.setVisibility(toScope(access));
         this.setClassDataLoader(loader);
-    }
-
-    protected void setVisibility(Scope visibility) {
-        this.visibility = visibility;
     }
 
     public Scope getVisibility() {
         return visibility;
     }
     
-    protected static Scope toScope(int access) {
+    private Scope toScope(int access) {
         if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
             return Scope.PRIVATE;
         } else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
@@ -146,7 +141,8 @@ public abstract class JavaItem {
 		return access;
 	}
 
-	public void setAccess(int access) {
+	protected void setAccess(int access) {
 		this.access = access;
+		this.visibility = toScope(access);
 	}
 }
