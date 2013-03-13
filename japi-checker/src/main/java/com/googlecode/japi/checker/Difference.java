@@ -16,6 +16,13 @@ public class Difference {
 	private String[] args;
 	private final String source;
 	
+	protected Difference() {
+		this.differenceType = null;
+		this.referenceItem = null;
+		this.newItem = null;
+		this.source = null;
+	}
+	
 	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType) {
 		this.referenceItem = referenceItem;
 		this.newItem = newItem;
@@ -32,7 +39,7 @@ public class Difference {
 	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType, Object...args) {
 		this(referenceItem, newItem, differenceType);
 		// objects to string
-		String[] stringArgs = new String[3];
+		String[] stringArgs = new String[args.length];
 		for (int i = 0; i < args.length; i++) {
 			stringArgs[i] = args[i].toString();
 		}
@@ -60,11 +67,11 @@ public class Difference {
 	}
 	
 	public String getMessage() {
-		return String.format(differenceType.getMessage(), (Object[])args);
+		return String.format(differenceType.getMessagePattern(), (Object[])args);
 	}
 	
 	public String getEffect() {
-		return String.format(differenceType.getMessage(), (Object[])args);
+		return String.format(differenceType.getMessagePattern(), (Object[])args);
 	}
 
 }
