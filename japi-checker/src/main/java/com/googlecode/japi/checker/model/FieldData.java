@@ -22,14 +22,14 @@ import com.googlecode.japi.checker.ClassDataLoader;
 public class FieldData extends JavaItem {
 	
     private final String descriptor;
-    private final Object value;
+    private final String value;
 
     protected FieldData() {
     	this.descriptor = null;
     	this.value = null;
     }
     
-    public FieldData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, Object value) { // String signature,
+    public FieldData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String value) { // String signature,
         super(loader, owner, access, name);
         this.descriptor = descriptor;
         this.value = value;
@@ -45,7 +45,7 @@ public class FieldData extends JavaItem {
     /**
      * @return the value
      */
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
     

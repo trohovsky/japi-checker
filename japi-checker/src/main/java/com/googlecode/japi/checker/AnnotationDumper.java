@@ -21,7 +21,7 @@ public class AnnotationDumper extends AnnotationVisitor {
 
 	@Override
 	public void visit(String name, Object value) {
-		method.setDefaultValue(value);
+		method.setDefaultValue(value.toString());
 	}
 
 }

@@ -130,8 +130,12 @@ class ClassDumper extends ClassVisitor {
         //clazz.add(new FieldData(loader, clazz, access, name, desc, value));
 		Constructor<FieldData> constructor;
 		try {
-			constructor = fieldClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, Object.class);
-			FieldData field = constructor.newInstance(loader, clazz, access, name, desc, value);
+			constructor = fieldClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String.class);
+			String stringValue = null;
+			if (value != null) {
+				stringValue = value.toString();
+			}
+			FieldData field = constructor.newInstance(loader, clazz, access, name, desc, stringValue);
 			clazz.add(field);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block

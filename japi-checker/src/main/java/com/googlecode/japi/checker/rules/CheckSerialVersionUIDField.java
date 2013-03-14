@@ -47,7 +47,7 @@ public class CheckSerialVersionUIDField implements Rule {
 						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE));
                 return;
             }
-            if (((Long)referenceField.getValue()).longValue() != ((Long)newField.getValue()).longValue()) {
+            if (referenceField.getValue().equals(newField.getValue())) {
 				reporter.report(new Difference(reference, newItem,
 						DifferenceType.CLASS_CHANGED_SERIAL_VERSION_VALUE,
 						toHex(referenceField), toHex(newField)));
@@ -56,7 +56,7 @@ public class CheckSerialVersionUIDField implements Rule {
     }
     
     private static String toHex(FieldData field) {
-        return String.format("0x%x", ((Long)field.getValue()).longValue());
+        return String.format("0x%x", Long.parseLong(field.getValue()));
     }
 
 }

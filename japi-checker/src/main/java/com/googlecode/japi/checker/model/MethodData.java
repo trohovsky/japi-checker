@@ -29,7 +29,7 @@ public class MethodData extends JavaItem implements Parametrized {
     private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
     private Integer line;
-    private Object defaultValue;
+    private String defaultValue; 
     private List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
     
     protected MethodData() {
@@ -107,14 +107,14 @@ public class MethodData extends JavaItem implements Parametrized {
 	 * Set the default value for the annotation member represented by this method.
 	 * @param value
 	 */
-	public void setDefaultValue(Object value) {
+	public void setDefaultValue(String value) {
 		this.defaultValue = value;
 	}
 	
 	/**
 	 * @return the default value for the annotation member represented by this method.
 	 */
-	public Object getDefaultValue() {
+	public String getDefaultValue() {
 		return defaultValue;
 	}
 	
