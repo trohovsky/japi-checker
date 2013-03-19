@@ -15,14 +15,13 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
+import com.googlecode.japi.checker.Rule;
+import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
-import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Scope;
 
 // CLASS
 public class CheckRemovedMethod implements Rule {
@@ -42,8 +41,8 @@ public class CheckRemovedMethod implements Rule {
                 }
             }
             if (!found && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-				reporter.report(new Difference(reference, newItem,
-						DifferenceType.CLASS_REMOVED_METHOD, oldMethod));
+				reporter.report(reference, newItem,
+						DifferenceType.CLASS_REMOVED_METHOD, oldMethod);
             }
         }
     }

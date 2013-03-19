@@ -1,6 +1,5 @@
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -19,8 +18,8 @@ public class CheckMethodVariableArity implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
 
     	if (((MethodData) reference).isVariableArity() && !((MethodData) newItem).isVariableArity()) {
-			reporter.report(new Difference(reference, newItem,
-					DifferenceType.METHOD_VARARG_PARAM_TO_ARRAY, reference));
+			reporter.report(reference, newItem,
+					DifferenceType.METHOD_VARARG_PARAM_TO_ARRAY, reference);
         }
     }
 }

@@ -15,7 +15,6 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -42,8 +41,8 @@ public class CheckRemovedField implements Rule {
                 }
             }
             if (!found && oldField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-				reporter.report(new Difference(reference, newItem,
-						DifferenceType.CLASS_REMOVED_FIELD, oldField));
+				reporter.report(reference, newItem,
+						DifferenceType.CLASS_REMOVED_FIELD, oldField);
             }
         }
     }

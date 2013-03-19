@@ -15,7 +15,6 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -28,11 +27,11 @@ public class CheckMethodChangedToStatic implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
 		if (!reference.isStatic() && newItem.isStatic()) {
-			reporter.report(new Difference(reference, newItem,
-					DifferenceType.METHOD_CHANGED_TO_STATIC, reference));
+			reporter.report(reference, newItem,
+					DifferenceType.METHOD_CHANGED_TO_STATIC, reference);
 		} else if (reference.isStatic() && !newItem.isStatic()) {
-			reporter.report(new Difference(reference, newItem,
-					DifferenceType.METHOD_CHANGED_TO_NON_STATIC, reference));
+			reporter.report(reference, newItem,
+					DifferenceType.METHOD_CHANGED_TO_NON_STATIC, reference);
 		}
     }
 

@@ -30,11 +30,6 @@ public class Difference {
 		this.source = (referenceItem.getOwner() == null ? ((ClassData)referenceItem).getFilename() : referenceItem.getOwner().getFilename());
 		this.args = null;
 	}
-		
-	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType, String... args) {
-		this(referenceItem, newItem, differenceType);
-		this.args = args;
-	}
 	
 	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType, Object...args) {
 		this(referenceItem, newItem, differenceType);

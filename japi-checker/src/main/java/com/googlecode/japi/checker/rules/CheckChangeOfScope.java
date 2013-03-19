@@ -15,11 +15,10 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.Rule;
+import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.JavaItem;
 
 // GENERAL
@@ -33,18 +32,18 @@ public class CheckChangeOfScope implements Rule {
         	(reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
         	reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE))) {
         	        	
-        		if (newItem.getVisibility().isLessVisibleThan(reference.getVisibility())) {
-        			// lower visibility
-					reporter.report(new Difference(reference, newItem,
-							DifferenceType.GENERAL_DECREASED_VISIBILITY, reference,
-							reference.getVisibility(), newItem.getVisibility()));
-				} else if (newItem.getVisibility().isMoreVisibleThan(
-						reference.getVisibility())) {
-					// higher visibility
-					reporter.report(new Difference(reference, newItem,
-							DifferenceType.GENERAL_INCREASED_VISIBILITY, reference,
-							reference.getVisibility(), newItem.getVisibility()));
-        		}
+			if (newItem.getVisibility().isLessVisibleThan(reference.getVisibility())) {
+				// lower visibility
+				reporter.report(reference, newItem,
+						DifferenceType.GENERAL_DECREASED_VISIBILITY, reference,
+						reference.getVisibility(), newItem.getVisibility());
+			} else if (newItem.getVisibility().isMoreVisibleThan(
+					reference.getVisibility())) {
+				// higher visibility
+				reporter.report(reference, newItem,
+						DifferenceType.GENERAL_INCREASED_VISIBILITY, reference,
+						reference.getVisibility(), newItem.getVisibility());
+			}
         }
     }
 }

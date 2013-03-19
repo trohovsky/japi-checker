@@ -18,7 +18,6 @@ package com.googlecode.japi.checker.rules;
 import java.util.List;
 
 import com.googlecode.japi.checker.ClassDataLoader;
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -45,18 +44,18 @@ public class CheckMethodExceptions implements Rule {
 		MethodData newMethod = (MethodData) newItem;
 		for (String exception : referenceMethod.getExceptions()) {
 			if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
-				reporter.report(new Difference(reference, newItem,
+				reporter.report(reference, newItem,
 						DifferenceType.METHOD_REMOVED_EXCEPTION,
 						referenceMethod, 
-						exception));
+						exception);
 			}
 		}
 		for (String exception : newMethod.getExceptions()) {
 			if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
-				reporter.report(new Difference(reference, newItem,
+				reporter.report(reference, newItem,
 						DifferenceType.METHOD_ADDED_EXCEPTION, 
 						referenceMethod,
-						exception));
+						exception);
 			}
         }
     }

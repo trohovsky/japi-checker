@@ -15,11 +15,10 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.Rule;
+import com.googlecode.japi.checker.model.JavaItem;
 
 // FIELD
 public class CheckFieldChangeToTransient implements Rule {
@@ -28,11 +27,11 @@ public class CheckFieldChangeToTransient implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
         if (reference.isTransient() && !newItem.isTransient()) {
-			reporter.report(new Difference(reference, newItem,
-					DifferenceType.FIELD_CHANGED_TO_NON_TRANSIENT, reference));
+			reporter.report(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_NON_TRANSIENT, reference);
         } else if (!reference.isTransient() && newItem.isTransient()) {
-			reporter.report(new Difference(reference, newItem,
-					DifferenceType.FIELD_CHANGED_TO_TRANSIENT, reference));
+			reporter.report(reference, newItem,
+					DifferenceType.FIELD_CHANGED_TO_TRANSIENT, reference);
         }
     }
 

@@ -15,7 +15,6 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -33,10 +32,11 @@ public class ChangeKindOfAPIType implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
     	if (!reference.getItemType().equals(newItem.getItemType())) {
-			reporter.report(new Difference(reference, newItem,
-					DifferenceType.CLASS_CHANGED_KIND_OF_API_TYPE,
-					reference,
-					newItem.getItemType()));
+    		reporter.report(reference,
+    				newItem,
+    				DifferenceType.CLASS_CHANGED_KIND_OF_API_TYPE,
+    				reference,
+    				newItem.getItemType());
         }
     }
 

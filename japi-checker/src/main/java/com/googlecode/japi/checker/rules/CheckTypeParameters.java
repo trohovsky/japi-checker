@@ -2,7 +2,6 @@ package com.googlecode.japi.checker.rules;
 
 import java.util.List;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -29,9 +28,9 @@ public class CheckTypeParameters implements Rule {
 		if (!referenceTypeParameters.isEmpty()) {
 			if (referenceTypeParameters.size() < newTypeParameters.size()) {
 				for (int i = referenceTypeParameters.size(); i < newTypeParameters.size(); i++) {
-					reporter.report(new Difference(reference, newItem,
+					reporter.report(reference, newItem,
 							DifferenceType.PARAMETRIZED_ADDED_TYPE_PARAMETER,
-							newTypeParameters.get(i), reference));
+							newTypeParameters.get(i), reference);
 				}
 			}
 		}
@@ -39,9 +38,9 @@ public class CheckTypeParameters implements Rule {
 		// removed type parameter
 		if (referenceTypeParameters.size() > newTypeParameters.size()) {
 			for (int i = newTypeParameters.size(); i < referenceTypeParameters.size(); i++) {
-				reporter.report(new Difference(reference, newItem,
+				reporter.report(reference, newItem,
 						DifferenceType.PARAMETRIZED_REMOVED_TYPE_PARAMETER,
-						referenceTypeParameters.get(i), reference));
+						referenceTypeParameters.get(i), reference);
 			}
 		}
 		
@@ -49,11 +48,11 @@ public class CheckTypeParameters implements Rule {
 		int minSize = Math.min(referenceTypeParameters.size(), newTypeParameters.size());
 		for (int i = 0; i < minSize; i++) {
 			if (!referenceTypeParameters.get(i).equals(newTypeParameters.get(i))) {
-				reporter.report(new Difference(reference, newItem,
+				reporter.report(reference, newItem,
 						DifferenceType.PARAMETRIZED_CHANGED_BOUNDS,
 						referenceTypeParameters.get(i), 
 						newTypeParameters.get(i), 
-						reference));
+						reference);
 			}
 		}
 

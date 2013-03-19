@@ -15,7 +15,6 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -38,19 +37,19 @@ public class CheckSerialVersionUIDField implements Rule {
         if ("serialVersionUID".equals(referenceField.getName())) {
             // J means long.
             if (!"J".equals(referenceField.getDescriptor())) {
-				reporter.report(new Difference(reference, newItem,
-						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE));
+				reporter.report(reference, newItem,
+						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE);
                 return;
             }
             if (!"J".equals(newField.getDescriptor())) {
-				reporter.report(new Difference(reference, newItem,
-						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE));
+				reporter.report(reference, newItem,
+						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE);
                 return;
             }
-            if (referenceField.getValue().equals(newField.getValue())) {
-				reporter.report(new Difference(reference, newItem,
+            if (!referenceField.getValue().equals(newField.getValue())) {
+				reporter.report(reference, newItem,
 						DifferenceType.CLASS_CHANGED_SERIAL_VERSION_VALUE,
-						toHex(referenceField), toHex(newField)));
+						toHex(referenceField), toHex(newField));
             }
         }
     }

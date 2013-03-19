@@ -1,6 +1,5 @@
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -40,21 +39,21 @@ public class CheckAddedMethod implements Rule {
 						if (!newClass.isFinal()) {
 
 							if (newMethod.isAbstract()) {
-								reporter.report(new Difference(reference,
+								reporter.report(reference,
 										newItem,
 										DifferenceType.CLASS_ADDED_ABSTRACT_METHOD,
-										newMethod));
+										newMethod);
 							} else if (newMethod.isStatic()) {
-								reporter.report(new Difference(reference,
+								reporter.report(reference,
 										newItem,
 										DifferenceType.CLASS_ADDED_STATIC_METHOD,
-										newMethod));
+										newMethod);
 							} else {
-								reporter.report(new Difference(
+								reporter.report(
 										reference,
 										newItem,
 										DifferenceType.CLASS_ADDED_NON_ABSTRACT_NON_STATIC_METHOD,
-										newMethod));
+										newMethod);
 							}
 						}
 					}
@@ -75,16 +74,16 @@ public class CheckAddedMethod implements Rule {
 				if (!found) {
 					if (referenceClass.isAnnotation() && newClass.isAnnotation()) {
 						if (newMethod.getDefaultValue() == null) {
-							reporter.report(new Difference(
+							reporter.report(
 									reference,
 									newItem,
 									DifferenceType.ANNOTATION_ADDED_METHOD_WITH_NO_DEFAULT_VALUE,
-									newMethod));
+									newMethod);
 						}
 					} else {
-						reporter.report(new Difference(reference, newItem,
+						reporter.report(reference, newItem,
 								DifferenceType.INTERFACE_ADDED_METHOD,
-								newMethod));
+								newMethod);
 					}
 				}
 			}

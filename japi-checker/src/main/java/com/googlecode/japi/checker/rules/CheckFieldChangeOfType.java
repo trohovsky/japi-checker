@@ -15,12 +15,11 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
+import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
-import com.googlecode.japi.checker.Rule;
 
 // FIELD
 public class CheckFieldChangeOfType implements Rule {
@@ -29,10 +28,10 @@ public class CheckFieldChangeOfType implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
                	
 		if (!((FieldData) reference).getType().equals(((FieldData) newItem).getType())) {
-			reporter.report(new Difference(reference, newItem,
+			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TYPE, reference,
 					((FieldData) reference).getType().getClassName(),
-					((FieldData) newItem).getType().getClassName()));
+					((FieldData) newItem).getType().getClassName());
 		}
     }
 }

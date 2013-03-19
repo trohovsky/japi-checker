@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.googlecode.japi.checker.ClassDataLoader;
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -51,9 +50,9 @@ public class CheckInheritanceChanges implements Rule {
         	List<String> subtractedClasses = new ArrayList<String>(referenceAPISuperClasses);
         	subtractedClasses.removeAll(newAPISuperClasses);
         	
-			reporter.report(new Difference(reference, newItem,
+			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CONTRACTED_SUPERCLASS_SET,
-					referenceClass, join(subtractedClasses, ", ")));
+					referenceClass, join(subtractedClasses, ", "));
         }
         
         // contracted interface set
@@ -64,9 +63,9 @@ public class CheckInheritanceChanges implements Rule {
         	List<String> subtractedInterfaces = new ArrayList<String>(referenceAPIInterfaces);
         	subtractedInterfaces.removeAll(newAPIInterfaces);
         	
-			reporter.report(new Difference(reference, newItem,
+			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CONTRACTED_SUPERINTERFACE_SET,
-					referenceClass, join(subtractedInterfaces, ", ")));
+					referenceClass, join(subtractedInterfaces, ", "));
         }
     }
     

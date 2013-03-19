@@ -15,12 +15,11 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
+import com.googlecode.japi.checker.Rule;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
-import com.googlecode.japi.checker.Rule;
 
 /**
  * 
@@ -34,10 +33,10 @@ public class CheckFieldChangeValue implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
             			
 		if (isValueOfCompileTimeConstantChanged((FieldData) reference, (FieldData) newItem)) {
-			reporter.report(new Difference(reference, newItem,
+			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_VALUE, reference,
 					((FieldData) reference).getValue(), 
-					((FieldData) newItem).getValue()));
+					((FieldData) newItem).getValue());
 		}
 	}
 

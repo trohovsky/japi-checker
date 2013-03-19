@@ -30,6 +30,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
 import com.googlecode.japi.checker.rules.CheckChangeOfScope;
 import com.googlecode.japi.checker.rules.CheckFieldChangeOfType;
@@ -331,6 +332,13 @@ public class TestBCChecker {
 		public void report(Difference difference) {
 			System.out.println(difference.getDifferenceType().getServerity() + ": " + difference.getSource() + getLine(difference) + ": " + difference.getMessage());
             differences.add(difference);
+		}
+		
+		@Override
+		public void report(JavaItem referenceItem, JavaItem newItem,
+				DifferenceType differenceType, Object... args) {
+			Difference difference = new Difference(referenceItem, newItem, differenceType, args);
+			report(difference);
 		}
         
         private String getLine(Difference difference) {

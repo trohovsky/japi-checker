@@ -1,6 +1,5 @@
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -37,11 +36,10 @@ public class CheckAddedField implements Rule {
 				if (!found) {
 					// class is subclassable, TODO maybe check public constructor
 					if (!newClass.isFinal()) {
-						reporter.report(new Difference(
-								reference,
+						reporter.report(reference,
 								newItem,
 								DifferenceType.CLASS_ADDED_FIELD,
-								newField));
+								newField);
 					}
 				}
 			}

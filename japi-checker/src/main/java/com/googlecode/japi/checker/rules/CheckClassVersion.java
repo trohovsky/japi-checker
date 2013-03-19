@@ -15,7 +15,6 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import com.googlecode.japi.checker.Difference;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Rule;
@@ -29,10 +28,10 @@ public class CheckClassVersion implements Rule {
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
     	
         if (((ClassData) reference).getVersion() != ((ClassData) newItem).getVersion()) {
-			reporter.report(new Difference(reference, newItem,
+			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CHANGED_CLASS_VERSION,
 					((ClassData) reference).getVersion(),
-					((ClassData) newItem).getVersion()));
+					((ClassData) newItem).getVersion());
 		}
     }
 

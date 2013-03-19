@@ -120,7 +120,7 @@ public class BCChecker {
                 }
             }
             if (!found && referenceClass.getVisibility() == Scope.PUBLIC) {
-                reporter.report(new Difference(referenceClass, null, DifferenceType.PACKAGE_REMOVED_CLASS, referenceClass));
+                reporter.report(referenceClass, null, DifferenceType.PACKAGE_REMOVED_CLASS, referenceClass);
             }
         }
     }

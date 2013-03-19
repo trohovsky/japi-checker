@@ -18,6 +18,8 @@ package com.googlecode.japi.checker;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.googlecode.japi.checker.model.JavaItem;
+
 public class MuxReporter implements Reporter {
 
     private List<Reporter> reporters = new ArrayList<Reporter>();
@@ -27,6 +29,14 @@ public class MuxReporter implements Reporter {
         for (Reporter reporter : reporters) {
             reporter.report(difference);
         }
+    }
+    
+    @Override
+    public void report(JavaItem referenceItem, JavaItem newItem,
+    		DifferenceType differenceType, Object... args) {
+    	// direct instantiation of Difference
+    	Difference difference = new Difference(referenceItem, newItem, differenceType, args);
+    	report(difference);
     }
 
     public void add(Reporter reporter) {
