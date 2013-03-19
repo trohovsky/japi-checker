@@ -44,10 +44,10 @@ class ClassDumper extends ClassVisitor {
 	private Logger logger = Logger.getLogger(ClassDumper.class.getName());
 	private ClassData clazz; // current main class being parsed.
 	private Map<String, ClassData> classes = new HashMap<String, ClassData>();
-	private Class<ClassData> classClass;
-	private Class<FieldData> fieldClass;
-	private Class<MethodData> methodClass;
-	private Class<TypeParameterData> typeParameterClass;
+	private Constructor<ClassData> classConstructor;
+	private Constructor<FieldData> fieldConstructor;
+	private Constructor<MethodData> methodConstructor;
+	private Constructor<TypeParameterData> typeParameterConstructor;
         
     /**
      * Create a new visitor instance.
@@ -64,10 +64,18 @@ class ClassDumper extends ClassVisitor {
     		Class<TypeParameterData> typeParameterClass) {
         super(Opcodes.ASM4);
         this.loader = loader;
-        this.classClass = classClass;
-        this.fieldClass = fieldClass;
-        this.methodClass = methodClass;
-        this.typeParameterClass = typeParameterClass;
+        try {
+			this.classConstructor = classClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class, int.class);
+			this.fieldConstructor = fieldClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String.class);
+			this.methodConstructor = methodClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class);
+			this.typeParameterConstructor = typeParameterClass.getConstructor(String.class);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -80,16 +88,8 @@ class ClassDumper extends ClassVisitor {
         String[] dottedInterfaces = Utils.toDottedClassNames(interfaces);
         logger.fine("class " + dottedName + " extends " + dottedSuperName + " {");
         //clazz = new ClassData(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
-        Constructor<ClassData> constructor;
-        try {
-			constructor = classClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class, int.class);
-			clazz = constructor.newInstance(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+        try { 
+			clazz = classConstructor.newInstance(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +104,7 @@ class ClassDumper extends ClassVisitor {
 			e.printStackTrace();
 		}
         if (signature != null) {
-            new SignatureReader(signature).accept(new TypeParameterDumper(clazz, typeParameterClass));
+            new SignatureReader(signature).accept(new TypeParameterDumper(clazz, typeParameterConstructor));
         }
         classes.put(dottedName, clazz);
     }
@@ -128,21 +128,13 @@ class ClassDumper extends ClassVisitor {
             String signature, Object value) {
         logger.fine("    -(field) " + name + " " + signature + " " + desc);
         //clazz.add(new FieldData(loader, clazz, access, name, desc, value));
-		Constructor<FieldData> constructor;
 		try {
-			constructor = fieldClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String.class);
 			String stringValue = null;
 			if (value != null) {
 				stringValue = value.toString();
 			}
-			FieldData field = constructor.newInstance(loader, clazz, access, name, desc, stringValue);
+			FieldData field = fieldConstructor.newInstance(loader, clazz, access, name, desc, stringValue);
 			clazz.add(field);
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -175,22 +167,14 @@ class ClassDumper extends ClassVisitor {
         if (!name.equals("<clinit>")) {
         	String[] dottedExceptions = Utils.toDottedClassNames(exceptions);
         	//MethodData method = new MethodData(loader, clazz, access, name, descriptor, dottedExceptions);
-        	Constructor<MethodData> constructor;
 			try {
-				constructor = methodClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class);
-				MethodData method = constructor.newInstance(loader, clazz,
-						access, name, descriptor, dottedExceptions);
+				MethodData method = methodConstructor.newInstance(loader,
+						clazz, access, name, descriptor, dottedExceptions);
 				if (signature != null) {
-					new SignatureReader(signature).accept(new TypeParameterDumper(method, typeParameterClass));
+					new SignatureReader(signature).accept(new TypeParameterDumper(method, typeParameterConstructor));
 				}
 				clazz.add(method);
 				return new MethodDumper(method);
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

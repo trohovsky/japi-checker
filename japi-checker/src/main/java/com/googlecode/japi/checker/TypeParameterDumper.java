@@ -19,33 +19,25 @@ public class TypeParameterDumper extends SignatureVisitor {
 	private final Parametrized item;
 	private TypeParameterData typeParameter;
 	private boolean bounded;
-	private Class<TypeParameterData> typeParameterClass;
+	private Constructor<TypeParameterData> typeParameterConstructor;
 	
-	public TypeParameterDumper(Parametrized item) {
-		this(item, TypeParameterData.class);
+	public TypeParameterDumper(Parametrized item) throws NoSuchMethodException, SecurityException {
+		this(item, TypeParameterData.class.getConstructor(String.class));
 	}
 	
-	public TypeParameterDumper(Parametrized item, Class<TypeParameterData> typeParameterClass) {
+	public TypeParameterDumper(Parametrized item, Constructor<TypeParameterData> typeParameterConstructor) {
 		super(Opcodes.ASM4);
 		this.item = item;
-		this.typeParameterClass = typeParameterClass;
+		this.typeParameterConstructor = typeParameterConstructor;
 	}
 	
 	@Override
 	public void visitFormalTypeParameter(String name) {
 		//System.out.println("  visitFormalTypeParameter(" + name + ")");
 		//typeParameter = new TypeParameterData(name);
-		Constructor<TypeParameterData> constructor;
 		try {
-			constructor = typeParameterClass.getConstructor(String.class);
-			typeParameter = constructor.newInstance(name);
+			typeParameter = typeParameterConstructor.newInstance(name);
 			item.add(typeParameter);
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
