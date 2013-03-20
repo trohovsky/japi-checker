@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.googlecode.japi.checker.Difference;
+import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.Severity;
+import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
 
 public class CLIReporter implements Reporter {
@@ -26,6 +28,13 @@ public class CLIReporter implements Reporter {
     	}
     	differences.add(difference);
     }
+    
+	@Override
+	public void report(JavaItem referenceItem, JavaItem newItem,
+			DifferenceType differenceType, Object... args) {
+		Difference difference = new Difference(referenceItem, newItem, differenceType, args);
+		report(difference);
+	}
     
     private String getLine(Difference difference) {
         if (difference.getNewItem() instanceof MethodData) {

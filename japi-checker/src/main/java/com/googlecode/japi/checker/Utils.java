@@ -15,6 +15,10 @@
  */
 package com.googlecode.japi.checker;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.zip.ZipFile;
+
 public final class Utils {
     
     private Utils() { }
@@ -56,5 +60,24 @@ public final class Utils {
     		return null;
     	}
     	return name.replaceAll("[.]", "/");
+    }
+    
+    public static boolean isArchive(File file) {
+        ZipFile zf = null;
+        try {
+            zf = new ZipFile(file);
+            zf.entries(); // forcing to do something with the file.
+            return true;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            if (zf != null) {
+                try {
+                    zf.close();
+                } catch (IOException e) {
+                    // swallow the exception...
+                }
+            }
+        }
     }
 }

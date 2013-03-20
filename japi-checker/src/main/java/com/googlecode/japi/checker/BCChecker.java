@@ -15,11 +15,7 @@
  */
 package com.googlecode.japi.checker;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipFile;
 
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
@@ -27,75 +23,27 @@ import com.googlecode.japi.checker.model.MethodData;
 import com.googlecode.japi.checker.rules.ClassRules;
 import com.googlecode.japi.checker.rules.FieldRules;
 import com.googlecode.japi.checker.rules.MethodRules;
-import com.googlecode.japi.checker.utils.AntPatternMatcher;
 
 public class BCChecker {
-    private File reference;
-    private File newArtifact;
-    private List<File> referenceClasspath = new ArrayList<File>();
-    private List<File> newArtifactClasspath = new ArrayList<File>();
-    private List<AntPatternMatcher> includes = new ArrayList<AntPatternMatcher>();
-    private List<AntPatternMatcher> excludes = new ArrayList<AntPatternMatcher>();
-    private ClassDataLoaderFactory<ClassData> classDataLoaderFactory = new DefaultClassDataLoaderFactory();
     
-    public BCChecker(File reference, File newArtifact) {
-        if (reference == null) {
-            throw new IllegalArgumentException("The reference parameter cannot be null.");
-        }
-        if (newArtifact == null) {
-            throw new IllegalArgumentException("The newArtifact parameter cannot be null.");
-        }
-        if (!reference.isDirectory() && !isArchive(reference)) {
-            throw new IllegalArgumentException("reference must be either a directory" +
-                    " or a jar (or a zip kind of archive) file");
-        }
-        if (!newArtifact.isDirectory() && !isArchive(newArtifact)) {
-            throw new IllegalArgumentException("new artifact must be either a directory" + 
-                    " or a jar (or a zip kind of archive) file");
-        }
-        this.reference = reference;
-        this.newArtifact = newArtifact;
-    }
- 
-    public void addToReferenceClasspath(File path) {
-        this.referenceClasspath.add(path);
-    }
-
-    public void addToNewArtifactClasspath(File path) {
-        this.newArtifactClasspath.add(path);
+    private ClassRules classRules;
+    private FieldRules fieldRules;
+    private MethodRules methodRules;
+    
+    public BCChecker() {
+        classRules = new ClassRules();
+    	fieldRules = new FieldRules();
+        methodRules = new MethodRules();
     }
     
-    public void addInclude(String include) {
-        includes.add(new AntPatternMatcher(include));
-    }
-
-    public void addExclude(String exclude) {
-        excludes.add(new AntPatternMatcher(exclude));
-    }
-    
-    public void checkBackwardCompatibility(Reporter reporter) throws IOException {
-    	ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
-        referenceDataLoader.read(reference.toURI());
-        for (File file : this.referenceClasspath) {
-            referenceDataLoader.read(file.toURI());
-        }
-        List<ClassData> referenceData = referenceDataLoader.getClasses(reference.toURI(), includes, excludes);
-        ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
-        newArtifactDataLoader.read(newArtifact.toURI());
-        for (File file : this.newArtifactClasspath) {
-            newArtifactDataLoader.read(file.toURI());
-        }
-        List<ClassData> newData = newArtifactDataLoader.getClasses(newArtifact.toURI(), includes, excludes);
+    public void checkBackwardCompatibility(Reporter reporter, List<ClassData> referenceClasses, List<ClassData> newClasses) {
         
-        ClassRules rules = new ClassRules();
-    	FieldRules fieldRules = new FieldRules();
-        MethodRules methodRules = new MethodRules();
-        for (ClassData referenceClass : referenceData) {
+        for (ClassData referenceClass : referenceClasses) {
             boolean found = false;
-            for (ClassData newClass : newData) {
+            for (ClassData newClass : newClasses) {
                 if (referenceClass.isSame(newClass)) {
                 	// checking class rules
-                    rules.checkBackwardCompatibility(reporter, referenceClass, newClass);
+                    classRules.checkBackwardCompatibility(reporter, referenceClass, newClass);
                     
                     // checking field rules
                     for (FieldData referenceField : referenceClass.getFields()) {
@@ -124,24 +72,4 @@ public class BCChecker {
             }
         }
     }
-    
-    private boolean isArchive(File file) {
-        ZipFile zf = null;
-        try {
-            zf = new ZipFile(file);
-            zf.entries(); // forcing to do something with the file.
-            return true;
-        } catch (IOException e) {
-            return false;
-        } finally {
-            if (zf != null) {
-                try {
-                    zf.close();
-                } catch (IOException e) {
-                    // swallow the exception...
-                }
-            }
-        }
-    }
-
 }

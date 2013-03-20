@@ -15,9 +15,10 @@
  */
 package com.googlecode.japi.checker;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,8 +31,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
+import com.googlecode.japi.checker.rules.ChangeKindOfAPIType;
 import com.googlecode.japi.checker.rules.CheckChangeOfScope;
 import com.googlecode.japi.checker.rules.CheckFieldChangeOfType;
 import com.googlecode.japi.checker.rules.CheckFieldChangeToStatic;
@@ -44,7 +47,7 @@ import com.googlecode.japi.checker.rules.CheckRemovedMethod;
 import com.googlecode.japi.checker.rules.CheckSerialVersionUIDField;
 import com.googlecode.japi.checker.rules.ClassChangedToAbstract;
 import com.googlecode.japi.checker.rules.ClassChangedToFinal;
-import com.googlecode.japi.checker.rules.ChangeKindOfAPIType;
+import com.googlecode.japi.checker.utils.AntPatternMatcher;
 
 public class TestBCChecker {
     
@@ -314,14 +317,36 @@ public class TestBCChecker {
 
     // TODO The parameter clazz is currently unused. It caused problem in in assertEquals, because every rule is done above input class.
     public BasicReporter check(Class<? extends Rule> clazz, String ... includes) throws InstantiationException, IllegalAccessException, IOException {
-        BCChecker checker = new BCChecker(reference, newVersion);
+    	List<AntPatternMatcher> includesList = new ArrayList<AntPatternMatcher>();
+        List<AntPatternMatcher> excludesList = new ArrayList<AntPatternMatcher>();
+    	
+    	for (String include : includes) {
+    		includesList.add(new AntPatternMatcher(include));
+        }   	
+    	
+    	// reading of classes
+    	ClassDataLoaderFactory<ClassData> classDataLoaderFactory = new DefaultClassDataLoaderFactory();
+    	
+    	ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
+    	try {
+			referenceDataLoader.read(reference.toURI());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+        List<ClassData> referenceClasses = referenceDataLoader.getClasses(reference.toURI(), includesList, excludesList);
+        
+        ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
+        try {
+			newArtifactDataLoader.read(newVersion.toURI());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+        List<ClassData> newClasses = newArtifactDataLoader.getClasses(newVersion.toURI(), includesList, excludesList);
+    	
+    	BCChecker checker = new BCChecker();
         BasicReporter reporter = new BasicReporter();
-        if (includes != null) {
-            for (String include : includes) {
-                checker.addInclude(include);
-            }
-        }
-        checker.checkBackwardCompatibility(reporter);
+
+        checker.checkBackwardCompatibility(reporter, referenceClasses, newClasses);
         return reporter;
     }
     
