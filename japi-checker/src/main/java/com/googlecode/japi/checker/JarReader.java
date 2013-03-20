@@ -28,11 +28,11 @@ import org.objectweb.asm.ClassReader;
 
 public class JarReader extends AbstractClassReader {
     private File filename;
-    private ClassDataLoader<?> loader;
+    private ClassDumper dumper;
     
     public JarReader(File filename, ClassDataLoader<?> loader) {
         this.filename = filename;
-        this.loader = loader;
+        this.dumper = new ClassDumper(loader);
     }
     
     @Override
@@ -47,8 +47,7 @@ public class JarReader extends AbstractClassReader {
         byte buffer[] = new byte[2048];
         int count = 0;
         while((entry = zis.getNextEntry()) != null) {
-            if (entry.getName().endsWith(".class")) {
-                ClassDumper dumper = new ClassDumper(loader); 
+            if (entry.getName().endsWith(".class")) { 
 
                 ByteArrayOutputStream os =  new ByteArrayOutputStream();
                 while ((count = zis.read(buffer)) != -1) {
@@ -57,7 +56,7 @@ public class JarReader extends AbstractClassReader {
                 ClassReader cr = new ClassReader(os.toByteArray());
                 cr.accept(dumper, 0);
 
-                this.put(entry.getName(), dumper.getClasses());
+                this.put(entry.getName(), dumper.getClazz());
             }
         }
         } finally {

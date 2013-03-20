@@ -27,11 +27,11 @@ import org.objectweb.asm.ClassReader;
 public class DirectoryReader extends AbstractClassReader {
 
     private File path;
-    private ClassDataLoader<?> loader;
+    private ClassDumper dumper;
     
     public DirectoryReader(File path, ClassDataLoader<?> loader) {
         this.path = path;
-        this.loader = loader;
+        this.dumper = new ClassDumper(loader);
     }
 
     @Override
@@ -49,7 +49,6 @@ public class DirectoryReader extends AbstractClassReader {
             if (file.isDirectory()) {
                 scanDir(file, path + file.getName() + "/");
             } else if (file.getName().endsWith(".class")) {
-                ClassDumper dumper = new ClassDumper(loader); 
                 ByteArrayOutputStream os =  new ByteArrayOutputStream();
                 InputStream is = null;
                 try {
@@ -60,7 +59,7 @@ public class DirectoryReader extends AbstractClassReader {
                     }
                     ClassReader cr = new ClassReader(os.toByteArray());
                     cr.accept(dumper, 0);
-                    this.put(path + file.getName(), dumper.getClasses());
+                    this.put(path + file.getName(), dumper.getClazz());
                 } finally {
                     if (is != null) {
                         is.close();

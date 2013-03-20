@@ -33,7 +33,7 @@ import com.googlecode.japi.checker.utils.AntPatternMatcher;
  * 
  */
 public abstract class AbstractClassReader {
-    private Map<String, List<ClassData>> classes = new Hashtable<String, List<ClassData>>();
+    private Map<String, ClassData> classes = new Hashtable<String, ClassData>();
 
     /**
      * This method should implement the extraction of the classes out of its container.
@@ -58,9 +58,9 @@ public abstract class AbstractClassReader {
      */
     public List<ClassData> getClasses(List<AntPatternMatcher> includes, List<AntPatternMatcher> excludes) {
         List<ClassData> result = new ArrayList<ClassData>();
-        for (Entry<String, List<ClassData>> entry : this.classes.entrySet()) {
+        for (Entry<String, ClassData> entry : this.classes.entrySet()) {
             if (shouldInclude(entry.getKey(), includes, excludes)) {
-                result.addAll(entry.getValue());
+                result.add(entry.getValue());
             }
         }
         return result;
@@ -70,7 +70,7 @@ public abstract class AbstractClassReader {
      * Empty this class data cache.
      */
     protected void clear() {
-        classes.clear();
+        this.classes.clear();
     }
     
     /**
@@ -78,12 +78,8 @@ public abstract class AbstractClassReader {
      * @param name the filename
      * @param classes the classes related to this filename.
      */
-    protected void put(String name, List<ClassData> classes) {
-        if (this.classes.containsKey(name)) {
-            this.classes.get(name).addAll(classes);
-        } else {
-            this.classes.put(name, new ArrayList<ClassData>(classes));
-        }
+    protected void put(String name, ClassData clazz) {
+        this.classes.put(name, clazz);
     }
     
     /**

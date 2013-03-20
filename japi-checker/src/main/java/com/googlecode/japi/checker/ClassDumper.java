@@ -17,11 +17,7 @@ package com.googlecode.japi.checker;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -43,7 +39,7 @@ class ClassDumper extends ClassVisitor {
 	private ClassDataLoader<?> loader;
 	private Logger logger = Logger.getLogger(ClassDumper.class.getName());
 	private ClassData clazz; // current main class being parsed.
-	private Map<String, ClassData> classes = new HashMap<String, ClassData>();
+	private ClassData returnClass;
 	private Constructor<ClassData> classConstructor;
 	private Constructor<FieldData> fieldConstructor;
 	private Constructor<MethodData> methodConstructor;
@@ -106,7 +102,6 @@ class ClassDumper extends ClassVisitor {
         if (signature != null) {
             new SignatureReader(signature).accept(new TypeParameterDumper(clazz, typeParameterConstructor));
         }
-        classes.put(dottedName, clazz);
     }
 
     /**
@@ -121,6 +116,7 @@ class ClassDumper extends ClassVisitor {
 
     public void visitEnd() {
         logger.fine("}");
+        returnClass = clazz;
         clazz = null;
     }
 
@@ -202,8 +198,8 @@ class ClassDumper extends ClassVisitor {
         clazz.setSource(source);
     }
 
-    public List<ClassData> getClasses() {
-        return new ArrayList<ClassData>(classes.values());
+    public ClassData getClazz() {
+        return returnClass;
     }
 
 }
