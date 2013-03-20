@@ -20,7 +20,7 @@ import com.googlecode.japi.checker.ClassDataLoader;
 
 public class AttributeData extends JavaItem {
 
-    public AttributeData(ClassDataLoader loader, ClassData owner, int access, String name) {
+    public AttributeData(ClassDataLoader<?> loader, ClassData owner, int access, String name) {
         super(loader, owner, access, name);
     }
 

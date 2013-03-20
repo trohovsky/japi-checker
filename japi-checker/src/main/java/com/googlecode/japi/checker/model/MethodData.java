@@ -36,7 +36,7 @@ public class MethodData extends JavaItem implements Parametrized {
     	this.descriptor = null;
     }
     
-    public MethodData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
+    public MethodData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
         super(loader, owner, access, name);
         this.descriptor = descriptor;
         if (exceptions != null) {

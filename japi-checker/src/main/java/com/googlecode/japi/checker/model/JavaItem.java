@@ -26,13 +26,13 @@ public abstract class JavaItem {
 	private int access;
 	private Scope visibility;
     private ClassData owner;
-    private ClassDataLoader classDataLoader;
+    private ClassDataLoader<?> classDataLoader;
     
 	protected JavaItem() {
     	
     }
 
-    protected JavaItem(ClassDataLoader loader, ClassData owner, int access, String name) {
+    protected JavaItem(ClassDataLoader<?> loader, ClassData owner, int access, String name) {
     	this.setAccess(access);
         this.setOwner(owner);
         this.setName(name);
@@ -125,7 +125,7 @@ public abstract class JavaItem {
      * Get the ClassDataLoader associated with this instance.
      * {@inheritDoc}
      */
-    public ClassDataLoader getClassDataLoader() {
+    public ClassDataLoader<?> getClassDataLoader() {
         return classDataLoader;
     }
 
@@ -133,7 +133,7 @@ public abstract class JavaItem {
      * Get the ClassDataLoader associated with this instance.
      * {@inheritDoc}
      */
-    protected void setClassDataLoader(ClassDataLoader loader) {
+    protected void setClassDataLoader(ClassDataLoader<?> loader) {
         classDataLoader = loader;
     }
     

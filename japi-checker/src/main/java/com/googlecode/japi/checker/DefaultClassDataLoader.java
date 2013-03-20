@@ -30,7 +30,7 @@ import com.googlecode.japi.checker.utils.AntPatternMatcher;
  * Basic implementation of the ClassDataLoader.
  * It populates itself thanks to the read method. 
  */
-class DefaultClassDataLoader implements ClassDataLoader {
+class DefaultClassDataLoader implements ClassDataLoader<ClassData> {
     private Map<URI, AbstractClassReader> readers = new Hashtable<URI, AbstractClassReader>(); 
     
     /**

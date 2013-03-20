@@ -42,7 +42,7 @@ public final class RuleHelpers {
      * @return Returns true if classname is found in topLevelClassname
      *           inheritance tree (or equal to it), false otherwise.
      */
-    public static boolean isClassPartOfClassTree(ClassDataLoader loader, String classname, String topLevelClassname) {
+    public static boolean isClassPartOfClassTree(ClassDataLoader<?> loader, String classname, String topLevelClassname) {
         if (topLevelClassname != null) {
             if (classname.equals(topLevelClassname)) {
                 return true;

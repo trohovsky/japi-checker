@@ -27,9 +27,9 @@ import org.objectweb.asm.ClassReader;
 public class DirectoryReader extends AbstractClassReader {
 
     private File path;
-    private ClassDataLoader loader;
+    private ClassDataLoader<?> loader;
     
-    public DirectoryReader(File path, ClassDataLoader loader) {
+    public DirectoryReader(File path, ClassDataLoader<?> loader) {
         this.path = path;
         this.loader = loader;
     }

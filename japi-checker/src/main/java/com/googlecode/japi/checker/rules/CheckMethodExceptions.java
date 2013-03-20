@@ -67,7 +67,7 @@ public class CheckMethodExceptions implements Rule {
      * @param referenceExceptions
      * @return
      */
-    private boolean isCompatibleWithAnyOfTheException(ClassDataLoader loader, String exception, List<String> referenceExceptions) {
+    private boolean isCompatibleWithAnyOfTheException(ClassDataLoader<?> loader, String exception, List<String> referenceExceptions) {
         for (String referenceException : referenceExceptions) {
             if (RuleHelpers.isClassPartOfClassTree(loader, exception, referenceException)) {
                 return true;
@@ -83,7 +83,7 @@ public class CheckMethodExceptions implements Rule {
      * @param referenceExceptions
      * @return
      */
-    private boolean hasCompatibleExceptionInItsHierarchy(ClassDataLoader loader, String exception, List<String> referenceExceptions) {
+    private boolean hasCompatibleExceptionInItsHierarchy(ClassDataLoader<?> loader, String exception, List<String> referenceExceptions) {
         for (String referenceException : referenceExceptions) {
             if (RuleHelpers.isClassPartOfClassTree(loader, referenceException, exception)) {
                 return true;

@@ -74,7 +74,7 @@ public class CheckInheritanceChanges implements Rule {
      * @param clazz
      * @return names of API types
      */
-    private List<String> getAPITypes(ClassDataLoader loader, Collection<String> typeNames) {
+    private List<String> getAPITypes(ClassDataLoader<?> loader, Collection<String> typeNames) {
     	List<String> APITypes = new ArrayList<String>();
     	for (String typeName: typeNames) {
         	ClassData type = loader.fromName(typeName);

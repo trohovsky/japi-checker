@@ -44,7 +44,7 @@ public class ClassData extends JavaItem implements Parametrized {
 		this.version = 0;
 	}
 
-    public ClassData(ClassDataLoader loader, ClassData owner, int access, String name, String superName, String[] interfaces, int version) { 
+    public ClassData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String superName, String[] interfaces, int version) { 
         super(loader, owner, access, name);
         this.superName = superName;
         if (interfaces != null) {

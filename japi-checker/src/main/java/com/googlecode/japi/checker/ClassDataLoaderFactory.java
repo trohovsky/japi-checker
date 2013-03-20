@@ -15,16 +15,18 @@
  */
 package com.googlecode.japi.checker;
 
+import com.googlecode.japi.checker.model.ClassData;
+
 /**
  * Factory which allow the BCChecker to create ClassDataLoader on demand.
  * This provides a simple mechanism to provide custom extended version of
  * ClassDataLoader. 
  */
-public interface ClassDataLoaderFactory {
+public interface ClassDataLoaderFactory<T extends ClassData> {
 
     /**
      * Provides a new ClassDataLoader implementation instance.
      * @return A new instance.
      */
-    ClassDataLoader createClassDataLoader();
+    ClassDataLoader<T> createClassDataLoader();
 }

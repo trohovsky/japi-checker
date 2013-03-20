@@ -23,7 +23,7 @@ public class InnerClassData extends JavaItem {
     private String outerName;
     private String innerName;
     
-    public InnerClassData(ClassDataLoader loader, ClassData owner, int access, String name, String outerName,
+    public InnerClassData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String outerName,
             String innerName) {
         super(loader, owner, access, name);
         this.setOuterName(outerName);

@@ -29,7 +29,7 @@ public class FieldData extends JavaItem {
     	this.value = null;
     }
     
-    public FieldData(ClassDataLoader loader, ClassData owner, int access, String name, String descriptor, String value) { // String signature,
+    public FieldData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String descriptor, String value) { // String signature,
         super(loader, owner, access, name);
         this.descriptor = descriptor;
         this.value = value;

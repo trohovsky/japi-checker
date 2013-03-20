@@ -40,7 +40,7 @@ import com.googlecode.japi.checker.model.TypeParameterData;
 
 class ClassDumper extends ClassVisitor {
 
-	private ClassDataLoader loader;
+	private ClassDataLoader<?> loader;
 	private Logger logger = Logger.getLogger(ClassDumper.class.getName());
 	private ClassData clazz; // current main class being parsed.
 	private Map<String, ClassData> classes = new HashMap<String, ClassData>();
@@ -53,11 +53,11 @@ class ClassDumper extends ClassVisitor {
      * Create a new visitor instance.
      * @param loader the ClassDataLoader to which the model are associated.
      */
-    public ClassDumper(ClassDataLoader loader) {
+    public ClassDumper(ClassDataLoader<?> loader) {
         this(loader, ClassData.class, FieldData.class, MethodData.class, TypeParameterData.class);
     }
     
-    public ClassDumper(ClassDataLoader loader, 
+    public ClassDumper(ClassDataLoader<?> loader, 
     		Class<ClassData> classClass, 
     		Class<FieldData> fieldClass, 
     		Class<MethodData> methodClass, 

@@ -28,9 +28,9 @@ import org.objectweb.asm.ClassReader;
 
 public class JarReader extends AbstractClassReader {
     private File filename;
-    private ClassDataLoader loader;
+    private ClassDataLoader<?> loader;
     
-    public JarReader(File filename, ClassDataLoader loader) {
+    public JarReader(File filename, ClassDataLoader<?> loader) {
         this.filename = filename;
         this.loader = loader;
     }

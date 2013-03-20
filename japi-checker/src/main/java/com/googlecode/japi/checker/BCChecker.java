@@ -36,7 +36,7 @@ public class BCChecker {
     private List<File> newArtifactClasspath = new ArrayList<File>();
     private List<AntPatternMatcher> includes = new ArrayList<AntPatternMatcher>();
     private List<AntPatternMatcher> excludes = new ArrayList<AntPatternMatcher>();
-    private ClassDataLoaderFactory classDataLoaderFactory = new DefaultClassDataLoaderFactory();
+    private ClassDataLoaderFactory<ClassData> classDataLoaderFactory = new DefaultClassDataLoaderFactory();
     
     public BCChecker(File reference, File newArtifact) {
         if (reference == null) {
@@ -74,13 +74,13 @@ public class BCChecker {
     }
     
     public void checkBackwardCompatibility(Reporter reporter) throws IOException {
-    	ClassDataLoader referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
+    	ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
         referenceDataLoader.read(reference.toURI());
         for (File file : this.referenceClasspath) {
             referenceDataLoader.read(file.toURI());
         }
         List<ClassData> referenceData = referenceDataLoader.getClasses(reference.toURI(), includes, excludes);
-        ClassDataLoader newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
+        ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
         newArtifactDataLoader.read(newArtifact.toURI());
         for (File file : this.newArtifactClasspath) {
             newArtifactDataLoader.read(file.toURI());
