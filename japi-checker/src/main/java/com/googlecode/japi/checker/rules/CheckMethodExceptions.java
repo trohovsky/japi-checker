@@ -43,7 +43,7 @@ public class CheckMethodExceptions implements Rule {
     	MethodData referenceMethod = (MethodData) reference;
 		MethodData newMethod = (MethodData) newItem;
 		for (String exception : referenceMethod.getExceptions()) {
-			if (!isCompatibleWithAnyOfTheException(newItem.getClassDataLoader(), exception, newMethod.getExceptions())) {
+			if (!isCompatibleWithAnyOfTheException(newItem.getOwner().getClassDataLoader(), exception, newMethod.getExceptions())) {
 				reporter.report(reference, newItem,
 						DifferenceType.METHOD_REMOVED_EXCEPTION,
 						referenceMethod, 
@@ -51,7 +51,7 @@ public class CheckMethodExceptions implements Rule {
 			}
 		}
 		for (String exception : newMethod.getExceptions()) {
-			if (!hasCompatibleExceptionInItsHierarchy(newItem.getClassDataLoader(), exception, referenceMethod.getExceptions())) {
+			if (!hasCompatibleExceptionInItsHierarchy(newItem.getOwner().getClassDataLoader(), exception, referenceMethod.getExceptions())) {
 				reporter.report(reference, newItem,
 						DifferenceType.METHOD_ADDED_EXCEPTION, 
 						referenceMethod,

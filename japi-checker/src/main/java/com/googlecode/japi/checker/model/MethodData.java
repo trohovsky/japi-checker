@@ -22,7 +22,6 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import com.googlecode.japi.checker.ClassDataLoader;
 
 public class MethodData extends JavaItem implements Parametrized {
 
@@ -36,8 +35,8 @@ public class MethodData extends JavaItem implements Parametrized {
     	this.descriptor = null;
     }
     
-    public MethodData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
-        super(loader, owner, access, name);
+    public MethodData(ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
+        super(owner, access, name);
         this.descriptor = descriptor;
         if (exceptions != null) {
             Collections.addAll(this.exceptions, exceptions);

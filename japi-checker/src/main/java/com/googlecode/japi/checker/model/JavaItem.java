@@ -17,7 +17,6 @@ package com.googlecode.japi.checker.model;
 
 import org.objectweb.asm.Opcodes;
 
-import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.Scope;
 
 public abstract class JavaItem {
@@ -26,17 +25,15 @@ public abstract class JavaItem {
 	private int access;
 	private Scope visibility;
     private ClassData owner;
-    private ClassDataLoader<?> classDataLoader;
     
 	protected JavaItem() {
     	
     }
 
-    protected JavaItem(ClassDataLoader<?> loader, ClassData owner, int access, String name) {
+    protected JavaItem(ClassData owner, int access, String name) {
     	this.setAccess(access);
         this.setOwner(owner);
         this.setName(name);
-        this.setClassDataLoader(loader);
     }
 
     public Scope getVisibility() {
@@ -119,22 +116,6 @@ public abstract class JavaItem {
      */
     public String toString() {
         return this.getItemType() + " " + name;
-    }
-
-    /**
-     * Get the ClassDataLoader associated with this instance.
-     * {@inheritDoc}
-     */
-    public ClassDataLoader<?> getClassDataLoader() {
-        return classDataLoader;
-    }
-
-    /**
-     * Get the ClassDataLoader associated with this instance.
-     * {@inheritDoc}
-     */
-    protected void setClassDataLoader(ClassDataLoader<?> loader) {
-        classDataLoader = loader;
     }
     
     public int getAccess() {

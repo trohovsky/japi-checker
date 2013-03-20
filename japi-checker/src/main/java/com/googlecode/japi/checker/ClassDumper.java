@@ -62,8 +62,8 @@ class ClassDumper extends ClassVisitor {
         this.loader = loader;
         try {
 			this.classConstructor = classClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class, int.class);
-			this.fieldConstructor = fieldClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String.class);
-			this.methodConstructor = methodClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class);
+			this.fieldConstructor = fieldClass.getConstructor(ClassData.class, int.class, String.class, String.class, String.class);
+			this.methodConstructor = methodClass.getConstructor(ClassData.class, int.class, String.class, String.class, String[].class);
 			this.typeParameterConstructor = typeParameterClass.getConstructor(String.class);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
@@ -129,7 +129,7 @@ class ClassDumper extends ClassVisitor {
 			if (value != null) {
 				stringValue = value.toString();
 			}
-			FieldData field = fieldConstructor.newInstance(loader, clazz, access, name, desc, stringValue);
+			FieldData field = fieldConstructor.newInstance(clazz, access, name, desc, stringValue);
 			clazz.add(field);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -153,7 +153,7 @@ class ClassDumper extends ClassVisitor {
     	String dottedInnerName = Utils.toDottedClassName(innerName);
         logger.fine("    +(ic) " + dottedName + " " + dottedOuterName + " " + dottedInnerName + " " + access);
         //clazz = new ClassData(access, name, innerName);
-        clazz.add(new InnerClassData(loader, clazz, access, dottedName, dottedOuterName, dottedInnerName));
+        clazz.add(new InnerClassData(clazz, access, dottedName, dottedOuterName, dottedInnerName));
     }
 
     public MethodVisitor visitMethod(int access, String name, String descriptor,
@@ -164,8 +164,7 @@ class ClassDumper extends ClassVisitor {
         	String[] dottedExceptions = Utils.toDottedClassNames(exceptions);
         	//MethodData method = new MethodData(loader, clazz, access, name, descriptor, dottedExceptions);
 			try {
-				MethodData method = methodConstructor.newInstance(loader,
-						clazz, access, name, descriptor, dottedExceptions);
+				MethodData method = methodConstructor.newInstance(clazz, access, name, descriptor, dottedExceptions);
 				if (signature != null) {
 					new SignatureReader(signature).accept(new TypeParameterDumper(method, typeParameterConstructor));
 				}

@@ -17,7 +17,6 @@ package com.googlecode.japi.checker.model;
 
 import org.objectweb.asm.Type;
 
-import com.googlecode.japi.checker.ClassDataLoader;
 
 public class FieldData extends JavaItem {
 	
@@ -29,8 +28,8 @@ public class FieldData extends JavaItem {
     	this.value = null;
     }
     
-    public FieldData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String descriptor, String value) { // String signature,
-        super(loader, owner, access, name);
+    public FieldData(ClassData owner, int access, String name, String descriptor, String value) { // String signature,
+        super(owner, access, name);
         this.descriptor = descriptor;
         this.value = value;
     }

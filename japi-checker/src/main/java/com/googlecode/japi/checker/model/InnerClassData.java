@@ -15,7 +15,6 @@
  */
 package com.googlecode.japi.checker.model;
 
-import com.googlecode.japi.checker.ClassDataLoader;
 
 
 public class InnerClassData extends JavaItem {
@@ -23,9 +22,8 @@ public class InnerClassData extends JavaItem {
     private String outerName;
     private String innerName;
     
-    public InnerClassData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String outerName,
-            String innerName) {
-        super(loader, owner, access, name);
+    public InnerClassData(ClassData owner, int access, String name, String outerName, String innerName) {
+        super(owner, access, name);
         this.setOuterName(outerName);
         this.setInnerName(innerName);
     }

@@ -15,13 +15,12 @@
  */
 package com.googlecode.japi.checker.model;
 
-import com.googlecode.japi.checker.ClassDataLoader;
 
 
 public class AttributeData extends JavaItem {
 
-    public AttributeData(ClassDataLoader<?> loader, ClassData owner, int access, String name) {
-        super(loader, owner, access, name);
+    public AttributeData(ClassData owner, int access, String name) {
+        super(owner, access, name);
     }
 
     @Override

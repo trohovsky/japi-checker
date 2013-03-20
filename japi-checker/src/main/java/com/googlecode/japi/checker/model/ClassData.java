@@ -29,6 +29,7 @@ import com.googlecode.japi.checker.Utils;
 
 public class ClassData extends JavaItem implements Parametrized {
 
+	private final ClassDataLoader<?> classDataLoader;
     private final String superName;
     private final List<String> interfaces = new ArrayList<String>();
     private final int version;
@@ -40,12 +41,14 @@ public class ClassData extends JavaItem implements Parametrized {
 	private String source;
 	
 	protected ClassData() {
+		this.classDataLoader = null;
 		this.superName = null;
 		this.version = 0;
 	}
 
     public ClassData(ClassDataLoader<?> loader, ClassData owner, int access, String name, String superName, String[] interfaces, int version) { 
-        super(loader, owner, access, name);
+        super(owner, access, name);
+        this.classDataLoader = loader;
         this.superName = superName;
         if (interfaces != null) {
         	Collections.addAll(this.interfaces, interfaces);
@@ -89,6 +92,13 @@ public class ClassData extends JavaItem implements Parametrized {
         } else {
         	return "class";
         }
+    }
+    
+    /**
+     * @return the classDataLoader
+     */
+    public ClassDataLoader<?> getClassDataLoader() {
+        return classDataLoader;
     }
     
     /**
