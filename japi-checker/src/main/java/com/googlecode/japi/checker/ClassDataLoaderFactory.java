@@ -22,11 +22,11 @@ import com.googlecode.japi.checker.model.ClassData;
  * This provides a simple mechanism to provide custom extended version of
  * ClassDataLoader. 
  */
-public interface ClassDataLoaderFactory<T extends ClassData> {
+public interface ClassDataLoaderFactory<C extends ClassData> {
 
     /**
      * Provides a new ClassDataLoader implementation instance.
      * @return A new instance.
      */
-    ClassDataLoader<T> createClassDataLoader();
+    ClassDataLoader<C> createClassDataLoader();
 }

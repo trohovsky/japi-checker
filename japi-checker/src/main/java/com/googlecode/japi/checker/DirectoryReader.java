@@ -23,15 +23,29 @@ import java.io.InputStream;
 
 import org.objectweb.asm.ClassReader;
 
+import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.FieldData;
+import com.googlecode.japi.checker.model.MethodData;
+import com.googlecode.japi.checker.model.TypeParameterData;
 
-public class DirectoryReader extends AbstractClassReader {
+
+public class DirectoryReader<C extends ClassData> extends AbstractClassReader<C> {
 
     private File path;
-    private ClassDumper dumper;
+    private ClassDumper<C> dumper;
     
-    public DirectoryReader(File path, ClassDataLoader<?> loader) {
+    public DirectoryReader(File path, ClassDataLoader<C> loader) {
         this.path = path;
-        this.dumper = new ClassDumper(loader);
+        this.dumper = new ClassDumper<C>(loader);
+    }
+    
+    public DirectoryReader(File path, ClassDataLoader<C> loader,
+    		Class<C> classClass, 
+    		Class<FieldData> fieldClass, 
+    		Class<MethodData> methodClass, 
+    		Class<TypeParameterData> typeParameterClass) {
+    	this.path = path;
+    	this.dumper = new ClassDumper<C>(loader, classClass, fieldClass, methodClass, typeParameterClass);
     }
 
     @Override

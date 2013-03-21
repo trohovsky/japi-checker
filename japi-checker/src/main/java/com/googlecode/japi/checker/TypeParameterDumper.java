@@ -19,13 +19,13 @@ public class TypeParameterDumper extends SignatureVisitor {
 	private final Parametrized item;
 	private TypeParameterData typeParameter;
 	private boolean bounded;
-	private Constructor<TypeParameterData> typeParameterConstructor;
+	private Constructor<? extends TypeParameterData> typeParameterConstructor;
 	
 	public TypeParameterDumper(Parametrized item) throws NoSuchMethodException, SecurityException {
 		this(item, TypeParameterData.class.getConstructor(String.class));
 	}
 	
-	public TypeParameterDumper(Parametrized item, Constructor<TypeParameterData> typeParameterConstructor) {
+	public TypeParameterDumper(Parametrized item, Constructor<? extends TypeParameterData> typeParameterConstructor) {
 		super(Opcodes.ASM4);
 		this.item = item;
 		this.typeParameterConstructor = typeParameterConstructor;

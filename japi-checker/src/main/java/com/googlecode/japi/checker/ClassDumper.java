@@ -34,30 +34,30 @@ import com.googlecode.japi.checker.model.InnerClassData;
 import com.googlecode.japi.checker.model.MethodData;
 import com.googlecode.japi.checker.model.TypeParameterData;
 
-class ClassDumper extends ClassVisitor {
+class ClassDumper<C extends ClassData> extends ClassVisitor {
 
-	private ClassDataLoader<?> loader;
+	private ClassDataLoader<C> loader;
 	private Logger logger = Logger.getLogger(ClassDumper.class.getName());
 	private ClassData clazz; // current main class being parsed.
 	private ClassData returnClass;
-	private Constructor<ClassData> classConstructor;
-	private Constructor<FieldData> fieldConstructor;
-	private Constructor<MethodData> methodConstructor;
-	private Constructor<TypeParameterData> typeParameterConstructor;
+	private Constructor<? extends ClassData> classConstructor;
+	private Constructor<? extends FieldData> fieldConstructor;
+	private Constructor<? extends MethodData> methodConstructor;
+	private Constructor<? extends TypeParameterData> typeParameterConstructor;
         
     /**
      * Create a new visitor instance.
      * @param loader the ClassDataLoader to which the model are associated.
      */
-    public ClassDumper(ClassDataLoader<?> loader) {
+    public ClassDumper(ClassDataLoader<C> loader) {
         this(loader, ClassData.class, FieldData.class, MethodData.class, TypeParameterData.class);
     }
     
-    public ClassDumper(ClassDataLoader<?> loader, 
-    		Class<ClassData> classClass, 
-    		Class<FieldData> fieldClass, 
-    		Class<MethodData> methodClass, 
-    		Class<TypeParameterData> typeParameterClass) {
+    public ClassDumper(ClassDataLoader<C> loader, 
+    		Class<? extends ClassData> classClass, 
+    		Class<? extends FieldData> fieldClass, 
+    		Class<? extends MethodData> methodClass, 
+    		Class<? extends TypeParameterData> typeParameterClass) {
         super(Opcodes.ASM4);
         this.loader = loader;
         try {
@@ -77,14 +77,14 @@ class ClassDumper extends ClassVisitor {
     /**
      * {@inheritDoc}
      */
-    public void visit(int version, int access, String name, String signature,
+	public void visit(int version, int access, String name, String signature,
             String superName, String[] interfaces) {
         String dottedName = Utils.toDottedClassName(name);
         String dottedSuperName = Utils.toDottedClassName(superName);
         String[] dottedInterfaces = Utils.toDottedClassNames(interfaces);
         logger.fine("class " + dottedName + " extends " + dottedSuperName + " {");
         //clazz = new ClassData(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
-        try { 
+        try {
 			clazz = classConstructor.newInstance(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -197,8 +197,9 @@ class ClassDumper extends ClassVisitor {
         clazz.setSource(source);
     }
 
-    public ClassData getClazz() {
-        return returnClass;
+    @SuppressWarnings("unchecked")
+	public C getClazz() {
+        return ((C)returnClass);
     }
 
 }

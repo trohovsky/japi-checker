@@ -58,6 +58,7 @@ public class Main {
 
 		// reading of classes
 		ClassDataLoaderFactory<ClassData> classDataLoaderFactory = new DefaultClassDataLoaderFactory();
+		
 		ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
 		try {
 			referenceDataLoader.read(reference.toURI());
@@ -69,6 +70,7 @@ public class Main {
 			referenceDataLoader.read(file.toURI());
 		}*/
 		List<ClassData> referenceClasses = referenceDataLoader.getClasses(reference.toURI());//, includes, excludes);
+		
 		ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
 		try {
 			newArtifactDataLoader.read(newArtifact.toURI());

@@ -25,23 +25,37 @@ import java.util.zip.ZipInputStream;
 
 import org.objectweb.asm.ClassReader;
 
+import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.FieldData;
+import com.googlecode.japi.checker.model.MethodData;
+import com.googlecode.japi.checker.model.TypeParameterData;
 
-public class JarReader extends AbstractClassReader {
-    private File filename;
-    private ClassDumper dumper;
+
+public class JarReader<C extends ClassData> extends AbstractClassReader<C> {
+    private File file;
+    private ClassDumper<C> dumper;
     
-    public JarReader(File filename, ClassDataLoader<?> loader) {
-        this.filename = filename;
-        this.dumper = new ClassDumper(loader);
+    public JarReader(File file, ClassDataLoader<C> loader) {
+        this.file = file;
+        this.dumper = new ClassDumper<C>(loader);
     }
     
-    @Override
+    public JarReader(File file, ClassDataLoader<C> loader,
+    		Class<C> classClass, 
+    		Class<? extends FieldData> fieldClass, 
+    		Class<? extends MethodData> methodClass, 
+    		Class<? extends TypeParameterData> typeParameterClass) {
+    	this.file = file;
+    	this.dumper = new ClassDumper<C>(loader, classClass, fieldClass, methodClass, typeParameterClass);
+    }
+
+	@Override
     public void read() throws IOException {
         this.clear();
         FileInputStream fis = null;
         ZipInputStream zis = null;
         try {
-        fis = new FileInputStream(this.filename);
+        fis = new FileInputStream(this.file);
         zis = new ZipInputStream(new BufferedInputStream(fis));
         ZipEntry entry = null;
         byte buffer[] = new byte[2048];

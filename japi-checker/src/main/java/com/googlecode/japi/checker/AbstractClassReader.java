@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.utils.AntPatternMatcher;
 
 /**
@@ -32,8 +31,8 @@ import com.googlecode.japi.checker.utils.AntPatternMatcher;
  * It must be extended to implement such functionalities.
  * 
  */
-public abstract class AbstractClassReader {
-    private Map<String, ClassData> classes = new Hashtable<String, ClassData>();
+public abstract class AbstractClassReader<C> {
+    private Map<String, C> classes = new Hashtable<String, C>();
 
     /**
      * This method should implement the extraction of the classes out of its container.
@@ -46,7 +45,7 @@ public abstract class AbstractClassReader {
      * Get all the discovered classes.
      * @return a list of all the discovered classes.
      */
-    public List<ClassData> getClasses() {
+    public List<C> getClasses() {
         return getClasses(Collections.<AntPatternMatcher> emptyList(), Collections.<AntPatternMatcher> emptyList());
     }
 
@@ -56,9 +55,9 @@ public abstract class AbstractClassReader {
      * @param excludes the exclude patterns.
      * @return a filtered list.
      */
-    public List<ClassData> getClasses(List<AntPatternMatcher> includes, List<AntPatternMatcher> excludes) {
-        List<ClassData> result = new ArrayList<ClassData>();
-        for (Entry<String, ClassData> entry : this.classes.entrySet()) {
+    public List<C> getClasses(List<AntPatternMatcher> includes, List<AntPatternMatcher> excludes) {
+        List<C> result = new ArrayList<C>();
+        for (Entry<String, C> entry : this.classes.entrySet()) {
             if (shouldInclude(entry.getKey(), includes, excludes)) {
                 result.add(entry.getValue());
             }
@@ -78,7 +77,7 @@ public abstract class AbstractClassReader {
      * @param name the filename
      * @param classes the classes related to this filename.
      */
-    protected void put(String name, ClassData clazz) {
+    protected void put(String name, C clazz) {
         this.classes.put(name, clazz);
     }
     

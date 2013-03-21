@@ -30,7 +30,7 @@ import com.googlecode.japi.checker.utils.AntPatternMatcher;
  * ClassData information out of a class path.
  *
  */
-public interface ClassDataLoader<T extends ClassData> {
+public interface ClassDataLoader<C extends ClassData> {
 
     /**
      * Read class file out of the provided URI.
@@ -45,14 +45,14 @@ public interface ClassDataLoader<T extends ClassData> {
      * @return a ClassData instance or null if Not found.
      */
     @Nullable
-    T fromName(String name);
+    C fromName(String name);
     
     /**
      * Get all the ClassData information which belongs to this loader.
      * @return the list of ClassData.
      */
     @Nonnull
-    List<T> getClasses();
+    List<C> getClasses();
 
     /**
      * Get all ClassData from this loaded provided by the given uri.
@@ -60,7 +60,7 @@ public interface ClassDataLoader<T extends ClassData> {
      * @return Returns a list of ClassData.
      */
     @Nonnull
-    List<T> getClasses(@Nonnull URI uri);
+    List<C> getClasses(@Nonnull URI uri);
     
     /**
      * Get all ClassData from this loaded provided by the given uri and filtered using pattern matchers.
@@ -70,6 +70,6 @@ public interface ClassDataLoader<T extends ClassData> {
      * @return Returns a list of ClassData.
      */
     @Nonnull
-    List<T> getClasses(@Nonnull URI uri, @Nonnull List<AntPatternMatcher> includes, @Nonnull List<AntPatternMatcher> excludes);
+    List<C> getClasses(@Nonnull URI uri, @Nonnull List<AntPatternMatcher> includes, @Nonnull List<AntPatternMatcher> excludes);
     
 }

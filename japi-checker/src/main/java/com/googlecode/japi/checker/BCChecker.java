@@ -36,7 +36,7 @@ public class BCChecker {
         methodRules = new MethodRules();
     }
     
-    public void checkBackwardCompatibility(Reporter reporter, List<ClassData> referenceClasses, List<ClassData> newClasses) {
+    public void checkBackwardCompatibility(Reporter reporter, List<? extends ClassData> referenceClasses, List<? extends ClassData> newClasses) {
         
         for (ClassData referenceClass : referenceClasses) {
             boolean found = false;

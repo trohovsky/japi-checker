@@ -31,7 +31,7 @@ import com.googlecode.japi.checker.utils.AntPatternMatcher;
  * It populates itself thanks to the read method. 
  */
 class DefaultClassDataLoader implements ClassDataLoader<ClassData> {
-    private Map<URI, AbstractClassReader> readers = new Hashtable<URI, AbstractClassReader>(); 
+    private Map<URI, AbstractClassReader<ClassData>> readers = new Hashtable<URI, AbstractClassReader<ClassData>>(); 
     
     /**
      * Read a set of classes via this ClassDataLoader. The idea is similar to the regular
@@ -40,11 +40,11 @@ class DefaultClassDataLoader implements ClassDataLoader<ClassData> {
      * @throws IOException thrown in case of error while extracting the class data.
      */
     protected void read(File filename) throws IOException {
-        AbstractClassReader reader;
+        AbstractClassReader<ClassData> reader;
         if (filename.isDirectory()) {
-            reader = new DirectoryReader(filename, this);
+            reader = new DirectoryReader<ClassData>(filename, this);
         } else {
-            reader = new JarReader(filename, this);
+            reader = new JarReader<ClassData>(filename, this);
         }
         reader.read();
         readers.put(filename.toURI(), reader);
@@ -55,7 +55,7 @@ class DefaultClassDataLoader implements ClassDataLoader<ClassData> {
      */
     @Override
     public ClassData fromName(String name) {
-        for (AbstractClassReader reader : readers.values()) {
+        for (AbstractClassReader<ClassData> reader : readers.values()) {
             for (ClassData clazz : reader.getClasses()) {
                 if (clazz.getName().equals(name)) {
                     return clazz;
@@ -83,7 +83,7 @@ class DefaultClassDataLoader implements ClassDataLoader<ClassData> {
     @Override
     public List<ClassData> getClasses() {
         List<ClassData> result = new ArrayList<ClassData>();
-        for (AbstractClassReader reader : readers.values()) {
+        for (AbstractClassReader<ClassData> reader : readers.values()) {
             result.addAll(reader.getClasses());
         }
         return result;
