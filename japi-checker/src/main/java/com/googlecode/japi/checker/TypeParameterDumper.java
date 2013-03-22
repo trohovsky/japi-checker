@@ -21,10 +21,6 @@ public class TypeParameterDumper extends SignatureVisitor {
 	private boolean bounded;
 	private Constructor<? extends TypeParameterData> typeParameterConstructor;
 	
-	public TypeParameterDumper(Parametrized item) throws NoSuchMethodException, SecurityException {
-		this(item, TypeParameterData.class.getConstructor(String.class));
-	}
-	
 	public TypeParameterDumper(Parametrized item, Constructor<? extends TypeParameterData> typeParameterConstructor) {
 		super(Opcodes.ASM4);
 		this.item = item;
@@ -36,7 +32,7 @@ public class TypeParameterDumper extends SignatureVisitor {
 		//System.out.println("  visitFormalTypeParameter(" + name + ")");
 		//typeParameter = new TypeParameterData(name);
 		try {
-			typeParameter = typeParameterConstructor.newInstance(name);
+			typeParameter = typeParameterConstructor.newInstance(item, name);
 			item.add(typeParameter);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
