@@ -10,30 +10,24 @@ import com.googlecode.japi.checker.model.JavaItem;
  */
 public class Difference {
 
-	private final DifferenceType differenceType;
-	private final JavaItem referenceItem;
-	private final JavaItem newItem;
+	private DifferenceType differenceType;
+	private JavaItem referenceItem;
+	private JavaItem newItem;
 	private String[] args;
-	private final String source;
+	private String source;
 	
 	protected Difference() {
-		this.differenceType = null;
-		this.referenceItem = null;
-		this.newItem = null;
-		this.source = null;
 	}
 	
 	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType) {
-		this.referenceItem = referenceItem;
+		this.setReferenceItem(referenceItem);
 		this.newItem = newItem;
 		this.differenceType = differenceType;
-		this.source = (referenceItem.getOwner() == null ? ((ClassData)referenceItem).getFilename() : referenceItem.getOwner().getFilename());
-		this.args = null;
 	}
 	
 	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType, Object...args) {
 		this(referenceItem, newItem, differenceType);
-		// objects to string
+		// objects to strings
 		String[] stringArgs = new String[args.length];
 		for (int i = 0; i < args.length; i++) {
 			stringArgs[i] = args[i].toString();
@@ -43,6 +37,12 @@ public class Difference {
 
 	public DifferenceType getDifferenceType() {
 		return differenceType;
+	}
+
+	// unfortunately this setter is needed, because Hibernate is not able to set source
+	protected void setReferenceItem(JavaItem referenceItem) {
+		this.referenceItem = referenceItem;
+		this.source = (referenceItem.getOwner() == null ? ((ClassData)referenceItem).getFilename() : referenceItem.getOwner().getFilename());
 	}
 
 	public JavaItem getReferenceItem() {
