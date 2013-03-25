@@ -10,24 +10,17 @@ import java.util.List;
  */
 public class TypeParameterData {
 	
-	private final Parametrized owner;
 	private final String name;
 	private final List<String> bounds; // TODO structured parametrized type <T:Object;Comparable<Int>>
 	
 	protected TypeParameterData() {
-		this.owner = null;
 		this.name = null;
 		this.bounds = null;
 	}
 	
-	public TypeParameterData(Parametrized owner, String name) {
-		this.owner = owner;
+	public TypeParameterData(String name) {
 		this.name = name;
 		this.bounds = new ArrayList<String>();
-	}
-	
-	public Parametrized getOwner() {
-		return owner;
 	}
 	
 	public String getName() {

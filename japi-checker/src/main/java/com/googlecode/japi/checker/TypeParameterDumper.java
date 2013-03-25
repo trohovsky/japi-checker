@@ -32,7 +32,7 @@ public class TypeParameterDumper extends SignatureVisitor {
 		//System.out.println("  visitFormalTypeParameter(" + name + ")");
 		//typeParameter = new TypeParameterData(name);
 		try {
-			typeParameter = typeParameterConstructor.newInstance(item, name);
+			typeParameter = typeParameterConstructor.newInstance(name);
 			item.add(typeParameter);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block

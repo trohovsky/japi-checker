@@ -32,7 +32,6 @@ import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.InnerClassData;
 import com.googlecode.japi.checker.model.MethodData;
-import com.googlecode.japi.checker.model.Parametrized;
 import com.googlecode.japi.checker.model.TypeParameterData;
 
 class ClassDumper<C extends ClassData> extends ClassVisitor {
@@ -65,7 +64,7 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
 			this.classConstructor = classClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class, int.class);
 			this.fieldConstructor = fieldClass.getConstructor(ClassData.class, int.class, String.class, String.class, String.class);
 			this.methodConstructor = methodClass.getConstructor(ClassData.class, int.class, String.class, String.class, String[].class);
-			this.typeParameterConstructor = typeParameterClass.getConstructor(Parametrized.class, String.class);
+			this.typeParameterConstructor = typeParameterClass.getConstructor(String.class);
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
