@@ -355,7 +355,7 @@ public class TestBCChecker {
         
 		@Override
 		public void report(Difference difference) {
-			System.out.println(difference.getDifferenceType().getServerity() + ": " + difference.getSource() + getLine(difference) + ": " + difference.getMessage());
+			System.out.println(difference.getDifferenceType().getSeverity() + ": " + difference.getSource() + getLine(difference) + ": " + difference.getMessage());
             differences.add(difference);
 		}
 		
@@ -385,7 +385,7 @@ public class TestBCChecker {
         public int count(Severity severity) {
             int count = 0;
             for (Difference difference : differences) {
-                if (difference.getDifferenceType().getServerity() == severity) {
+                if (difference.getDifferenceType().getSeverity() == severity) {
                     count++;
                 }
             }
@@ -394,7 +394,7 @@ public class TestBCChecker {
         
         public void assertContains(Severity severity, String str) {
             for (Difference difference : differences) {
-                if (difference.getDifferenceType().getServerity() == severity && difference.getMessage().contains(str)) {
+                if (difference.getDifferenceType().getSeverity() == severity && difference.getMessage().contains(str)) {
                     return;
                 }
             }

@@ -60,20 +60,20 @@ public enum DifferenceType {
 	PARAMETRIZED_REMOVED_TYPE_PARAMETER(Severity.ERROR, true, "The type parameter [%s] has been removed from the %s", ""),
 	PARAMETRIZED_CHANGED_BOUNDS(Severity.ERROR, true, "The bounds of the type parameter have been changed from [%s] to [%s] in the %s", "");
 	
-	private final Severity serverity;
+	private final Severity severity;
 	private final boolean source; // true if affects only source compatibility, false otherwise
 	private final String messagePattern;
 	private final String effectPattern;
 	
 	private DifferenceType(Severity serverity, boolean source, String messagePattern, String effectPattern) {
-		this.serverity = serverity;
+		this.severity = serverity;
 		this.source = source;
 		this.messagePattern = messagePattern;
 		this.effectPattern = effectPattern;
 	}
 			
-	public Severity getServerity() {
-		return serverity;
+	public Severity getSeverity() {
+		return severity;
 	}
 
 	public boolean isSource() {

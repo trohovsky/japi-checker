@@ -2,6 +2,7 @@ package com.googlecode.japi.checker;
 
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
+import com.googlecode.japi.checker.model.MethodData;
 
 /**
  * 
@@ -68,5 +69,13 @@ public class Difference {
 	public String getEffect() {
 		return String.format(differenceType.getMessagePattern(), (Object[])args);
 	}
+	
+    public Integer getLine() {
+        if (newItem instanceof MethodData) {
+        	Integer lineNumber = ((MethodData)newItem).getLineNumber();
+        	return lineNumber;
+        }
+        return null;
+    }
 
 }

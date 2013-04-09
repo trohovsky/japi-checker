@@ -50,7 +50,7 @@
         <module>reference-test-jar</module>
         <module>new-test-jar</module>
         <!--<module>japi-checker-maven-plugin</module>-->
-		<module>japi-checker-cli</module>
+        <module>japi-checker-cli</module>
     </modules>
     
     <distributionManagement>
@@ -81,8 +81,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <target>1.6</target>
-                    <source>1.6</source>
+                    <target>1.7</target>
+                    <source>1.7</source>
                 </configuration>
             </plugin>
             <plugin>
@@ -115,7 +115,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.1</version>
                 <inherited>false</inherited>
                 <configuration>
                     <siteDirectory>${project.basedir}/src/site</siteDirectory>
