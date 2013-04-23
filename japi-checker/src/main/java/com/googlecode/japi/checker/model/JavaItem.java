@@ -17,7 +17,6 @@ package com.googlecode.japi.checker.model;
 
 import org.objectweb.asm.Opcodes;
 
-import com.googlecode.japi.checker.Scope;
 
 public abstract class JavaItem {
 

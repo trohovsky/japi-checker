@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.googlecode.japi.checker;
+package com.googlecode.japi.checker.rules;
 
+import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.model.JavaItem;
 
 public interface Rule {

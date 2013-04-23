@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.JavaItem;
+import com.googlecode.japi.checker.model.Scope;
 
 /**
  * 

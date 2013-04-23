@@ -17,9 +17,8 @@ package com.googlecode.japi.checker.rules;
 
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
-import com.googlecode.japi.checker.Rule;
-import com.googlecode.japi.checker.Scope;
 import com.googlecode.japi.checker.model.JavaItem;
+import com.googlecode.japi.checker.model.Scope;
 
 // GENERAL
 public class CheckChangeOfScope implements Rule {

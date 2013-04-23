@@ -20,6 +20,7 @@ import java.util.List;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.MethodData;
+import com.googlecode.japi.checker.model.Scope;
 import com.googlecode.japi.checker.rules.ClassRules;
 import com.googlecode.japi.checker.rules.FieldRules;
 import com.googlecode.japi.checker.rules.MethodRules;

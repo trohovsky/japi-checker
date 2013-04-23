@@ -47,6 +47,7 @@ import com.googlecode.japi.checker.rules.CheckRemovedMethod;
 import com.googlecode.japi.checker.rules.CheckSerialVersionUIDField;
 import com.googlecode.japi.checker.rules.ClassChangedToAbstract;
 import com.googlecode.japi.checker.rules.ClassChangedToFinal;
+import com.googlecode.japi.checker.rules.Rule;
 import com.googlecode.japi.checker.utils.AntPatternMatcher;
 
 public class TestBCChecker {
