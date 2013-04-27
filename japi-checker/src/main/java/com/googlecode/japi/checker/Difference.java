@@ -31,7 +31,12 @@ public class Difference {
 		// objects to strings
 		String[] stringArgs = new String[args.length];
 		for (int i = 0; i < args.length; i++) {
-			stringArgs[i] = args[i].toString();
+		    // TODO quickly fixed to prevent null exception, which occur when field's value is changed to null
+		    if (args[i] != null) {
+		        stringArgs[i] = args[i].toString();
+		    } else {
+		        stringArgs[i] = "null";
+		    }
 		}
 		this.args = stringArgs;
 	}
