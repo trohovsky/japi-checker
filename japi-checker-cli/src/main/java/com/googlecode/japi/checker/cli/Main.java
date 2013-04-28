@@ -11,6 +11,7 @@ import com.googlecode.japi.checker.DefaultClassDataLoaderFactory;
 import com.googlecode.japi.checker.Severity;
 import com.googlecode.japi.checker.Utils;
 import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.Scope;
 
 
 /**
@@ -59,7 +60,7 @@ public class Main {
 		// reading of classes
 		ClassDataLoaderFactory<ClassData> classDataLoaderFactory = new DefaultClassDataLoaderFactory();
 		
-		ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
+		ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader(Scope.PRIVATE);
 		try {
 			referenceDataLoader.read(reference.toURI());
 		} catch (IOException e1) {
@@ -71,7 +72,7 @@ public class Main {
 		}*/
 		List<ClassData> referenceClasses = referenceDataLoader.getClasses(reference.toURI());//, includes, excludes);
 		
-		ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
+		ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader(Scope.PRIVATE);
 		try {
 			newArtifactDataLoader.read(newArtifact.toURI());
 		} catch (IOException e1) {

@@ -16,6 +16,7 @@
 package com.googlecode.japi.checker;
 
 import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.Scope;
 
 /**
  * Factory which allow the BCChecker to create ClassDataLoader on demand.
@@ -28,5 +29,5 @@ public interface ClassDataLoaderFactory<C extends ClassData> {
      * Provides a new ClassDataLoader implementation instance.
      * @return A new instance.
      */
-    ClassDataLoader<C> createClassDataLoader();
+    ClassDataLoader<C> createClassDataLoader(Scope maxVisibility);
 }

@@ -55,24 +55,26 @@ public class JarReader<C extends ClassData> extends AbstractClassReader<C> {
         FileInputStream fis = null;
         ZipInputStream zis = null;
         try {
-        fis = new FileInputStream(this.file);
-        zis = new ZipInputStream(new BufferedInputStream(fis));
-        ZipEntry entry = null;
-        byte buffer[] = new byte[2048];
-        int count = 0;
-        while((entry = zis.getNextEntry()) != null) {
-            if (entry.getName().endsWith(".class")) { 
+            fis = new FileInputStream(this.file);
+            zis = new ZipInputStream(new BufferedInputStream(fis));
+            ZipEntry entry = null;
+            byte buffer[] = new byte[2048];
+            int count = 0;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entry.getName().endsWith(".class")) {
 
-                ByteArrayOutputStream os =  new ByteArrayOutputStream();
-                while ((count = zis.read(buffer)) != -1) {
-                    os.write(buffer, 0, count);
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    while ((count = zis.read(buffer)) != -1) {
+                        os.write(buffer, 0, count);
+                    }
+                    ClassReader cr = new ClassReader(os.toByteArray());
+                    cr.accept(dumper, 0);
+                    C clazz = dumper.getClazz();
+                    if (clazz != null) {
+                        this.put(entry.getName(), clazz);
+                    }
                 }
-                ClassReader cr = new ClassReader(os.toByteArray());
-                cr.accept(dumper, 0);
-
-                this.put(entry.getName(), dumper.getClazz());
             }
-        }
         } finally {
             if (fis != null) {
                 fis.close();

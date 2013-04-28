@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.Scope;
 import com.googlecode.japi.checker.utils.AntPatternMatcher;
 
 /**
@@ -71,5 +72,7 @@ public interface ClassDataLoader<C extends ClassData> {
      */
     @Nonnull
     List<C> getClasses(@Nonnull URI uri, @Nonnull List<AntPatternMatcher> includes, @Nonnull List<AntPatternMatcher> excludes);
+
+    Scope getVisibilityLimit();
     
 }

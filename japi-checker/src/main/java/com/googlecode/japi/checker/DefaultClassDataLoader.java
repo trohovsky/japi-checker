@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.Scope;
 import com.googlecode.japi.checker.utils.AntPatternMatcher;
 
 /**
@@ -31,7 +32,12 @@ import com.googlecode.japi.checker.utils.AntPatternMatcher;
  * It populates itself thanks to the read method. 
  */
 class DefaultClassDataLoader implements ClassDataLoader<ClassData> {
-    private Map<URI, AbstractClassReader<ClassData>> readers = new Hashtable<URI, AbstractClassReader<ClassData>>(); 
+    private Map<URI, AbstractClassReader<ClassData>> readers = new Hashtable<URI, AbstractClassReader<ClassData>>();
+    private Scope visibility; 
+    
+    DefaultClassDataLoader(Scope maxVisibility) {
+        this.visibility = maxVisibility;
+    }
     
     /**
      * Read a set of classes via this ClassDataLoader. The idea is similar to the regular
@@ -111,5 +117,10 @@ class DefaultClassDataLoader implements ClassDataLoader<ClassData> {
         } else {
             throw new IOException("Unsupported scheme: " + uri.getScheme());
         }
+    }
+
+    @Override
+    public Scope getVisibilityLimit() {
+        return this.visibility;
     }
 }

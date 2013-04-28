@@ -73,7 +73,10 @@ public class DirectoryReader<C extends ClassData> extends AbstractClassReader<C>
                     }
                     ClassReader cr = new ClassReader(os.toByteArray());
                     cr.accept(dumper, 0);
-                    this.put(path + file.getName(), dumper.getClazz());
+                    C clazz = dumper.getClazz();
+                    if (clazz != null) {
+                        this.put(path + file.getName(), dumper.getClazz());
+                    }
                 } finally {
                     if (is != null) {
                         is.close();

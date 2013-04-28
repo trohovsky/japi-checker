@@ -85,22 +85,27 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
         logger.fine("class " + dottedName + " extends " + dottedSuperName + " {");
         //clazz = new ClassData(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
         try {
-			clazz = classConstructor.newInstance(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        if (signature != null) {
-            new SignatureReader(signature).accept(new TypeParameterDumper(clazz, typeParameterConstructor));
+            clazz = classConstructor.newInstance(loader, null, access,
+                    dottedName, dottedSuperName, dottedInterfaces, version);
+            if (clazz.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
+                clazz = null;
+                return;
+            }
+            if (signature != null) {
+                new SignatureReader(signature).accept(new TypeParameterDumper(clazz, typeParameterConstructor));
+            }
+        } catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
@@ -123,13 +128,19 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
     public FieldVisitor visitField(int access, String name, String desc,
             String signature, Object value) {
         logger.fine("    -(field) " + name + " " + signature + " " + desc);
+        if (clazz == null) {
+            return null;
+        }
         //clazz.add(new FieldData(loader, clazz, access, name, desc, value));
 		try {
 			String stringValue = null;
 			if (value != null) {
 				stringValue = value.toString();
 			}
-			FieldData field = fieldConstructor.newInstance(clazz, access, name, desc, stringValue);
+            FieldData field = fieldConstructor.newInstance(clazz, access, name, desc, stringValue);
+            if (field.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
+                return null;
+            }
 			clazz.add(field);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -152,22 +163,36 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
     	String dottedOuterName = Utils.toDottedClassName(outerName);
     	String dottedInnerName = Utils.toDottedClassName(innerName);
         logger.fine("    +(ic) " + dottedName + " " + dottedOuterName + " " + dottedInnerName + " " + access);
+        if (clazz == null) {
+            return;
+        }
         //clazz = new ClassData(access, name, innerName);
-        clazz.add(new InnerClassData(clazz, access, dottedName, dottedOuterName, dottedInnerName));
+        InnerClassData innerClass = new InnerClassData(clazz, access, dottedName, dottedOuterName, dottedInnerName);
+        if (innerClass.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
+            return;
+        }
+        clazz.add(innerClass);
     }
 
     public MethodVisitor visitMethod(int access, String name, String descriptor,
             String signature, String[] exceptions) {
         logger.fine("    +(m) " + name + " " + descriptor + " " + signature + " " + Arrays.toString(exceptions));
+        if (clazz == null) {
+            return null;
+        }
         // the method is not a static initializer
         if (!name.equals("<clinit>")) {
         	String[] dottedExceptions = Utils.toDottedClassNames(exceptions);
         	//MethodData method = new MethodData(loader, clazz, access, name, descriptor, dottedExceptions);
 			try {
-				MethodData method = methodConstructor.newInstance(clazz, access, name, descriptor, dottedExceptions);
-				if (signature != null) {
-					new SignatureReader(signature).accept(new TypeParameterDumper(method, typeParameterConstructor));
-				}
+                MethodData method = methodConstructor.newInstance(clazz,
+                        access, name, descriptor, dottedExceptions);
+                if (method.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
+                    return null;
+                }
+                if (signature != null) {
+                    new SignatureReader(signature).accept(new TypeParameterDumper(method, typeParameterConstructor));
+                }
 				clazz.add(method);
 				return new MethodDumper(method);
 			} catch (InstantiationException e) {
@@ -194,6 +219,9 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
     public void visitSource(String source, String debug) {
         logger.fine(" - source: " + source);
         logger.fine(" - debug: " + debug);
+        if (clazz == null) {
+            return;
+        }
         clazz.setSource(source);
     }
 

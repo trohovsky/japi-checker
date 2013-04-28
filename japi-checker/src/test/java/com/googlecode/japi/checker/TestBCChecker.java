@@ -34,6 +34,7 @@ import org.junit.Test;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
+import com.googlecode.japi.checker.model.Scope;
 import com.googlecode.japi.checker.rules.ChangeKindOfAPIType;
 import com.googlecode.japi.checker.rules.CheckChangeOfScope;
 import com.googlecode.japi.checker.rules.CheckFieldChangeOfType;
@@ -328,7 +329,7 @@ public class TestBCChecker {
     	// reading of classes
     	ClassDataLoaderFactory<ClassData> classDataLoaderFactory = new DefaultClassDataLoaderFactory();
     	
-    	ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader();
+    	ClassDataLoader<ClassData> referenceDataLoader = classDataLoaderFactory.createClassDataLoader(Scope.PRIVATE);
     	try {
 			referenceDataLoader.read(reference.toURI());
 		} catch (IOException e1) {
@@ -336,7 +337,7 @@ public class TestBCChecker {
 		}
         List<ClassData> referenceClasses = referenceDataLoader.getClasses(reference.toURI(), includesList, excludesList);
         
-        ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader();
+        ClassDataLoader<ClassData> newArtifactDataLoader = classDataLoaderFactory.createClassDataLoader(Scope.PRIVATE);
         try {
 			newArtifactDataLoader.read(newVersion.toURI());
 		} catch (IOException e1) {
