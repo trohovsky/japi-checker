@@ -26,7 +26,7 @@ import com.googlecode.japi.checker.model.JavaItem;
  *
  */
 // FIELD
-public class CheckFieldChangeValue implements Rule {
+public class CheckFieldChangedValue implements Rule {
 
     @Override
     public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
