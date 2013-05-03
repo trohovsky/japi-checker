@@ -41,10 +41,6 @@ public class Difference {
 		this.args = stringArgs;
 	}
 
-	public DifferenceType getDifferenceType() {
-		return differenceType;
-	}
-
 	// unfortunately this setter is needed, because Hibernate is not able to set source
 	protected void setReferenceItem(JavaItem referenceItem) {
 		this.referenceItem = referenceItem;
@@ -67,13 +63,25 @@ public class Difference {
 		return source;
 	}
 	
-	public String getMessage() {
-		return String.format(differenceType.getMessagePattern(), (Object[])args);
-	}
+    /* Methods encapsulating difference type */
+
+    public Severity getSeverity() {
+        return differenceType.getSeverity();
+    }
+
+    public boolean isSourceIncompatible() {
+        return differenceType.isSourceIncompatible();
+    }
+
+    public String getMessage() {
+        return String.format(differenceType.getMessagePattern(), (Object[]) args);
+    }
+
+    public String getEffect() {
+        return String.format(differenceType.getMessagePattern(), (Object[]) args);
+    }
 	
-	public String getEffect() {
-		return String.format(differenceType.getMessagePattern(), (Object[])args);
-	}
+	/* Other methods */
 	
     public Integer getLine() {
         if (newItem instanceof MethodData) {

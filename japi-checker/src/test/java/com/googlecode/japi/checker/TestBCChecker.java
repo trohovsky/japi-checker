@@ -33,7 +33,6 @@ import org.junit.Test;
 
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
-import com.googlecode.japi.checker.model.MethodData;
 import com.googlecode.japi.checker.model.Scope;
 import com.googlecode.japi.checker.rules.ChangeKindOfAPIType;
 import com.googlecode.japi.checker.rules.CheckChangeOfScope;
@@ -356,10 +355,15 @@ public class TestBCChecker {
         List<Difference> differences = new ArrayList<Difference>();
         
 		@Override
-		public void report(Difference difference) {
-			System.out.println(difference.getDifferenceType().getSeverity() + ": " + difference.getSource() + getLine(difference) + ": " + difference.getMessage());
+        public void report(Difference difference) {
+            System.out.println(difference.getSeverity()
+                    + ": "
+                    + difference.getSource()
+                    + (difference.getLine() != null ? "("
+                            + difference.getLine() + ")" : "") + ": "
+                    + difference.getMessage());
             differences.add(difference);
-		}
+        }
 		
 		@Override
 		public void report(JavaItem referenceItem, JavaItem newItem,
@@ -367,19 +371,7 @@ public class TestBCChecker {
 			Difference difference = new Difference(referenceItem, newItem, differenceType, args);
 			report(difference);
 		}
-        
-        private String getLine(Difference difference) {
-            if (difference.getNewItem() instanceof MethodData) {
-            	Integer lineNumber = ((MethodData)difference.getNewItem()).getLineNumber();
-            	if (lineNumber != null) {
-            		return "(" + lineNumber + ")";
-            	} else {
-            		return "";
-            	}
-            }
-            return "";
-        }
-        
+
         public List<Difference> getDifferences() {
             return differences;
         }
@@ -387,7 +379,7 @@ public class TestBCChecker {
         public int count(Severity severity) {
             int count = 0;
             for (Difference difference : differences) {
-                if (difference.getDifferenceType().getSeverity() == severity) {
+                if (difference.getSeverity() == severity) {
                     count++;
                 }
             }
@@ -396,7 +388,7 @@ public class TestBCChecker {
         
         public void assertContains(Severity severity, String str) {
             for (Difference difference : differences) {
-                if (difference.getDifferenceType().getSeverity() == severity && difference.getMessage().contains(str)) {
+                if (difference.getSeverity() == severity && difference.getMessage().contains(str)) {
                     return;
                 }
             }

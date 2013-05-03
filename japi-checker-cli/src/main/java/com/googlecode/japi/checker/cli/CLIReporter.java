@@ -10,27 +10,28 @@ import com.googlecode.japi.checker.Severity;
 import com.googlecode.japi.checker.model.JavaItem;
 
 public class CLIReporter implements Reporter {
-	private List<Difference> differences;
-    private boolean reportSourceAffectingDifferences;
+    private List<Difference> differences;
+    private boolean reportSourceIncompatibilities;
     
-    public CLIReporter(boolean source) {
+    public CLIReporter(boolean reportSourceIncompatibilities) {
     	this.differences = new ArrayList<Difference>();
-    	this.reportSourceAffectingDifferences = source;
+    	this.reportSourceIncompatibilities = reportSourceIncompatibilities;
     }
-            
+
     public void report(Difference difference) {
-    	if ((difference.getDifferenceType().getSeverity() == Severity.ERROR || 
-    			difference.getDifferenceType().getSeverity() == Severity.WARNING)) {
-    		if (reportSourceAffectingDifferences || !difference.getDifferenceType().isSource()) {
-				System.out.println(difference.getDifferenceType().getSeverity()
-						+ ": "
-						+ difference.getSource()
-						+ (difference.getLine() != null ? "("
-								+ difference.getLine() + ")" : "") + ": "
-						+ difference.getMessage());
-    		}
-    	}
-    	differences.add(difference);
+        if ((difference.getSeverity() == Severity.ERROR || difference
+                .getSeverity() == Severity.WARNING)) {
+            if (reportSourceIncompatibilities
+                    || !difference.isSourceIncompatible()) {
+                System.out.println(difference.getSeverity()
+                        + ": "
+                        + difference.getSource()
+                        + (difference.getLine() != null ? "("
+                                + difference.getLine() + ")" : "") + ": "
+                        + difference.getMessage());
+            }
+        }
+        differences.add(difference);
     }
     
 	@Override
@@ -47,8 +48,8 @@ public class CLIReporter implements Reporter {
     public int getCount(Severity severity) {
         int count = 0;
         for (Difference difference : differences) {
-            if (difference.getDifferenceType().getSeverity() == severity) {
-            	if (reportSourceAffectingDifferences || !difference.getDifferenceType().isSource()) {
+            if (difference.getSeverity() == severity) {
+            	if (reportSourceIncompatibilities || !difference.isSourceIncompatible()) {
             		count++;
             	}
             }

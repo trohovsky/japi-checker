@@ -52,9 +52,9 @@ public class Main {
 					"new artifact must be either a directory"
 							+ " or a jar (or a zip kind of archive) file");
 		}
-		boolean reportSourceAffectingDifferences = true;		
+		boolean reportSourceIncompatibilities = true;		
 		if (args.length > 2) {
-			reportSourceAffectingDifferences = (args[2] == null ? true : (args[2].equals("-bin") ? false : true));
+			reportSourceIncompatibilities = (args[2] == null ? true : (args[2].equals("-bin") ? false : true));
 		}
 
 		// reading of classes
@@ -86,7 +86,7 @@ public class Main {
 
 		// checker initialization
 		BCChecker checker = new BCChecker();
-		CLIReporter reporter = new CLIReporter(reportSourceAffectingDifferences);
+		CLIReporter reporter = new CLIReporter(reportSourceIncompatibilities);
 
 		// checking
 		checker.checkBackwardCompatibility(reporter, referenceClasses, newClasses);
