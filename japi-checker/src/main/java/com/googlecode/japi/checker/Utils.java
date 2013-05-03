@@ -19,6 +19,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.zip.ZipFile;
 
+import org.objectweb.asm.Opcodes;
+
+import com.googlecode.japi.checker.model.Scope;
+
 public final class Utils {
     
     private Utils() { }
@@ -78,6 +82,18 @@ public final class Utils {
                     // swallow the exception...
                 }
             }
+        }
+    }
+    
+    public static Scope toScope(int access) {
+        if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
+            return Scope.PRIVATE;
+        } else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
+            return Scope.PROTECTED;
+        } if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
+            return Scope.PUBLIC;
+        } else {
+            return Scope.PACKAGE;
         }
     }
 }

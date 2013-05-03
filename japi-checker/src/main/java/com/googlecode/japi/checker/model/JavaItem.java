@@ -17,6 +17,8 @@ package com.googlecode.japi.checker.model;
 
 import org.objectweb.asm.Opcodes;
 
+import com.googlecode.japi.checker.Utils;
+
 
 public abstract class JavaItem {
 
@@ -39,17 +41,7 @@ public abstract class JavaItem {
         return visibility;
     }
     
-    private Scope toScope(int access) {
-        if ((access & Opcodes.ACC_PRIVATE) == Opcodes.ACC_PRIVATE) {
-            return Scope.PRIVATE;
-        } else if ((access & Opcodes.ACC_PROTECTED) == Opcodes.ACC_PROTECTED) {
-            return Scope.PROTECTED;
-        } if ((access & Opcodes.ACC_PUBLIC) == Opcodes.ACC_PUBLIC) {
-            return Scope.PUBLIC;
-        } else {
-            return Scope.PACKAGE;
-        }
-    }
+
 
     /**
      * @return the isAbstract
@@ -123,6 +115,6 @@ public abstract class JavaItem {
 
 	protected void setAccess(int access) {
 		this.access = access;
-		this.visibility = toScope(access);
+		this.visibility = Utils.toScope(access);
 	}
 }

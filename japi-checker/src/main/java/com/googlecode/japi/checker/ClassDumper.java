@@ -83,14 +83,16 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
         String dottedSuperName = Utils.toDottedClassName(superName);
         String[] dottedInterfaces = Utils.toDottedClassNames(interfaces);
         logger.fine("class " + dottedName + " extends " + dottedSuperName + " {");
+        // visibility limit checking
+        if (Utils.toScope(access).isLessVisibleThan(loader.getVisibilityLimit())) {
+            clazz = null;
+            return;
+        }
+        // instantiation
         //clazz = new ClassData(loader, null, access, dottedName, dottedSuperName, dottedInterfaces, version);
         try {
             clazz = classConstructor.newInstance(loader, null, access,
                     dottedName, dottedSuperName, dottedInterfaces, version);
-            if (clazz.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
-                clazz = null;
-                return;
-            }
             if (signature != null) {
                 new SignatureReader(signature).accept(new TypeParameterDumper(clazz, typeParameterConstructor));
             }
@@ -128,9 +130,14 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
     public FieldVisitor visitField(int access, String name, String desc,
             String signature, Object value) {
         logger.fine("    -(field) " + name + " " + signature + " " + desc);
+        // visibility limit checking
         if (clazz == null) {
             return null;
         }
+        if (Utils.toScope(access).isLessVisibleThan(loader.getVisibilityLimit())) {
+            return null;
+        }
+        // instantiation
         //clazz.add(new FieldData(loader, clazz, access, name, desc, value));
 		try {
 			String stringValue = null;
@@ -138,9 +145,6 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
 				stringValue = value.toString();
 			}
             FieldData field = fieldConstructor.newInstance(clazz, access, name, desc, stringValue);
-            if (field.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
-                return null;
-            }
 			clazz.add(field);
 		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
@@ -163,33 +167,37 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
     	String dottedOuterName = Utils.toDottedClassName(outerName);
     	String dottedInnerName = Utils.toDottedClassName(innerName);
         logger.fine("    +(ic) " + dottedName + " " + dottedOuterName + " " + dottedInnerName + " " + access);
+        // visibility limit checking
         if (clazz == null) {
             return;
         }
-        //clazz = new ClassData(access, name, innerName);
-        InnerClassData innerClass = new InnerClassData(clazz, access, dottedName, dottedOuterName, dottedInnerName);
-        if (innerClass.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
+        if (Utils.toScope(access).isLessVisibleThan(loader.getVisibilityLimit())) {
             return;
         }
+        // instantiation
+        //clazz = new ClassData(access, name, innerName);
+        InnerClassData innerClass = new InnerClassData(clazz, access, dottedName, dottedOuterName, dottedInnerName);
         clazz.add(innerClass);
     }
 
     public MethodVisitor visitMethod(int access, String name, String descriptor,
             String signature, String[] exceptions) {
         logger.fine("    +(m) " + name + " " + descriptor + " " + signature + " " + Arrays.toString(exceptions));
+        // visibility limit checking
         if (clazz == null) {
             return null;
         }
+        if (Utils.toScope(access).isLessVisibleThan(loader.getVisibilityLimit())) {
+            return null;
+        }
+        // instantiation
         // the method is not a static initializer
         if (!name.equals("<clinit>")) {
         	String[] dottedExceptions = Utils.toDottedClassNames(exceptions);
         	//MethodData method = new MethodData(loader, clazz, access, name, descriptor, dottedExceptions);
 			try {
-                MethodData method = methodConstructor.newInstance(clazz,
+                MethodData method = methodConstructor.newInstance(clazz, 
                         access, name, descriptor, dottedExceptions);
-                if (method.getVisibility().isLessVisibleThan(loader.getVisibilityLimit())) {
-                    return null;
-                }
                 if (signature != null) {
                     new SignatureReader(signature).accept(new TypeParameterDumper(method, typeParameterConstructor));
                 }
