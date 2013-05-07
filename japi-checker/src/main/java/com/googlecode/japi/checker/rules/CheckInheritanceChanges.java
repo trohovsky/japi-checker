@@ -42,8 +42,8 @@ public class CheckInheritanceChanges implements Rule {
     	ClassData newClass = (ClassData) newItem;
     	
         // contracted superclass set
-        List<String> referenceAPISuperClasses = getAPITypes(referenceClass.getClassDataLoader(), referenceClass.getSuperClasses());
-        List<String> newAPISuperClasses = getAPITypes(newClass.getClassDataLoader(), newClass.getSuperClasses());
+        List<String> referenceAPISuperClasses = filterAPITypes(referenceClass.getClassDataLoader(), referenceClass.getSuperClasses());
+        List<String> newAPISuperClasses = filterAPITypes(newClass.getClassDataLoader(), newClass.getSuperClasses());
         if (!newAPISuperClasses.containsAll(referenceAPISuperClasses)) {
         	
         	List<String> subtractedClasses = new ArrayList<String>(referenceAPISuperClasses);
@@ -55,8 +55,8 @@ public class CheckInheritanceChanges implements Rule {
         }
         
         // contracted interface set
-        List<String> referenceAPIInterfaces = getAPITypes(referenceClass.getClassDataLoader(), referenceClass.getAllInterfaces());
-        List<String> newAPIInterfaces = getAPITypes(newClass.getClassDataLoader(), newClass.getAllInterfaces());
+        List<String> referenceAPIInterfaces = filterAPITypes(referenceClass.getClassDataLoader(), referenceClass.getAllInterfaces());
+        List<String> newAPIInterfaces = filterAPITypes(newClass.getClassDataLoader(), newClass.getAllInterfaces());
         if (!newAPIInterfaces.containsAll(referenceAPIInterfaces)) {
         	
         	List<String> subtractedInterfaces = new ArrayList<String>(referenceAPIInterfaces);
@@ -69,11 +69,11 @@ public class CheckInheritanceChanges implements Rule {
     }
     
     /**
-     * Return only names of API types. 
+     * Filters types, which are API (with visibility higher than package).
      * @param clazz
      * @return names of API types
      */
-    private List<String> getAPITypes(ClassDataLoader<?> loader, Collection<String> typeNames) {
+    private List<String> filterAPITypes(ClassDataLoader<?> loader, Collection<String> typeNames) {
     	List<String> APITypes = new ArrayList<String>();
     	for (String typeName: typeNames) {
         	ClassData type = loader.fromName(typeName);
