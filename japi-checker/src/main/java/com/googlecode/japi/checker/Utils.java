@@ -17,6 +17,7 @@ package com.googlecode.japi.checker;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.zip.ZipFile;
 
 import org.objectweb.asm.Opcodes;
@@ -64,6 +65,24 @@ public final class Utils {
     		return null;
     	}
     	return name.replaceAll("[.]", "/");
+    }
+    
+    /**
+     * Joins the elements of the provided <code>Iterable</code> into a single String containing the provided elements.
+     * @param s
+     * @param separator
+     * @return the String containing provided elements
+     */
+    public static String join(Iterable<?> iterable, String separator) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator<?> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            buffer.append(iterator.next());
+            if (iterator.hasNext()) {
+                buffer.append(separator);
+            }
+        }
+        return buffer.toString();
     }
     
     public static boolean isArchive(File file) {

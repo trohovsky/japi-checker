@@ -3,6 +3,8 @@ package com.googlecode.japi.checker.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.googlecode.japi.checker.Utils;
+
 /**
  * 
  * @author Tomas Rohovsky
@@ -54,21 +56,12 @@ public class TypeParameterData {
 
 	@Override
 	public String toString() {
-		StringBuffer s = new StringBuffer();
-		s.append(name);
+		StringBuffer sb = new StringBuffer();
+		sb.append(name);
 		if (!bounds.isEmpty()) {
-			s.append(" extends");
-			boolean first = true;
-			for (String bound : bounds) {
-				if (first) {
-					first = false;
-					s.append(" ");
-				} else {
-					s.append(" & ");
-				}
-				s.append(bound);
-			}	
+			sb.append(" extends ");
+			sb.append(Utils.join(bounds, " & "));	
 		}
-		return s.toString();
+		return sb.toString();
 	}
 }

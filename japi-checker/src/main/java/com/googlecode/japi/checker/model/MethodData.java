@@ -22,6 +22,8 @@ import java.util.List;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import com.googlecode.japi.checker.Utils;
+
 
 public class MethodData extends JavaItem implements Parametrized {
 
@@ -164,15 +166,7 @@ public class MethodData extends JavaItem implements Parametrized {
 		sb.append(" ");
 		if (!this.getTypeParameters().isEmpty()) {
 			sb.append("<");
-			boolean first = true;
-			for (TypeParameterData typeParameter : this.getTypeParameters()) {
-				if (first) {
-					first = false;
-				} else {
-					sb.append(", ");
-				}	
-				sb.append(typeParameter);
-			}
+			sb.append(Utils.join(this.getTypeParameters(), ", "));
 			sb.append("> ");
 		}
 		sb.append(this.getName());

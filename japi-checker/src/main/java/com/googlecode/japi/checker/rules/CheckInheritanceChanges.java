@@ -17,12 +17,12 @@ package com.googlecode.japi.checker.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
+import com.googlecode.japi.checker.Utils;
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.Scope;
@@ -51,7 +51,7 @@ public class CheckInheritanceChanges implements Rule {
         	
 			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CONTRACTED_SUPERCLASS_SET,
-					referenceClass, join(subtractedClasses, ", "));
+					referenceClass, Utils.join(subtractedClasses, ", "));
         }
         
         // contracted interface set
@@ -64,7 +64,7 @@ public class CheckInheritanceChanges implements Rule {
         	
 			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CONTRACTED_SUPERINTERFACE_SET,
-					referenceClass, join(subtractedInterfaces, ", "));
+					referenceClass, Utils.join(subtractedInterfaces, ", "));
         }
     }
     
@@ -87,23 +87,5 @@ public class CheckInheritanceChanges implements Rule {
         	}
         }
     	return APITypes;
-    }
-    
-    /**
-     * Joins the elements of the provided Collection into a single String containing the provided elements.
-     * @param s
-     * @param separator
-     * @return the String containing provided elements
-     */
-    private String join(Collection<String> s, String separator) {
-        StringBuffer buffer = new StringBuffer();
-        Iterator<String> iter = s.iterator();
-        while (iter.hasNext()) {
-            buffer.append(iter.next());
-            if (iter.hasNext()) {
-                buffer.append(separator);
-            }
-        }
-        return buffer.toString();
     }
 }
