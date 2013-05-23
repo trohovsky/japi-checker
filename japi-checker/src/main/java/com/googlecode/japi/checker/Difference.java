@@ -21,9 +21,10 @@ public class Difference {
 	}
 	
 	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType) {
-		this.setReferenceItem(referenceItem);
+		this.referenceItem = referenceItem;
 		this.newItem = newItem;
 		this.differenceType = differenceType;
+		this.source = (referenceItem.getOwner() == null ? ((ClassData)referenceItem).getFilename() : referenceItem.getOwner().getFilename());
 	}
 	
 	public Difference(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType, Object...args) {
@@ -39,12 +40,6 @@ public class Difference {
 		    }
 		}
 		this.args = stringArgs;
-	}
-
-	// unfortunately this setter is needed, because Hibernate is not able to set source
-	protected void setReferenceItem(JavaItem referenceItem) {
-		this.referenceItem = referenceItem;
-		this.source = (referenceItem.getOwner() == null ? ((ClassData)referenceItem).getFilename() : referenceItem.getOwner().getFilename());
 	}
 
 	public JavaItem getReferenceItem() {
