@@ -33,8 +33,8 @@ public class CheckAddedField implements Rule {
 				}
 					
 				if (!found) {
-					// class is subclassable, TODO maybe check public constructor
-					if (!newClass.isFinal()) {
+					// class is subclassable of it is interface
+					if (newClass.isSubclassable() || newClass.isInterface()) {
 						reporter.report(reference,
 								newItem,
 								DifferenceType.CLASS_ADDED_FIELD,

@@ -34,8 +34,8 @@ public class CheckAddedMethod implements Rule {
 					}
 					
 					if (!found) {
-						// class is subclassable, TODO maybe check public constructor
-						if (!newClass.isFinal()) {
+						// class is subclassable
+						if (newClass.isSubclassable()) {
 
 							if (newMethod.isAbstract()) {
 								reporter.report(reference,

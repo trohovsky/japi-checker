@@ -242,6 +242,23 @@ public class ClassData extends JavaItem implements Parametrized {
     public String getSource() {
         return source;
     }
+    
+    /**
+     * It determines whether the class is subclassable.
+     * @return
+     */
+    public boolean isSubclassable() {
+        // it cannot be final
+        if (!this.isFinal()) {
+            // and it has to have an API constructor
+            for (MethodData method : methods) {
+                if (method.isConstructor() && method.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 	public String getFilename() {
         if (this.getName().lastIndexOf('.') != -1) {
