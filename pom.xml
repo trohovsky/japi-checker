@@ -17,20 +17,23 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.googlecode.japi-checker</groupId>
 	<artifactId>japi-checker-pom</artifactId>
-	<name>JAPI Checker POM</name>
 	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
+	<name>JAPI Checker :: Parent POM</name>
+	<description>Top level POM file for the JAPI Checker project.</description>
+	<url>http://japi-checker.googlecode.com</url>
+	<inceptionYear>2011</inceptionYear>
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
-	<description>Top level POM file for the JAPI Checker project.</description>
-	<url>http://japi-checker.googlecode.com</url>
-	<inceptionYear>2011</inceptionYear>
+
 	<developers>
 		<developer>
 			<id>william.bernardet</id>
@@ -54,6 +57,12 @@
 		<module>japi-checker-cli</module>
 	</modules>
 
+	<scm>
+		<connection>scm:hg:https://code.google.com/p/japi-checker</connection>
+		<developerConnection>scm:hg:https://code.google.com/p/japi-checker</developerConnection>
+		<url>https://code.google.com/p/japi-checker</url>
+	</scm>
+
 	<distributionManagement>
 		<repository>
 			<id>sonatype-nexus</id>
@@ -70,11 +79,10 @@
 		</site>
 	</distributionManagement>
 
-	<scm>
-		<connection>scm:hg:https://code.google.com/p/japi-checker</connection>
-		<developerConnection>scm:hg:https://code.google.com/p/japi-checker</developerConnection>
-		<url>https://code.google.com/p/japi-checker</url>
-	</scm>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -181,7 +189,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
 
 	<profiles>
 		<profile>

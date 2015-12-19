@@ -15,22 +15,25 @@
   -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<artifactId>japi-checker-pom</artifactId>
 		<groupId>com.googlecode.japi-checker</groupId>
 		<version>0.2.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.googlecode.japi-checker</groupId>
+
 	<artifactId>reference-test-jar</artifactId>
-	<packaging>jar</packaging>
+
+	<name>JAPI-Checker :: Reference Test Artifact</name>
+	<url>http://japi-checker.googlecode.com</url>
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
+
 	<developers>
 		<developer>
 			<id>william.bernardet</id>
@@ -40,23 +43,7 @@
 		</developer>
 	</developers>
 
-	<!--     <build>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.3.2</version>
-					<configuration>
-						<target>1.5</target>
-						<source>1.5</source>
-					</configuration>
-				</plugin>
-			</plugins>
-		</build> -->
-
-
 	<properties>
 		<findbugs.skip>true</findbugs.skip>
 	</properties>
-	<name>JAPI-Checker reference test artifact</name>
 </project>
