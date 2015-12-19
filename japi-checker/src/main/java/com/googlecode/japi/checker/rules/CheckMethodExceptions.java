@@ -15,8 +15,6 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import java.util.List;
-
 import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
@@ -24,71 +22,63 @@ import com.googlecode.japi.checker.RuleHelpers;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.MethodData;
 
+import java.util.List;
+
 /**
- * This rule checks if a method is still throwing a compatible
- * set of exceptions. 
- * The check is not occurring for private scope.
- * '
+ * This rule checks if a method is still throwing a compatible set of exceptions. The check is not occurring for private
+ * scope. '
  */
 // METHOD
 public class CheckMethodExceptions implements Rule {
 
-    /**
-     * Implementation of the check.
-     */
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-    	MethodData referenceMethod = (MethodData) reference;
+	/**
+	 * Implementation of the check.
+	 */
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		MethodData referenceMethod = (MethodData) reference;
 		MethodData newMethod = (MethodData) newItem;
 		for (String exception : referenceMethod.getExceptions()) {
 			if (!isCompatibleWithAnyOfTheException(newItem.getOwner().getClassDataLoader(), exception, newMethod.getExceptions())) {
 				reporter.report(reference, newItem,
 						DifferenceType.METHOD_REMOVED_EXCEPTION,
-						referenceMethod, 
+						referenceMethod,
 						exception);
 			}
 		}
 		for (String exception : newMethod.getExceptions()) {
 			if (!hasCompatibleExceptionInItsHierarchy(newItem.getOwner().getClassDataLoader(), exception, referenceMethod.getExceptions())) {
 				reporter.report(reference, newItem,
-						DifferenceType.METHOD_ADDED_EXCEPTION, 
+						DifferenceType.METHOD_ADDED_EXCEPTION,
 						referenceMethod,
 						exception);
 			}
-        }
-    }
-    
-    /**
-     * Check if exception is part of inheritance tree of any of the referenceExceptions members.
-     * @param loader
-     * @param exception
-     * @param referenceExceptions
-     * @return
-     */
-    private boolean isCompatibleWithAnyOfTheException(ClassDataLoader<?> loader, String exception, List<String> referenceExceptions) {
-        for (String referenceException : referenceExceptions) {
-            if (RuleHelpers.isClassPartOfClassTree(loader, exception, referenceException)) {
-                return true;
-            }
-        } 
-        return false;
-    }
-    
-    /**
-     * Check if any of the referenceException are part of the inherirance tree of exception. 
-     * @param loader
-     * @param exception
-     * @param referenceExceptions
-     * @return
-     */
-    private boolean hasCompatibleExceptionInItsHierarchy(ClassDataLoader<?> loader, String exception, List<String> referenceExceptions) {
-        for (String referenceException : referenceExceptions) {
-            if (RuleHelpers.isClassPartOfClassTree(loader, referenceException, exception)) {
-                return true;
-            }
-        } 
-        return false;
-    }
-    
+		}
+	}
+
+	/**
+	 * Check if exception is part of inheritance tree of any of the referenceExceptions members.
+	 */
+	private boolean isCompatibleWithAnyOfTheException(ClassDataLoader<?> loader, String exception, List<String> referenceExceptions) {
+		for (String referenceException : referenceExceptions) {
+			if (RuleHelpers.isClassPartOfClassTree(loader, exception, referenceException)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if any of the referenceException are part of the inherirance tree of exception.
+	 */
+	private boolean hasCompatibleExceptionInItsHierarchy(ClassDataLoader<?> loader, String exception, List<String> referenceExceptions) {
+		for (String referenceException : referenceExceptions) {
+			if (RuleHelpers.isClassPartOfClassTree(loader, referenceException, exception)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

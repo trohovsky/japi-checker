@@ -15,47 +15,47 @@
  */
 package com.googlecode.japi.checker.maven.plugin;
 
-import org.apache.maven.plugin.logging.Log;
-
 import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.model.MethodData;
 
+import org.apache.maven.plugin.logging.Log;
+
 public class LogReporter implements Reporter {
 
-    private Log log;
-    private Level display = Level.WARNING;
-    
-    public LogReporter(Log log, Level display) {
-        this(log);
-        this.display = display;
-    }
+	private Log log;
+	private Level display = Level.WARNING;
 
-    public LogReporter(Log log) {
-        this.log = log;
-    }
-    
-    public void report(Report report) {
-        if (report.level.ordinal() <= display.ordinal()) {
-            if (report.level == Level.ERROR) {
-                log.error(format(report));
-            } else if (report.level == Level.WARNING) {
-                log.warn(format(report));
-            } else if (report.level == Level.INFO) {
-                log.info(format(report));
-            } else if (report.level == Level.DEBUG) {
-                log.debug(format(report));
-            }
-        }
-    }
+	public LogReporter(Log log, Level display) {
+		this(log);
+		this.display = display;
+	}
 
-    private String format(Report report) {
-        return report.source + getLine(report) + ": " + report.message;
-    }
-    
-    private static String getLine(Report report) {
-        if (report.newItem instanceof MethodData) {
-            return "(" + ((MethodData)report.newItem).getLineNumber() + ")";
-        }
-        return "";
-    }
+	public LogReporter(Log log) {
+		this.log = log;
+	}
+
+	private static String getLine(Report report) {
+		if (report.newItem instanceof MethodData) {
+			return "(" + ((MethodData) report.newItem).getLineNumber() + ")";
+		}
+		return "";
+	}
+
+	public void report(Report report) {
+		if (report.level.ordinal() <= display.ordinal()) {
+			if (report.level == Level.ERROR) {
+				log.error(format(report));
+			} else if (report.level == Level.WARNING) {
+				log.warn(format(report));
+			} else if (report.level == Level.INFO) {
+				log.info(format(report));
+			} else if (report.level == Level.DEBUG) {
+				log.debug(format(report));
+			}
+		}
+	}
+
+	private String format(Report report) {
+		return report.source + getLine(report) + ": " + report.message;
+	}
 }

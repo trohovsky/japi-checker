@@ -19,6 +19,6 @@ import java.io.Serializable;
 
 public class InvalidTypeUID implements Serializable {
 
-    private static final long serialVersionUID = 123;
+	private static final long serialVersionUID = 123;
 
 }

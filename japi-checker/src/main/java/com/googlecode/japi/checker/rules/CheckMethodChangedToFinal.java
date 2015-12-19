@@ -22,13 +22,13 @@ import com.googlecode.japi.checker.model.JavaItem;
 // METHOD
 public class CheckMethodChangedToFinal implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
 		if (!reference.isFinal() && newItem.isFinal()) {
 			reporter.report(reference, newItem,
 					DifferenceType.METHOD_CHANGED_TO_FINAL, reference);
-        }
-    }
+		}
+	}
 
 }

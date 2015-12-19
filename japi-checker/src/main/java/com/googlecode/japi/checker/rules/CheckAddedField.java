@@ -8,22 +8,20 @@ import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.Scope;
 
 /**
- * 
  * @author Tomas Rohovsky
- *
  */
 public class CheckAddedField implements Rule {
 
 	@Override
 	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-     
-		ClassData referenceClass = (ClassData)reference;
-		ClassData newClass = (ClassData)newItem;
-		
+
+		ClassData referenceClass = (ClassData) reference;
+		ClassData newClass = (ClassData) newItem;
+
 		// applicable for both - classes and interfaces
-		for (FieldData newField: newClass.getFields()) {
+		for (FieldData newField : newClass.getFields()) {
 			if (newField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-				
+
 				boolean found = false;
 				for (FieldData oldField : referenceClass.getFields()) {
 					if (oldField.isSame(newField) && oldField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
@@ -31,7 +29,7 @@ public class CheckAddedField implements Rule {
 						break;
 					}
 				}
-					
+
 				if (!found) {
 					// class is subclassable of it is interface
 					if (newClass.isSubclassable() || newClass.isInterface()) {

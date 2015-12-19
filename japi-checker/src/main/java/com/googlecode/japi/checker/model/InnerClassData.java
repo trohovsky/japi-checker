@@ -16,50 +16,49 @@
 package com.googlecode.japi.checker.model;
 
 
-
 public class InnerClassData extends JavaItem {
 
-    private String outerName;
-    private String innerName;
-    
-    public InnerClassData(ClassData owner, int access, String name, String outerName, String innerName) {
-        super(owner, access, name);
-        this.setOuterName(outerName);
-        this.setInnerName(innerName);
-    }
+	private String outerName;
+	private String innerName;
 
-    @Override
-    public String getItemType() {
-        return "class";
-    }
+	public InnerClassData(ClassData owner, int access, String name, String outerName, String innerName) {
+		super(owner, access, name);
+		this.setOuterName(outerName);
+		this.setInnerName(innerName);
+	}
 
-    /**
-     * @param outerName the outerName to set
-     */
-    protected void setOuterName(String outerName) {
-        this.outerName = outerName;
-    }
+	@Override
+	public String getItemType() {
+		return "class";
+	}
 
-    /**
-     * @return the outerName
-     */
-    public String getOuterName() {
-        return outerName;
-    }
+	/**
+	 * @return the outerName
+	 */
+	public String getOuterName() {
+		return outerName;
+	}
 
-    /**
-     * @param innerName the innerName to set
-     */
-    protected void setInnerName(String innerName) {
-        this.innerName = innerName;
-    }
+	/**
+	 * @param outerName the outerName to set
+	 */
+	protected void setOuterName(String outerName) {
+		this.outerName = outerName;
+	}
 
-    /**
-     * @return the innerName
-     */
-    public String getInnerName() {
-        return innerName;
-    }
+	/**
+	 * @return the innerName
+	 */
+	public String getInnerName() {
+		return innerName;
+	}
 
-    
+	/**
+	 * @param innerName the innerName to set
+	 */
+	protected void setInnerName(String innerName) {
+		this.innerName = innerName;
+	}
+
+
 }

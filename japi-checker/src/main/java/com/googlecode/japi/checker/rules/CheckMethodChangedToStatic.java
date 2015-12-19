@@ -22,9 +22,9 @@ import com.googlecode.japi.checker.model.JavaItem;
 // METHOD
 public class CheckMethodChangedToStatic implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
 		if (!reference.isStatic() && newItem.isStatic()) {
 			reporter.report(reference, newItem,
 					DifferenceType.METHOD_CHANGED_TO_STATIC, reference);
@@ -32,6 +32,6 @@ public class CheckMethodChangedToStatic implements Rule {
 			reporter.report(reference, newItem,
 					DifferenceType.METHOD_CHANGED_TO_NON_STATIC, reference);
 		}
-    }
+	}
 
 }

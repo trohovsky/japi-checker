@@ -23,15 +23,15 @@ import com.googlecode.japi.checker.model.JavaItem;
 // CLASS
 public class CheckClassVersion implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-        if (((ClassData) reference).getVersion() != ((ClassData) newItem).getVersion()) {
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		if (((ClassData) reference).getVersion() != ((ClassData) newItem).getVersion()) {
 			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CHANGED_CLASS_VERSION,
 					((ClassData) reference).getVersion(),
 					((ClassData) newItem).getVersion());
 		}
-    }
+	}
 
 }

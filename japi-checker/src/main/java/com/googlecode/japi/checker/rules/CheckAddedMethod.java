@@ -8,23 +8,21 @@ import com.googlecode.japi.checker.model.MethodData;
 import com.googlecode.japi.checker.model.Scope;
 
 /**
- * 
  * @author Tomas Rohovsky
- *
  */
 //CLASS
 public class CheckAddedMethod implements Rule {
 
 	@Override
 	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-     
-		ClassData referenceClass = (ClassData)reference;
-		ClassData newClass = (ClassData)newItem;
-		
+
+		ClassData referenceClass = (ClassData) reference;
+		ClassData newClass = (ClassData) newItem;
+
 		if (!referenceClass.isInterface() && !newClass.isInterface()) {
-			for (MethodData newMethod: newClass.getMethods()) {
+			for (MethodData newMethod : newClass.getMethods()) {
 				if (newMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE) && !newMethod.isConstructor()) {
-				
+
 					boolean found = false;
 					for (MethodData oldMethod : referenceClass.getMethods()) {
 						if (oldMethod.isSame(newMethod) && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
@@ -32,7 +30,7 @@ public class CheckAddedMethod implements Rule {
 							break;
 						}
 					}
-					
+
 					if (!found) {
 						// class is subclassable
 						if (newClass.isSubclassable()) {
@@ -59,17 +57,17 @@ public class CheckAddedMethod implements Rule {
 				}
 			}
 		} else if (referenceClass.isInterface() && newClass.isInterface()) {
-			for (MethodData newMethod: newClass.getMethods()) {
+			for (MethodData newMethod : newClass.getMethods()) {
 				// all interface methods are implicitly public and abstract - no need to check if are API
 				boolean found = false;
-				
+
 				for (MethodData oldMethod : referenceClass.getMethods()) {
 					if (oldMethod.isSame(newMethod) && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
 						found = true;
 						break;
 					}
 				}
-				
+
 				if (!found) {
 					if (referenceClass.isAnnotation() && newClass.isAnnotation()) {
 						if (newMethod.getDefaultValue() == null) {
@@ -86,8 +84,8 @@ public class CheckAddedMethod implements Rule {
 					}
 				}
 			}
-			
+
 		}
 	}
-	
- }    
+
+}

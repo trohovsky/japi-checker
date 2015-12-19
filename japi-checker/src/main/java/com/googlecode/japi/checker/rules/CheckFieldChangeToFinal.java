@@ -21,25 +21,23 @@ import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 
 /**
- * 
  * @author Tomas Rohovsky
- *
  */
 // FIELD
 public class CheckFieldChangeToFinal implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-        if (!reference.isFinal() && newItem.isFinal()) {
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		if (!reference.isFinal() && newItem.isFinal()) {
 			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TO_FINAL, reference);
-		} else if (reference.isFinal() && !newItem.isFinal() 
-        	&& reference.isStatic() && newItem.isStatic()
-        	&& ((FieldData) reference).isCompileTimeConstant()) {
+		} else if (reference.isFinal() && !newItem.isFinal()
+				&& reference.isStatic() && newItem.isStatic()
+				&& ((FieldData) reference).isCompileTimeConstant()) {
 			// if field is static with compile-time constant value
 			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TO_NON_FINAL, reference);
 		}
-    }
+	}
 }

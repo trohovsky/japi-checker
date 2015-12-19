@@ -18,41 +18,36 @@ package com.googlecode.japi.checker;
 import com.googlecode.japi.checker.model.ClassData;
 
 /**
- * Some common functions which ease the writing of rules. 
- *
+ * Some common functions which ease the writing of rules.
  */
 public final class RuleHelpers {
-    
-    private RuleHelpers() {}
-    
-    /**
-     * 
-     * For the following given inheritance tree:
-     * <code>
-     *    A -> B -> C -> D
-     *  </code>
-     *  
-     *  A call to <code>isClassPartOfClassTree(loader, "B", "A");</code> will return true, as A inherits from B. 
-     *  But calling <code>isClassPartOfClassTree(loader, "B", "C");</code> will return false.
-     * </code>
-     * 
-     * @param loader the loader to use for extracting class information.
-     * @param classname the class to look for in the inheritance tree.
-     * @param topLevelClassname the top-level element of the tree to start
-     * @return Returns true if classname is found in topLevelClassname
-     *           inheritance tree (or equal to it), false otherwise.
-     */
-    public static boolean isClassPartOfClassTree(ClassDataLoader<?> loader, String classname, String topLevelClassname) {
-        if (topLevelClassname != null) {
-            if (classname.equals(topLevelClassname)) {
-                return true;
-            }
-            ClassData superClass = loader.fromName(topLevelClassname);
-            if (superClass != null) {
-                return isClassPartOfClassTree(loader, classname, superClass.getSuperName());
-            }
-        }
-        return false;
-    }
+
+	private RuleHelpers() {
+	}
+
+	/**
+	 * For the following given inheritance tree: <code> A -> B -> C -> D </code>
+	 *
+	 * A call to <code>isClassPartOfClassTree(loader, "B", "A");</code> will return true, as A inherits from B. But
+	 * calling <code>isClassPartOfClassTree(loader, "B", "C");</code> will return false. </code>
+	 *
+	 * @param loader            the loader to use for extracting class information.
+	 * @param classname         the class to look for in the inheritance tree.
+	 * @param topLevelClassname the top-level element of the tree to start
+	 * @return Returns true if classname is found in topLevelClassname inheritance tree (or equal to it), false
+	 * otherwise.
+	 */
+	public static boolean isClassPartOfClassTree(ClassDataLoader<?> loader, String classname, String topLevelClassname) {
+		if (topLevelClassname != null) {
+			if (classname.equals(topLevelClassname)) {
+				return true;
+			}
+			ClassData superClass = loader.fromName(topLevelClassname);
+			if (superClass != null) {
+				return isClassPartOfClassTree(loader, classname, superClass.getSuperName());
+			}
+		}
+		return false;
+	}
 
 }

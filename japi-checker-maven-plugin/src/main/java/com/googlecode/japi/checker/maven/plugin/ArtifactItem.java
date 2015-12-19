@@ -15,142 +15,125 @@
  */
 package com.googlecode.japi.checker.maven.plugin;
 
-import org.apache.maven.artifact.Artifact;
-
 import com.googlecode.japi.checker.Utils;
 
+import org.apache.maven.artifact.Artifact;
+
 public class ArtifactItem {
-    /**
-     * Group Id of Artifact
-     *
-     * @parameter
-     * @required
-     */
-    private String groupId;
+	/**
+	 * Group Id of Artifact
+	 *
+	 * @parameter
+	 * @required
+	 */
+	private String groupId;
 
-    /**
-     * Name of Artifact
-     *
-     * @parameter
-     * @required
-     */
-    private String artifactId;
+	/**
+	 * Name of Artifact
+	 *
+	 * @parameter
+	 * @required
+	 */
+	private String artifactId;
 
-    /**
-     * Version of Artifact
-     *
-     * @parameter
-     */
-    private String version = null;
+	/**
+	 * Version of Artifact
+	 *
+	 * @parameter
+	 */
+	private String version = null;
 
-    /**
-     * Type of Artifact (War,Jar,etc)
-     *
-     * @parameter
-     * @required
-     */
-    private String type = "jar";
+	/**
+	 * Type of Artifact (War,Jar,etc)
+	 *
+	 * @parameter
+	 * @required
+	 */
+	private String type = "jar";
 
-    private Artifact artifact;
+	private Artifact artifact;
 
-    public ArtifactItem()
-    {
-        // default constructor
-    }
+	public ArtifactItem() {
+		// default constructor
+	}
 
-    public ArtifactItem( Artifact artifact )
-    {
-        this.setArtifact( artifact );
-        this.setArtifactId( artifact.getArtifactId() );
-        this.setGroupId( artifact.getGroupId() );
-        this.setType( artifact.getType() );
-        this.setVersion( artifact.getVersion() );
-    }
+	public ArtifactItem(Artifact artifact) {
+		this.setArtifact(artifact);
+		this.setArtifactId(artifact.getArtifactId());
+		this.setGroupId(artifact.getGroupId());
+		this.setType(artifact.getType());
+		this.setVersion(artifact.getVersion());
+	}
 
-    /**
-     * @return Returns the artifactId.
-     */
-    public String getArtifactId()
-    {
-        return artifactId;
-    }
+	/**
+	 * @return Returns the artifactId.
+	 */
+	public String getArtifactId() {
+		return artifactId;
+	}
 
-    /**
-     * @param artifactId
-     *            The artifactId to set.
-     */
-    public void setArtifactId( String artifact )
-    {
-        this.artifactId = Utils.fixEmpty( artifact );
-    }
+	/**
+	 * @param artifactId The artifactId to set.
+	 */
+	public void setArtifactId(String artifact) {
+		this.artifactId = Utils.fixEmpty(artifact);
+	}
 
-    /**
-     * @return Returns the groupId.
-     */
-    public String getGroupId()
-    {
-        return groupId;
-    }
+	/**
+	 * @return Returns the groupId.
+	 */
+	public String getGroupId() {
+		return groupId;
+	}
 
-    /**
-     * @param groupId
-     *            The groupId to set.
-     */
-    public void setGroupId( String groupId )
-    {
-        this.groupId = Utils.fixEmpty( groupId );
-    }
+	/**
+	 * @param groupId The groupId to set.
+	 */
+	public void setGroupId(String groupId) {
+		this.groupId = Utils.fixEmpty(groupId);
+	}
 
-    /**
-     * @return Returns the type.
-     */
-    public String getType()
-    {
-        return type;
-    }
+	/**
+	 * @return Returns the type.
+	 */
+	public String getType() {
+		return type;
+	}
 
-    /**
-     * @param type
-     *            The type to set.
-     */
-    public void setType( String type )
-    {
-        this.type = Utils.fixEmpty( type );
-    }
+	/**
+	 * @param type The type to set.
+	 */
+	public void setType(String type) {
+		this.type = Utils.fixEmpty(type);
+	}
 
-    /**
-     * @return Returns the version.
-     */
-    public String getVersion()
-    {
-        return version;
-    }
+	/**
+	 * @return Returns the version.
+	 */
+	public String getVersion() {
+		return version;
+	}
 
-    /**
-     * @param version
-     *            The version to set.
-     */
-    public void setVersion( String version )
-    {
-        this.version = Utils.fixEmpty( version );
-    }
+	/**
+	 * @param version The version to set.
+	 */
+	public void setVersion(String version) {
+		this.version = Utils.fixEmpty(version);
+	}
 
-    /**
-     * @return Returns the artifact.
-     */
-    public Artifact getArtifact()
-    {
-        return this.artifact;
-    }
+	/**
+	 * @return Returns the artifact.
+	 */
+	public Artifact getArtifact() {
+		return this.artifact;
+	}
 
-    /**
-     * @param artifact
-     *            The artifact to set.
-     */
-    public void setArtifact( Artifact artifact )
-    {
-        this.artifact = artifact;
-    }
-    
-    
+	/**
+	 * @param artifact The artifact to set.
+	 */
+	public void setArtifact(Artifact artifact) {
+		this.artifact = artifact;
+	}
+
+
 }

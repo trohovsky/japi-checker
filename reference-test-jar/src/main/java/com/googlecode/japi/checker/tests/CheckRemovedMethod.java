@@ -17,24 +17,24 @@ package com.googlecode.japi.checker.tests;
 
 public class CheckRemovedMethod {
 
-    public void publicMethodRemoved() {
-        
-    }
+	public void publicMethodRemoved() {
 
-    public void publicMethodRemoved(boolean throwException) throws Exception {
-        
-    }
+	}
 
-    public void publicMethodRemoved(String keeped) {
-        
-    }
+	public void publicMethodRemoved(boolean throwException) throws Exception {
 
-    protected void protectedMethodRemoved() {
-        
-    }
-    
-    private void privateMethodRemoved() {
-        
-    }
+	}
+
+	public void publicMethodRemoved(String keeped) {
+
+	}
+
+	protected void protectedMethodRemoved() {
+
+	}
+
+	private void privateMethodRemoved() {
+
+	}
 
 }

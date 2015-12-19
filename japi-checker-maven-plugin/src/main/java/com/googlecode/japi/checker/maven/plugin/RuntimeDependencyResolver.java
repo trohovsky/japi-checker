@@ -17,14 +17,6 @@
 //
 package com.googlecode.japi.checker.maven.plugin;
 
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.factory.ArtifactFactory;
 import org.apache.maven.artifact.metadata.ArtifactMetadataSource;
@@ -41,154 +33,150 @@ import org.apache.maven.project.ProjectBuildingException;
 import org.apache.maven.project.artifact.InvalidDependencyVersionException;
 import org.apache.maven.project.artifact.MavenMetadataSource;
 
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
+
 /**
- * RuntimeDependencyResolver
- * This class is able to pull down a remote pom, find all of it's
- * dependencies and transitively resolve them.
+ * RuntimeDependencyResolver This class is able to pull down a remote pom, find all of it's dependencies and
+ * transitively resolve them.
  */
 public class RuntimeDependencyResolver {
-    private static Logger LOGGER = Logger.getLogger(RuntimeDependencyResolver.class.getCanonicalName());
-    private ArtifactFactory artifactFactory;
-    private ArtifactResolver artifactResolver;
-    private ArtifactMetadataSource metadataSource;
-    private ArtifactRepository localRepository;
-    private List<ArtifactRepository> remoteRepositories;
+	private static Logger LOGGER = Logger.getLogger(RuntimeDependencyResolver.class.getCanonicalName());
+	private ArtifactFactory artifactFactory;
+	private ArtifactResolver artifactResolver;
+	private ArtifactMetadataSource metadataSource;
+	private ArtifactRepository localRepository;
+	private List<ArtifactRepository> remoteRepositories;
 
-    /**
-     * RuntimeResolutionListener
-     * Just for debug printing of transitive resolution steps
-     */
-    static class RuntimeResolutionListener implements ResolutionListener {
-        public void testArtifact(Artifact arg0) {
-        }
+	public RuntimeDependencyResolver(ArtifactFactory artifactFactory, ArtifactResolver artifactResolver,
+									 ArtifactMetadataSource metadataSource, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories) {
+		this.artifactFactory = artifactFactory;
+		this.artifactResolver = artifactResolver;
+		this.metadataSource = metadataSource;
+		this.localRepository = localRepository;
+		this.remoteRepositories = new ArrayList<ArtifactRepository>();
+		if (remoteRepositories != null) {
+			this.remoteRepositories.addAll(remoteRepositories);
+		}
+	}
 
-        public void startProcessChildren(Artifact arg0) {
-        }
+	/**
+	 * Download (if necessary) a pom, and load it as a MavenProject, transitively resolving any dependencies therein.
+	 *
+	 * @return a Set of Artifacts representing the transitively resolved dependencies.
+	 */
+	public Set<Artifact> transitivelyResolvePomDependencies(MavenProjectBuilder projectBuilder, String groupId,
+															String artifactId, String versionId, boolean resolveProjectArtifact) throws MalformedURLException,
+			ProjectBuildingException, InvalidDependencyVersionException, ArtifactResolutionException,
+			ArtifactNotFoundException {
 
-        public void endProcessChildren(Artifact arg0) {
-        }
+		Artifact pomArtifact = getPomArtifact(groupId, artifactId, versionId);
+		MavenProject project = loadPomAsProject(projectBuilder, pomArtifact);
+		@SuppressWarnings("rawtypes")
+		List dependencies = project.getDependencies();
 
-        public void includeArtifact(Artifact arg0) {
-        }
+		@SuppressWarnings("unchecked")
+		Set<Artifact> dependencyArtifacts = MavenMetadataSource.createArtifacts(artifactFactory, dependencies, null, null, null);
+		dependencyArtifacts.add(project.getArtifact());
 
-        public void omitForNearer(Artifact arg0, Artifact arg1) {
-        }
+		@SuppressWarnings("rawtypes")
+		List listeners = Collections.EMPTY_LIST;
 
-        public void updateScope(Artifact arg0, String arg1) {
-        }
+		ArtifactResolutionResult result =
+				artifactResolver.resolveTransitively(dependencyArtifacts, pomArtifact, Collections.EMPTY_MAP,
+						localRepository, remoteRepositories, metadataSource, null, listeners);
 
-        public void manageArtifact(Artifact arg0, Artifact arg1) {
-        }
+		@SuppressWarnings("unchecked")
+		Set<Artifact> artifacts = result.getArtifacts();
 
-        public void omitForCycle(Artifact arg0) {
-        }
+		LOGGER.fine("RESOLVED " + artifacts.size() + " ARTIFACTS");
+		Iterator<Artifact> itor = artifacts.iterator();
+		while (itor.hasNext()) {
+			Artifact a = (Artifact) itor.next();
+			LOGGER.fine(a.getFile().toURI().toURL().toString());
+		}
+		return artifacts;
+	}
 
-        public void updateScopeCurrentPom(Artifact arg0, String arg1) {
-        }
+	public MavenProject loadPomAsProject(MavenProjectBuilder projectBuilder, Artifact pomArtifact)
+			throws ProjectBuildingException {
+		return projectBuilder.buildFromRepository(pomArtifact, remoteRepositories, localRepository);
+	}
 
-        public void selectVersionFromRange(Artifact arg0) {
-        }
+	public Artifact getArtifact(String groupId, String artifactId, String versionId, String type) {
+		return this.artifactFactory.createBuildArtifact(groupId, artifactId, versionId, type);
+	}
 
-        public void restrictRange(Artifact arg0, Artifact arg1, VersionRange arg2) {
-        }
+	public Artifact getPomArtifact(String groupId, String artifactId, String versionId) {
+		return this.artifactFactory.createBuildArtifact(groupId, artifactId, versionId, "pom");
+	}
 
-    }
+	public void removeDependency(Set<Artifact> artifacts, String groupId, String artifactId, String versionId, String type) {
+		if ((artifacts == null) || artifacts.isEmpty())
+			return;
 
-    public RuntimeDependencyResolver(ArtifactFactory artifactFactory, ArtifactResolver artifactResolver,
-            ArtifactMetadataSource metadataSource, ArtifactRepository localRepository, List<ArtifactRepository> remoteRepositories) {
-        this.artifactFactory = artifactFactory;
-        this.artifactResolver = artifactResolver;
-        this.metadataSource = metadataSource;
-        this.localRepository = localRepository;
-        this.remoteRepositories = new ArrayList<ArtifactRepository>();
-        if (remoteRepositories != null) {
-            this.remoteRepositories.addAll(remoteRepositories);
-        }
-    }
+		Iterator<Artifact> itor = artifacts.iterator();
+		while (itor.hasNext()) {
+			Artifact a = (Artifact) itor.next();
+			if (a.getGroupId().equals(groupId) && a.getArtifactId().equals(artifactId) && a.getType().equals(type)) {
+				// remove if the versions match, or there was no version specified
+				if (versionId == null)
+					itor.remove();
+				else if (a.getVersion().equals(versionId))
+					itor.remove();
+			}
+		}
+	}
 
-    /**
-     * Download (if necessary) a pom, and load it as a MavenProject, transitively resolving any
-     * dependencies therein.
-     * 
-     * @param projectBuilder
-     * @param groupId
-     * @param artifactId
-     * @param versionId
-     * @return a Set of Artifacts representing the transitively resolved dependencies.
-     * @throws MalformedURLException
-     * @throws ProjectBuildingException
-     * @throws InvalidDependencyVersionException
-     * @throws ArtifactResolutionException
-     * @throws ArtifactNotFoundException
-     */
-    public Set<Artifact> transitivelyResolvePomDependencies(MavenProjectBuilder projectBuilder, String groupId,
-            String artifactId, String versionId, boolean resolveProjectArtifact) throws MalformedURLException,
-            ProjectBuildingException, InvalidDependencyVersionException, ArtifactResolutionException,
-            ArtifactNotFoundException {
+	public void addDependency(Set<Artifact> artifacts, String groupId, String artifactId, String versionId, String type)
+			throws ArtifactResolutionException, ArtifactNotFoundException {
+		Artifact a = getArtifact(groupId, artifactId, versionId, type);
+		artifactResolver.resolve(a, remoteRepositories, localRepository);
+		artifacts.add(a);
+	}
 
-        Artifact pomArtifact = getPomArtifact(groupId, artifactId, versionId);
-        MavenProject project = loadPomAsProject(projectBuilder, pomArtifact);
-        @SuppressWarnings("rawtypes")
-        List dependencies = project.getDependencies();
+	/**
+	 * RuntimeResolutionListener Just for debug printing of transitive resolution steps
+	 */
+	static class RuntimeResolutionListener implements ResolutionListener {
+		public void testArtifact(Artifact arg0) {
+		}
 
-        @SuppressWarnings("unchecked")
-        Set<Artifact> dependencyArtifacts = MavenMetadataSource.createArtifacts(artifactFactory, dependencies, null, null, null);
-        dependencyArtifacts.add(project.getArtifact());
+		public void startProcessChildren(Artifact arg0) {
+		}
 
-        @SuppressWarnings("rawtypes")
-        List listeners = Collections.EMPTY_LIST;
+		public void endProcessChildren(Artifact arg0) {
+		}
 
-        ArtifactResolutionResult result =
-                artifactResolver.resolveTransitively(dependencyArtifacts, pomArtifact, Collections.EMPTY_MAP,
-                        localRepository, remoteRepositories, metadataSource, null, listeners);
+		public void includeArtifact(Artifact arg0) {
+		}
 
-        @SuppressWarnings("unchecked")
-        Set<Artifact> artifacts = result.getArtifacts();
+		public void omitForNearer(Artifact arg0, Artifact arg1) {
+		}
 
-        LOGGER.fine("RESOLVED " + artifacts.size() + " ARTIFACTS");
-        Iterator<Artifact> itor = artifacts.iterator();
-        while (itor.hasNext()) {
-            Artifact a = (Artifact) itor.next();
-            LOGGER.fine(a.getFile().toURI().toURL().toString());
-        }
-        return artifacts;
-    }
+		public void updateScope(Artifact arg0, String arg1) {
+		}
 
-    public MavenProject loadPomAsProject(MavenProjectBuilder projectBuilder, Artifact pomArtifact)
-            throws ProjectBuildingException {
-        return projectBuilder.buildFromRepository(pomArtifact, remoteRepositories, localRepository);
-    }
+		public void manageArtifact(Artifact arg0, Artifact arg1) {
+		}
 
-    public Artifact getArtifact(String groupId, String artifactId, String versionId, String type) {
-        return this.artifactFactory.createBuildArtifact(groupId, artifactId, versionId, type);
-    }
+		public void omitForCycle(Artifact arg0) {
+		}
 
-    public Artifact getPomArtifact(String groupId, String artifactId, String versionId) {
-        return this.artifactFactory.createBuildArtifact(groupId, artifactId, versionId, "pom");
-    }
+		public void updateScopeCurrentPom(Artifact arg0, String arg1) {
+		}
 
-    public void removeDependency(Set<Artifact> artifacts, String groupId, String artifactId, String versionId, String type) {
-        if ((artifacts == null) || artifacts.isEmpty())
-            return;
+		public void selectVersionFromRange(Artifact arg0) {
+		}
 
-        Iterator<Artifact> itor = artifacts.iterator();
-        while (itor.hasNext()) {
-            Artifact a = (Artifact) itor.next();
-            if (a.getGroupId().equals(groupId) && a.getArtifactId().equals(artifactId) && a.getType().equals(type)) {
-                // remove if the versions match, or there was no version specified
-                if (versionId == null)
-                    itor.remove();
-                else if (a.getVersion().equals(versionId))
-                    itor.remove();
-            }
-        }
-    }
+		public void restrictRange(Artifact arg0, Artifact arg1, VersionRange arg2) {
+		}
 
-    public void addDependency(Set<Artifact> artifacts, String groupId, String artifactId, String versionId, String type)
-            throws ArtifactResolutionException, ArtifactNotFoundException {
-        Artifact a = getArtifact(groupId, artifactId, versionId, type);
-        artifactResolver.resolve(a, remoteRepositories, localRepository);
-        artifacts.add(a);
-    }
+	}
 
 }

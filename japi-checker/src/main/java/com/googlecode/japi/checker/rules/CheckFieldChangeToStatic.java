@@ -22,15 +22,15 @@ import com.googlecode.japi.checker.model.JavaItem;
 // FIELD
 public class CheckFieldChangeToStatic implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-    	if (reference.isStatic() && !newItem.isStatic()) {
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		if (reference.isStatic() && !newItem.isStatic()) {
 			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TO_NON_STATIC, reference);
 		} else if (!reference.isStatic() && newItem.isStatic()) {
 			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TO_STATIC, reference);
 		}
-    }
+	}
 }

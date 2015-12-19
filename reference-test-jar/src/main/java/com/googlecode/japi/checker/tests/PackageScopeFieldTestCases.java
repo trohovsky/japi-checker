@@ -16,34 +16,31 @@
 package com.googlecode.japi.checker.tests;
 
 class PackageScopeFieldTestCases {
-    // change of type
-    public String testChangeOfTypePublic;
-    protected String testChangeOfTypeProtected;
-    private String testChangeOfTypePrivate;
-    
-    // Change of scope
-    public String testChangeOfScopeFromPublicToProtected;
-    public String testChangeOfScopeFromPublicToPrivate;
-    protected String testChangeOfScopeFromProtectedToPublic;
-    protected String testChangeOfScopeFromProtectedToPrivate;
-    private String testChangeOfScopeFromPrivateToProtected;
-    private String testChangeOfScopeFromPrivateToPublic;
-    
-    // Static
-    public String testPublicChangeToStatic;
-    public static String testPublicChangeFromStatic;
-    protected String testProtectedChangeToStatic;
-    protected static String testProtectedChangeFromStatic;
-    private String testPrivateChangeToStatic;
-    private static String testPrivateChangeFromStatic;
-    
-    // Final
-    public final String publicFinalToNoFinal = "";
-    public String publicNotfinalToFinal = "";
-    protected final String protectedFinalToNoFinal = "";
-    protected String protectedNotfinalToFinal = "";
-    private final String privateFinalToNoFinal = "";
-    private String privateNotfinalToFinal = "";
+	public static String testPublicChangeFromStatic;
+	protected static String testProtectedChangeFromStatic;
+	private static String testPrivateChangeFromStatic;
+	// Final
+	public final String publicFinalToNoFinal = "";
+	protected final String protectedFinalToNoFinal = "";
+	private final String privateFinalToNoFinal = "";
+	// change of type
+	public String testChangeOfTypePublic;
+	// Change of scope
+	public String testChangeOfScopeFromPublicToProtected;
+	public String testChangeOfScopeFromPublicToPrivate;
+	// Static
+	public String testPublicChangeToStatic;
+	public String publicNotfinalToFinal = "";
+	protected String testChangeOfTypeProtected;
+	protected String testChangeOfScopeFromProtectedToPublic;
+	protected String testChangeOfScopeFromProtectedToPrivate;
+	protected String testProtectedChangeToStatic;
+	protected String protectedNotfinalToFinal = "";
+	private String testChangeOfTypePrivate;
+	private String testChangeOfScopeFromPrivateToProtected;
+	private String testChangeOfScopeFromPrivateToPublic;
+	private String testPrivateChangeToStatic;
+	private String privateNotfinalToFinal = "";
 
-    
+
 }

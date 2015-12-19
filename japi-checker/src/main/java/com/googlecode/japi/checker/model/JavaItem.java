@@ -15,9 +15,9 @@
  */
 package com.googlecode.japi.checker.model;
 
-import org.objectweb.asm.Opcodes;
-
 import com.googlecode.japi.checker.Utils;
+
+import org.objectweb.asm.Opcodes;
 
 
 public abstract class JavaItem {
@@ -25,91 +25,89 @@ public abstract class JavaItem {
 	private String name;
 	private int access;
 	private Scope visibility;
-    private ClassData owner;
-    
+	private ClassData owner;
+
 	protected JavaItem() {
-    	
-    }
 
-    protected JavaItem(ClassData owner, int access, String name) {
-    	this.setAccess(access);
-        this.setOwner(owner);
-        this.setName(name);
-    }
+	}
 
-    public Scope getVisibility() {
-        return visibility;
-    }
-    
+	protected JavaItem(ClassData owner, int access, String name) {
+		this.setAccess(access);
+		this.setOwner(owner);
+		this.setName(name);
+	}
+
+	public Scope getVisibility() {
+		return visibility;
+	}
 
 
-    /**
-     * @return the isAbstract
-     */
-    public boolean isAbstract() {
-        return (access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT;
-    }
+	/**
+	 * @return the isAbstract
+	 */
+	public boolean isAbstract() {
+		return (access & Opcodes.ACC_ABSTRACT) == Opcodes.ACC_ABSTRACT;
+	}
 
-    /**
-     * @return the isFinal
-     */
-    public boolean isFinal() {
-        return (access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL;
-    }
+	/**
+	 * @return the isFinal
+	 */
+	public boolean isFinal() {
+		return (access & Opcodes.ACC_FINAL) == Opcodes.ACC_FINAL;
+	}
 
-    /**
-     * @return the isStatic
-     */
-    public boolean isStatic() {
-        return (access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC;
-    }
+	/**
+	 * @return the isStatic
+	 */
+	public boolean isStatic() {
+		return (access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC;
+	}
 
-    /**
-     * @return the isTransient
-     */
-    public boolean isTransient() {
-        return (access & Opcodes.ACC_TRANSIENT) == Opcodes.ACC_TRANSIENT;
-    }
-    
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @return the isTransient
+	 */
+	public boolean isTransient() {
+		return (access & Opcodes.ACC_TRANSIENT) == Opcodes.ACC_TRANSIENT;
+	}
 
-    /**
-     * @param name the name to set
-     */
-    protected void setName(String name) {
-        this.name = name;
-    }
-    
-    /**
-     * @return the owner
-     */
-    public ClassData getOwner() {
-        return owner;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @param owner the owner to set
-     */
-    protected void setOwner(ClassData owner) {
-        this.owner = owner;
-    }
+	/**
+	 * @param name the name to set
+	 */
+	protected void setName(String name) {
+		this.name = name;
+	}
 
-    public abstract String getItemType();
-    
-    /**
-     * Display the item name.
-     * {@inheritDoc}
-     */
-    public String toString() {
-        return this.getItemType() + " " + name;
-    }
-    
-    public int getAccess() {
+	/**
+	 * @return the owner
+	 */
+	public ClassData getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @param owner the owner to set
+	 */
+	protected void setOwner(ClassData owner) {
+		this.owner = owner;
+	}
+
+	public abstract String getItemType();
+
+	/**
+	 * Display the item name. {@inheritDoc}
+	 */
+	public String toString() {
+		return this.getItemType() + " " + name;
+	}
+
+	public int getAccess() {
 		return access;
 	}
 

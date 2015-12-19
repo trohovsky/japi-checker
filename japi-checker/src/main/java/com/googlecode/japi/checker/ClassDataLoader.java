@@ -15,6 +15,10 @@
  */
 package com.googlecode.japi.checker;
 
+import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.Scope;
+import com.googlecode.japi.checker.utils.AntPatternMatcher;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -22,57 +26,55 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.googlecode.japi.checker.model.ClassData;
-import com.googlecode.japi.checker.model.Scope;
-import com.googlecode.japi.checker.utils.AntPatternMatcher;
-
 /**
- * This class is the equivalent of the ClassLoader for the Class. It enabled us to access
- * ClassData information out of a class path.
- *
+ * This class is the equivalent of the ClassLoader for the Class. It enabled us to access ClassData information out of a
+ * class path.
  */
 public interface ClassDataLoader<C extends ClassData> {
 
-    /**
-     * Read class file out of the provided URI.
-     * @param uri the URI where to load class file from.
-     * @throws IOException Thrown in case of error.
-     */
-    void read(URI uri) throws IOException;
-    
-    /**
-     * Get ClassData out of a class name e.g: com.mycompany.mypackage.Class
-     * @param name the class name
-     * @return a ClassData instance or null if Not found.
-     */
-    @Nullable
-    C fromName(String name);
-    
-    /**
-     * Get all the ClassData information which belongs to this loader.
-     * @return the list of ClassData.
-     */
-    @Nonnull
-    List<C> getClasses();
+	/**
+	 * Read class file out of the provided URI.
+	 *
+	 * @param uri the URI where to load class file from.
+	 * @throws IOException Thrown in case of error.
+	 */
+	void read(URI uri) throws IOException;
 
-    /**
-     * Get all ClassData from this loaded provided by the given uri.
-     * @param uri the uri to retrieve ClassData from
-     * @return Returns a list of ClassData.
-     */
-    @Nonnull
-    List<C> getClasses(@Nonnull URI uri);
-    
-    /**
-     * Get all ClassData from this loaded provided by the given uri and filtered using pattern matchers.
-     * @param uri the uri to retrieve ClassData from 
-     * @param includes
-     * @param excludes
-     * @return Returns a list of ClassData.
-     */
-    @Nonnull
-    List<C> getClasses(@Nonnull URI uri, @Nonnull List<AntPatternMatcher> includes, @Nonnull List<AntPatternMatcher> excludes);
+	/**
+	 * Get ClassData out of a class name e.g: com.mycompany.mypackage.Class
+	 *
+	 * @param name the class name
+	 * @return a ClassData instance or null if Not found.
+	 */
+	@Nullable
+	C fromName(String name);
 
-    Scope getVisibilityLimit();
-    
+	/**
+	 * Get all the ClassData information which belongs to this loader.
+	 *
+	 * @return the list of ClassData.
+	 */
+	@Nonnull
+	List<C> getClasses();
+
+	/**
+	 * Get all ClassData from this loaded provided by the given uri.
+	 *
+	 * @param uri the uri to retrieve ClassData from
+	 * @return Returns a list of ClassData.
+	 */
+	@Nonnull
+	List<C> getClasses(@Nonnull URI uri);
+
+	/**
+	 * Get all ClassData from this loaded provided by the given uri and filtered using pattern matchers.
+	 *
+	 * @param uri the uri to retrieve ClassData from
+	 * @return Returns a list of ClassData.
+	 */
+	@Nonnull
+	List<C> getClasses(@Nonnull URI uri, @Nonnull List<AntPatternMatcher> includes, @Nonnull List<AntPatternMatcher> excludes);
+
+	Scope getVisibilityLimit();
+
 }

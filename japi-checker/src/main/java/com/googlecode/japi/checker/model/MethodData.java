@@ -15,73 +15,73 @@
  */
 package com.googlecode.japi.checker.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.googlecode.japi.checker.Utils;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import com.googlecode.japi.checker.Utils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class MethodData extends JavaItem implements Parametrized {
 
-    private final String descriptor;
+	private final String descriptor;
 	private List<String> exceptions = new ArrayList<String>();
-    private Integer line;
-    private String defaultValue; 
-    private List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
-    
-    protected MethodData() {
-    	this.descriptor = null;
-    }
-    
-    public MethodData(ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
-        super(owner, access, name);
-        this.descriptor = descriptor;
-        if (exceptions != null) {
-            Collections.addAll(this.exceptions, exceptions);
-        }
-    }
+	private Integer line;
+	private String defaultValue;
+	private List<TypeParameterData> typeParameters = new ArrayList<TypeParameterData>();
 
-    public boolean isSame(MethodData method) {
-        return this.getName().equals(method.getName()) && this.getDescriptor().equals(method.getDescriptor());
-    }
-    
-    @Override
-    public String getItemType() {
-        return this.isConstructor() ? "constructor" : "method";
-    }
+	protected MethodData() {
+		this.descriptor = null;
+	}
 
-    /**
-     * @return the descriptor
-     */
-    public String getDescriptor() {
-        return descriptor;
-    }
-    
-    /**
-     * @return types of the arguments
-     */
-    public Type[] getParameterTypes() {
+	public MethodData(ClassData owner, int access, String name, String descriptor, String[] exceptions) { // String signature,
+		super(owner, access, name);
+		this.descriptor = descriptor;
+		if (exceptions != null) {
+			Collections.addAll(this.exceptions, exceptions);
+		}
+	}
+
+	public boolean isSame(MethodData method) {
+		return this.getName().equals(method.getName()) && this.getDescriptor().equals(method.getDescriptor());
+	}
+
+	@Override
+	public String getItemType() {
+		return this.isConstructor() ? "constructor" : "method";
+	}
+
+	/**
+	 * @return the descriptor
+	 */
+	public String getDescriptor() {
+		return descriptor;
+	}
+
+	/**
+	 * @return types of the arguments
+	 */
+	public Type[] getParameterTypes() {
 		return Type.getArgumentTypes(descriptor);
 	}
 
-    /**
-     * @return return type
-     */
+	/**
+	 * @return return type
+	 */
 	public Type getReturnType() {
 		return Type.getReturnType(descriptor);
 	}
 
-    /**
-     * @return the exceptions
-     */
-    public List<String> getExceptions() {
-        return exceptions;
-    }
-    
+	/**
+	 * @return the exceptions
+	 */
+	public List<String> getExceptions() {
+		return exceptions;
+	}
+
 	/**
 	 * @return the isVariableArity
 	 */
@@ -89,59 +89,57 @@ public class MethodData extends JavaItem implements Parametrized {
 		return (this.getAccess() & Opcodes.ACC_VARARGS) == Opcodes.ACC_VARARGS;
 	}
 
-    /**
-     * Set the line number of appearance in the source file.
-     * @param line
-     */
-    public void setLineNumber(Integer line) {
-        this.line = line;
-    }
-    
-    /**
-     * @return the line number of appearance in the source file.
-     */
-    public Integer getLineNumber() {
-        return line;
-    }
-	
 	/**
-	 * Set the default value for the annotation member represented by this method.
-	 * @param value
+	 * @return the line number of appearance in the source file.
 	 */
-	public void setDefaultValue(String value) {
-		this.defaultValue = value;
+	public Integer getLineNumber() {
+		return line;
 	}
-	
+
+	/**
+	 * Set the line number of appearance in the source file.
+	 */
+	public void setLineNumber(Integer line) {
+		this.line = line;
+	}
+
 	/**
 	 * @return the default value for the annotation member represented by this method.
 	 */
 	public String getDefaultValue() {
 		return defaultValue;
 	}
-	
+
+	/**
+	 * Set the default value for the annotation member represented by this method.
+	 */
+	public void setDefaultValue(String value) {
+		this.defaultValue = value;
+	}
+
 	/**
 	 * Add the type parameter.
 	 */
 	@Override
 	public void add(TypeParameterData typeParameter) {
-		typeParameters.add(typeParameter);		
+		typeParameters.add(typeParameter);
 	}
 
-    /**
-     * @return the type parameters
-     */
+	/**
+	 * @return the type parameters
+	 */
 	@Override
 	public List<TypeParameterData> getTypeParameters() {
 		return typeParameters;
 	}
-	
+
 	/**
-     * @return true if this method is constructor; false otherwise.
-     */
+	 * @return true if this method is constructor; false otherwise.
+	 */
 	public boolean isConstructor() {
 		return this.getName().equals("<init>");
 	}
-	
+
 	/**
 	 * @return the parameter types as a string.
 	 */
@@ -158,7 +156,7 @@ public class MethodData extends JavaItem implements Parametrized {
 		}
 		return buffer.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

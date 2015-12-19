@@ -18,8 +18,9 @@ package com.googlecode.japi.checker;
 import com.googlecode.japi.checker.model.JavaItem;
 
 public interface Reporter {
-    
-    void report(Difference difference);
-    void report(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType, Object... args);
+
+	void report(Difference difference);
+
+	void report(JavaItem referenceItem, JavaItem newItem, DifferenceType differenceType, Object... args);
 
 }

@@ -17,27 +17,27 @@ package com.googlecode.japi.checker.tests;
 
 public class InnerClassRemoved {
 
-    public static class PublicStaticInnerClass {
-        
-    }
+	public static class PublicStaticInnerClass {
 
-    protected static class ProtectedStaticInnerClass {
-        
-    }
-    
-    private static class PrivateStaticInnerClass {
-        
-    }
+	}
 
-    public class PublicInnerClass {
-        
-    }
+	protected static class ProtectedStaticInnerClass {
 
-    protected class ProtectedInnerClass {
-        
-    }
-    
-    private class PrivateInnerClass {
-        
-    }
+	}
+
+	private static class PrivateStaticInnerClass {
+
+	}
+
+	public class PublicInnerClass {
+
+	}
+
+	protected class ProtectedInnerClass {
+
+	}
+
+	private class PrivateInnerClass {
+
+	}
 }

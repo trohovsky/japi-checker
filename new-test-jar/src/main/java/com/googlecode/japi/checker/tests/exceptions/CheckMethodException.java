@@ -17,28 +17,28 @@ package com.googlecode.japi.checker.tests.exceptions;
 
 public class CheckMethodException {
 
-    public void publicAddedException() throws Exception {
-        
-    }
+	public void publicAddedException() throws Exception {
 
-    protected void protectedAddedException() throws Exception {
-        
-    }
+	}
 
-    private void privatedAddedException() throws Exception {
-        
-    }
- 
-    public void publicRemovedException() {
-        
-    }
+	protected void protectedAddedException() throws Exception {
 
-    protected void protectedRemovedException() {
-        
-    }
+	}
 
-    private void privatedRemovedException() {
-        
-    }
+	private void privatedAddedException() throws Exception {
+
+	}
+
+	public void publicRemovedException() {
+
+	}
+
+	protected void protectedRemovedException() {
+
+	}
+
+	private void privatedRemovedException() {
+
+	}
 
 }

@@ -20,6 +20,6 @@ import java.util.Vector;
 
 public class CheckInheritanceChanges extends Vector<String> implements Serializable {
 
-    private static final long serialVersionUID = -223059841201961493L;
+	private static final long serialVersionUID = -223059841201961493L;
 
 }

@@ -15,8 +15,6 @@
  */
 package com.googlecode.japi.checker;
 
-import java.util.List;
-
 import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.MethodData;
@@ -25,52 +23,54 @@ import com.googlecode.japi.checker.rules.ClassRules;
 import com.googlecode.japi.checker.rules.FieldRules;
 import com.googlecode.japi.checker.rules.MethodRules;
 
+import java.util.List;
+
 public class BCChecker {
-    
-    private ClassRules classRules;
-    private FieldRules fieldRules;
-    private MethodRules methodRules;
-    
-    public BCChecker() {
-        classRules = new ClassRules();
-    	fieldRules = new FieldRules();
-        methodRules = new MethodRules();
-    }
-    
-    public void checkBackwardCompatibility(Reporter reporter, List<? extends ClassData> referenceClasses, List<? extends ClassData> newClasses) {
-        
-        for (ClassData referenceClass : referenceClasses) {
-            boolean found = false;
-            for (ClassData newClass : newClasses) {
-                if (referenceClass.isSame(newClass)) {
-                	// checking class rules
-                    classRules.checkBackwardCompatibility(reporter, referenceClass, newClass);
-                    
-                    // checking field rules
-                    for (FieldData referenceField : referenceClass.getFields()) {
-                        for (FieldData newField: newClass.getFields()) {
-                            if (referenceField.isSame(newField)) {
-                            	fieldRules.checkBackwardCompatibility(reporter, referenceField, newField);
-                            }
-                        }
-                    }
-                    
-                    // checking method rules
-                    for (MethodData referenceMethod : referenceClass.getMethods()) {
-                        for (MethodData newMethod: newClass.getMethods()) {
-                            if (referenceMethod.isSame(newMethod)) {
-                            	methodRules.checkBackwardCompatibility(reporter, referenceMethod, newMethod);
-                            }
-                        }
-                    }
-                    
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && referenceClass.getVisibility() == Scope.PUBLIC) {
-                reporter.report(referenceClass, null, DifferenceType.PACKAGE_REMOVED_CLASS, referenceClass);
-            }
-        }
-    }
+
+	private ClassRules classRules;
+	private FieldRules fieldRules;
+	private MethodRules methodRules;
+
+	public BCChecker() {
+		classRules = new ClassRules();
+		fieldRules = new FieldRules();
+		methodRules = new MethodRules();
+	}
+
+	public void checkBackwardCompatibility(Reporter reporter, List<? extends ClassData> referenceClasses, List<? extends ClassData> newClasses) {
+
+		for (ClassData referenceClass : referenceClasses) {
+			boolean found = false;
+			for (ClassData newClass : newClasses) {
+				if (referenceClass.isSame(newClass)) {
+					// checking class rules
+					classRules.checkBackwardCompatibility(reporter, referenceClass, newClass);
+
+					// checking field rules
+					for (FieldData referenceField : referenceClass.getFields()) {
+						for (FieldData newField : newClass.getFields()) {
+							if (referenceField.isSame(newField)) {
+								fieldRules.checkBackwardCompatibility(reporter, referenceField, newField);
+							}
+						}
+					}
+
+					// checking method rules
+					for (MethodData referenceMethod : referenceClass.getMethods()) {
+						for (MethodData newMethod : newClass.getMethods()) {
+							if (referenceMethod.isSame(newMethod)) {
+								methodRules.checkBackwardCompatibility(reporter, referenceMethod, newMethod);
+							}
+						}
+					}
+
+					found = true;
+					break;
+				}
+			}
+			if (!found && referenceClass.getVisibility() == Scope.PUBLIC) {
+				reporter.report(referenceClass, null, DifferenceType.PACKAGE_REMOVED_CLASS, referenceClass);
+			}
+		}
+	}
 }

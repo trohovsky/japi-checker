@@ -20,23 +20,21 @@ import com.googlecode.japi.checker.Reporter;
 import com.googlecode.japi.checker.model.JavaItem;
 
 /**
- * 
  * @author Tomas Rohovsky
- *
  */
 // CLASS
 public class ChangeKindOfAPIType implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-    	if (!reference.getItemType().equals(newItem.getItemType())) {
-    		reporter.report(reference,
-    				newItem,
-    				DifferenceType.CLASS_CHANGED_KIND_OF_API_TYPE,
-    				reference,
-    				newItem.getItemType());
-        }
-    }
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		if (!reference.getItemType().equals(newItem.getItemType())) {
+			reporter.report(reference,
+					newItem,
+					DifferenceType.CLASS_CHANGED_KIND_OF_API_TYPE,
+					reference,
+					newItem.getItemType());
+		}
+	}
 
 }

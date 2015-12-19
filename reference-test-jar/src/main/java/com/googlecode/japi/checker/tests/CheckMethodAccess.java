@@ -17,15 +17,30 @@ package com.googlecode.japi.checker.tests;
 
 public class CheckMethodAccess {
 
-    public void publicToFinal() {}
-    protected void protectedToFinal() {}
-    private void privateToFinal() {}
+	public static void publicFromStatic() {
+	}
 
-    public void publicToStatic() {}
-    protected void protectedToStatic() {}
-    private void privateToStatic() {}
-    
-    public static void publicFromStatic() {}
-    protected static void protectedFromStatic() {}
-    private static void privateFromStatic() {}
+	protected static void protectedFromStatic() {
+	}
+
+	private static void privateFromStatic() {
+	}
+
+	public void publicToFinal() {
+	}
+
+	protected void protectedToFinal() {
+	}
+
+	private void privateToFinal() {
+	}
+
+	public void publicToStatic() {
+	}
+
+	protected void protectedToStatic() {
+	}
+
+	private void privateToStatic() {
+	}
 }

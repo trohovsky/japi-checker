@@ -25,27 +25,26 @@ import com.googlecode.japi.checker.model.Scope;
 // CLASS
 public class CheckRemovedField implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        
-    	ClassData referenceClass = (ClassData)reference;
-        ClassData newClass = (ClassData)newItem;
-        
-        for (FieldData oldField : referenceClass.getFields()) {
-            boolean found = false;
-            for (FieldData newField: newClass.getFields()) {
-                if (oldField.isSame(newField)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && oldField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		ClassData referenceClass = (ClassData) reference;
+		ClassData newClass = (ClassData) newItem;
+
+		for (FieldData oldField : referenceClass.getFields()) {
+			boolean found = false;
+			for (FieldData newField : newClass.getFields()) {
+				if (oldField.isSame(newField)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found && oldField.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
 				reporter.report(reference, newItem,
 						DifferenceType.CLASS_REMOVED_FIELD, oldField);
-            }
-        }
-    }
+			}
+		}
+	}
 
-    
-    
+
 }

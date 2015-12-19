@@ -17,28 +17,28 @@ package com.googlecode.japi.checker.tests.exceptions;
 
 public class CheckMethodExceptionInheritance {
 
-    
-    public void publicInheritedException() throws MyException {
-        
-    }
 
-    protected void protectedInheritedException() throws MyException {
-        
-    }
+	public void publicInheritedException() throws MyException {
 
-    private void privatedInheritedException() throws MyException {
-        
-    }
+	}
 
-    public void publicInheritedExceptionAndAdditional() throws MyException {
-        
-    }
+	protected void protectedInheritedException() throws MyException {
 
-    protected void protectedInheritedExceptionAndAdditional() throws MyException {
-        
-    }
+	}
 
-    private void privatedInheritedExceptionAndAdditional() throws MyException {
-        
-    }
+	private void privatedInheritedException() throws MyException {
+
+	}
+
+	public void publicInheritedExceptionAndAdditional() throws MyException {
+
+	}
+
+	protected void protectedInheritedExceptionAndAdditional() throws MyException {
+
+	}
+
+	private void privatedInheritedExceptionAndAdditional() throws MyException {
+
+	}
 }

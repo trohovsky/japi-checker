@@ -6,9 +6,9 @@ import com.googlecode.japi.checker.model.Scope;
 
 public class DefaultClassDataLoaderFactory implements ClassDataLoaderFactory<ClassData> {
 
-    @Override
-    public ClassDataLoader<ClassData> createClassDataLoader(Scope maxVisibility) {
-        return new DefaultClassDataLoader(maxVisibility);
-    }
+	@Override
+	public ClassDataLoader<ClassData> createClassDataLoader(Scope maxVisibility) {
+		return new DefaultClassDataLoader(maxVisibility);
+	}
 
 }

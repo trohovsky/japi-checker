@@ -15,75 +15,75 @@
  */
 package com.googlecode.japi.checker;
 
+import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.FieldData;
+import com.googlecode.japi.checker.model.MethodData;
+import com.googlecode.japi.checker.model.TypeParameterData;
+
+import org.objectweb.asm.ClassReader;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.objectweb.asm.ClassReader;
-
-import com.googlecode.japi.checker.model.ClassData;
-import com.googlecode.japi.checker.model.FieldData;
-import com.googlecode.japi.checker.model.MethodData;
-import com.googlecode.japi.checker.model.TypeParameterData;
-
 
 public class DirectoryReader<C extends ClassData> extends AbstractClassReader<C> {
 
-    private File path;
-    private ClassDumper<C> dumper;
-    
-    public DirectoryReader(File path, ClassDataLoader<C> loader) {
-        this.path = path;
-        this.dumper = new ClassDumper<C>(loader);
-    }
-    
-    public DirectoryReader(File path, ClassDataLoader<C> loader,
-    		Class<C> classClass, 
-    		Class<FieldData> fieldClass, 
-    		Class<MethodData> methodClass, 
-    		Class<TypeParameterData> typeParameterClass) {
-    	this.path = path;
-    	this.dumper = new ClassDumper<C>(loader, classClass, fieldClass, methodClass, typeParameterClass);
-    }
+	private File path;
+	private ClassDumper<C> dumper;
 
-    @Override
-    public void read() throws IOException {
-        clear();
-        scanDir(this.path, null);
-    }
+	public DirectoryReader(File path, ClassDataLoader<C> loader) {
+		this.path = path;
+		this.dumper = new ClassDumper<C>(loader);
+	}
 
-    private void scanDir(File dir, String path) throws IOException {
-        byte buffer[] = new byte[2048]; 
-        if (path == null) {
-            path = "";
-        }
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()) {
-                scanDir(file, path + file.getName() + "/");
-            } else if (file.getName().endsWith(".class")) {
-                ByteArrayOutputStream os =  new ByteArrayOutputStream();
-                InputStream is = null;
-                try {
-                    is = new FileInputStream(file);
-                    int count = 0;
-                    while ((count = is.read(buffer)) != -1) {
-                        os.write(buffer, 0, count);
-                    }
-                    ClassReader cr = new ClassReader(os.toByteArray());
-                    cr.accept(dumper, 0);
-                    C clazz = dumper.getClazz();
-                    if (clazz != null) {
-                        this.put(path + file.getName(), dumper.getClazz());
-                    }
-                } finally {
-                    if (is != null) {
-                        is.close();
-                    }
-                }
-            }
-        }
-    }
+	public DirectoryReader(File path, ClassDataLoader<C> loader,
+						   Class<C> classClass,
+						   Class<FieldData> fieldClass,
+						   Class<MethodData> methodClass,
+						   Class<TypeParameterData> typeParameterClass) {
+		this.path = path;
+		this.dumper = new ClassDumper<C>(loader, classClass, fieldClass, methodClass, typeParameterClass);
+	}
+
+	@Override
+	public void read() throws IOException {
+		clear();
+		scanDir(this.path, null);
+	}
+
+	private void scanDir(File dir, String path) throws IOException {
+		byte buffer[] = new byte[2048];
+		if (path == null) {
+			path = "";
+		}
+		for (File file : dir.listFiles()) {
+			if (file.isDirectory()) {
+				scanDir(file, path + file.getName() + "/");
+			} else if (file.getName().endsWith(".class")) {
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+				InputStream is = null;
+				try {
+					is = new FileInputStream(file);
+					int count = 0;
+					while ((count = is.read(buffer)) != -1) {
+						os.write(buffer, 0, count);
+					}
+					ClassReader cr = new ClassReader(os.toByteArray());
+					cr.accept(dumper, 0);
+					C clazz = dumper.getClazz();
+					if (clazz != null) {
+						this.put(path + file.getName(), dumper.getClazz());
+					}
+				} finally {
+					if (is != null) {
+						is.close();
+					}
+				}
+			}
+		}
+	}
 
 }

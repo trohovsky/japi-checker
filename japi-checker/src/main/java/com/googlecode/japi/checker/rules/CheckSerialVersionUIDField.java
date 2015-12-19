@@ -21,40 +21,39 @@ import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 
 /**
- * This test looks for modifications to serialVersionUID class attribute.
- * This field is used by the serialized interface to identify the class
- * so changing its value is not a good idea from BC prospective. 
+ * This test looks for modifications to serialVersionUID class attribute. This field is used by the serialized interface
+ * to identify the class so changing its value is not a good idea from BC prospective.
  */
 // FIELD
 public class CheckSerialVersionUIDField implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        // private static final long serialVersionUID = 338331310737246989L;
-        FieldData referenceField = (FieldData)reference;
-        FieldData newField = (FieldData)newItem;
-        if ("serialVersionUID".equals(referenceField.getName())) {
-            // J means long.
-            if (!"J".equals(referenceField.getDescriptor())) {
+	private static String toHex(FieldData field) {
+		return String.format("0x%x", Long.parseLong(field.getValue()));
+	}
+
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+		// private static final long serialVersionUID = 338331310737246989L;
+		FieldData referenceField = (FieldData) reference;
+		FieldData newField = (FieldData) newItem;
+		if ("serialVersionUID".equals(referenceField.getName())) {
+			// J means long.
+			if (!"J".equals(referenceField.getDescriptor())) {
 				reporter.report(reference, newItem,
 						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE);
-                return;
-            }
-            if (!"J".equals(newField.getDescriptor())) {
+				return;
+			}
+			if (!"J".equals(newField.getDescriptor())) {
 				reporter.report(reference, newItem,
 						DifferenceType.CLASS_INVALID_SERIAL_VERSION_TYPE);
-                return;
-            }
-            if (!referenceField.getValue().equals(newField.getValue())) {
+				return;
+			}
+			if (!referenceField.getValue().equals(newField.getValue())) {
 				reporter.report(reference, newItem,
 						DifferenceType.CLASS_CHANGED_SERIAL_VERSION_VALUE,
 						toHex(referenceField), toHex(newField));
-            }
-        }
-    }
-    
-    private static String toHex(FieldData field) {
-        return String.format("0x%x", Long.parseLong(field.getValue()));
-    }
+			}
+		}
+	}
 
 }

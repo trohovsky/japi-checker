@@ -19,6 +19,6 @@ import java.io.Serializable;
 
 public class DifferentUID implements Serializable {
 
-    private static final long serialVersionUID = -6465371736477641225L;
+	private static final long serialVersionUID = -6465371736477641225L;
 
 }

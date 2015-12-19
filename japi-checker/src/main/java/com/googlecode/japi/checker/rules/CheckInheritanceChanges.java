@@ -15,10 +15,6 @@
  */
 package com.googlecode.japi.checker.rules;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.googlecode.japi.checker.ClassDataLoader;
 import com.googlecode.japi.checker.DifferenceType;
 import com.googlecode.japi.checker.Reporter;
@@ -27,65 +23,67 @@ import com.googlecode.japi.checker.model.ClassData;
 import com.googlecode.japi.checker.model.JavaItem;
 import com.googlecode.japi.checker.model.Scope;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
- * 
  * @author Tomas Rohovsky
- *
  */
 // CLASS
 public class CheckInheritanceChanges implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-    	ClassData referenceClass = (ClassData) reference;
-    	ClassData newClass = (ClassData) newItem;
-    	
-        // contracted superclass set
-        List<String> referenceAPISuperClasses = filterAPITypes(referenceClass.getClassDataLoader(), referenceClass.getSuperClasses());
-        List<String> newAPISuperClasses = filterAPITypes(newClass.getClassDataLoader(), newClass.getSuperClasses());
-        if (!newAPISuperClasses.containsAll(referenceAPISuperClasses)) {
-        	
-        	List<String> subtractedClasses = new ArrayList<String>(referenceAPISuperClasses);
-        	subtractedClasses.removeAll(newAPISuperClasses);
-        	
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		ClassData referenceClass = (ClassData) reference;
+		ClassData newClass = (ClassData) newItem;
+
+		// contracted superclass set
+		List<String> referenceAPISuperClasses = filterAPITypes(referenceClass.getClassDataLoader(), referenceClass.getSuperClasses());
+		List<String> newAPISuperClasses = filterAPITypes(newClass.getClassDataLoader(), newClass.getSuperClasses());
+		if (!newAPISuperClasses.containsAll(referenceAPISuperClasses)) {
+
+			List<String> subtractedClasses = new ArrayList<String>(referenceAPISuperClasses);
+			subtractedClasses.removeAll(newAPISuperClasses);
+
 			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CONTRACTED_SUPERCLASS_SET,
 					referenceClass, Utils.join(subtractedClasses, ", "));
-        }
-        
-        // contracted interface set
-        List<String> referenceAPIInterfaces = filterAPITypes(referenceClass.getClassDataLoader(), referenceClass.getAllInterfaces());
-        List<String> newAPIInterfaces = filterAPITypes(newClass.getClassDataLoader(), newClass.getAllInterfaces());
-        if (!newAPIInterfaces.containsAll(referenceAPIInterfaces)) {
-        	
-        	List<String> subtractedInterfaces = new ArrayList<String>(referenceAPIInterfaces);
-        	subtractedInterfaces.removeAll(newAPIInterfaces);
-        	
+		}
+
+		// contracted interface set
+		List<String> referenceAPIInterfaces = filterAPITypes(referenceClass.getClassDataLoader(), referenceClass.getAllInterfaces());
+		List<String> newAPIInterfaces = filterAPITypes(newClass.getClassDataLoader(), newClass.getAllInterfaces());
+		if (!newAPIInterfaces.containsAll(referenceAPIInterfaces)) {
+
+			List<String> subtractedInterfaces = new ArrayList<String>(referenceAPIInterfaces);
+			subtractedInterfaces.removeAll(newAPIInterfaces);
+
 			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CONTRACTED_SUPERINTERFACE_SET,
 					referenceClass, Utils.join(subtractedInterfaces, ", "));
-        }
-    }
-    
-    /**
-     * Filters types, which are API (with visibility higher than package).
-     * @param clazz
-     * @return names of API types
-     */
-    private List<String> filterAPITypes(ClassDataLoader<?> loader, Collection<String> typeNames) {
-    	List<String> APITypes = new ArrayList<String>();
-    	for (String typeName: typeNames) {
-        	ClassData type = loader.fromName(typeName);
-        	if (type != null) {
-        		if (type.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
-        			APITypes.add(typeName);
-        		}
-        	} else {
-        		// if type's visibility is not known, it is API type
-        		APITypes.add(typeName);
-        	}
-        }
-    	return APITypes;
-    }
+		}
+	}
+
+	/**
+	 * Filters types, which are API (with visibility higher than package).
+	 *
+	 * @return names of API types
+	 */
+	private List<String> filterAPITypes(ClassDataLoader<?> loader, Collection<String> typeNames) {
+		List<String> APITypes = new ArrayList<String>();
+		for (String typeName : typeNames) {
+			ClassData type = loader.fromName(typeName);
+			if (type != null) {
+				if (type.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+					APITypes.add(typeName);
+				}
+			} else {
+				// if type's visibility is not known, it is API type
+				APITypes.add(typeName);
+			}
+		}
+		return APITypes;
+	}
 }

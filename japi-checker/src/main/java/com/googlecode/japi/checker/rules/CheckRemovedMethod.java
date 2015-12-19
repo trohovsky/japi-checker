@@ -25,25 +25,25 @@ import com.googlecode.japi.checker.model.Scope;
 // CLASS
 public class CheckRemovedMethod implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-        
-    	ClassData referenceClass = (ClassData)reference;
-        ClassData newClass = (ClassData)newItem;
-        
-        for (MethodData oldMethod : referenceClass.getMethods()) {
-            boolean found = false;
-            for (MethodData newMethod: newClass.getMethods()) {
-                if (oldMethod.isSame(newMethod)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		ClassData referenceClass = (ClassData) reference;
+		ClassData newClass = (ClassData) newItem;
+
+		for (MethodData oldMethod : referenceClass.getMethods()) {
+			boolean found = false;
+			for (MethodData newMethod : newClass.getMethods()) {
+				if (oldMethod.isSame(newMethod)) {
+					found = true;
+					break;
+				}
+			}
+			if (!found && oldMethod.getVisibility().isMoreVisibleThan(Scope.PACKAGE)) {
 				reporter.report(reference, newItem,
 						DifferenceType.CLASS_REMOVED_METHOD, oldMethod);
-            }
-        }
-    }
-    
+			}
+		}
+	}
+
 }

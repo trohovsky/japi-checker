@@ -22,13 +22,13 @@ import com.googlecode.japi.checker.model.JavaItem;
 // CLASS
 public class ClassChangedToAbstract implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
 
-        if (!reference.isAbstract() && newItem.isAbstract()) {
+		if (!reference.isAbstract() && newItem.isAbstract()) {
 			reporter.report(reference, newItem,
 					DifferenceType.CLASS_CHANGED_TO_ABSTRACT, reference);
-        }
-    }
+		}
+	}
 
 }

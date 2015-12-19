@@ -21,26 +21,24 @@ import com.googlecode.japi.checker.model.FieldData;
 import com.googlecode.japi.checker.model.JavaItem;
 
 /**
- * 
  * @author Tomas Rohovsky
- *
  */
 // FIELD
 public class CheckFieldChangedValue implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-            			
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
 		if (isValueOfCompileTimeConstantChanged((FieldData) reference, (FieldData) newItem)) {
 			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_VALUE, reference,
-					((FieldData) reference).getValue(), 
+					((FieldData) reference).getValue(),
 					((FieldData) newItem).getValue());
 		}
 	}
 
 	private boolean isValueOfCompileTimeConstantChanged(FieldData reference, FieldData newItem) {
-				
+
 		if (reference.isFinal() && newItem.isFinal()) {
 			final Object rVal = reference.getValue();
 			if (rVal != null) {

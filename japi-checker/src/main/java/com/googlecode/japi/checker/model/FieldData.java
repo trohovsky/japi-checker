@@ -19,57 +19,56 @@ import org.objectweb.asm.Type;
 
 
 public class FieldData extends JavaItem {
-	
-    private final String descriptor;
-    private final String value;
 
-    protected FieldData() {
-    	this.descriptor = null;
-    	this.value = null;
-    }
-    
-    public FieldData(ClassData owner, int access, String name, String descriptor, String value) { // String signature,
-        super(owner, access, name);
-        this.descriptor = descriptor;
-        this.value = value;
-    }
+	private final String descriptor;
+	private final String value;
 
-    /**
-     * @return the description
-     */
-    public String getDescriptor() {
-        return descriptor;
-    }
+	protected FieldData() {
+		this.descriptor = null;
+		this.value = null;
+	}
 
-    /**
-     * @return the value
-     */
-    public String getValue() {
-        return value;
-    }
-    
-    /**
-     * @return the type
-     */
-    public Type getType() {
-    	return Type.getType(getDescriptor());
-    }
-    
-    /**
-     * Finds out whether the field is compile-time constant.
-     * @return
-     */
-    public boolean isCompileTimeConstant() {
-    	return this.isFinal() && this.getValue() != null;
-    }
-    
-    public boolean isSame(FieldData reference) {
-        return this.getName().equals(reference.getName());
-    }
+	public FieldData(ClassData owner, int access, String name, String descriptor, String value) { // String signature,
+		super(owner, access, name);
+		this.descriptor = descriptor;
+		this.value = value;
+	}
 
-    @Override
-    public String getItemType() {
-        return "field";
-    }
-    
+	/**
+	 * @return the description
+	 */
+	public String getDescriptor() {
+		return descriptor;
+	}
+
+	/**
+	 * @return the value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public Type getType() {
+		return Type.getType(getDescriptor());
+	}
+
+	/**
+	 * Finds out whether the field is compile-time constant.
+	 */
+	public boolean isCompileTimeConstant() {
+		return this.isFinal() && this.getValue() != null;
+	}
+
+	public boolean isSame(FieldData reference) {
+		return this.getName().equals(reference.getName());
+	}
+
+	@Override
+	public String getItemType() {
+		return "field";
+	}
+
 }

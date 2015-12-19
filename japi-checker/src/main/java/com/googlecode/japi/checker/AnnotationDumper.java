@@ -1,19 +1,19 @@
 package com.googlecode.japi.checker;
 
+import com.googlecode.japi.checker.model.MethodData;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Opcodes;
 
-import com.googlecode.japi.checker.model.MethodData;
-
 /**
  * AnnotationDumper inspects annotation of the method.
- * @author Tomas Rohovsky
  *
+ * @author Tomas Rohovsky
  */
 public class AnnotationDumper extends AnnotationVisitor {
 
 	private final MethodData method;
-	
+
 	public AnnotationDumper(MethodData method) {
 		super(Opcodes.ASM4);
 		this.method = method;

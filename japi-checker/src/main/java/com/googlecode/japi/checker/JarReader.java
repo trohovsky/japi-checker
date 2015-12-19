@@ -15,6 +15,13 @@
  */
 package com.googlecode.japi.checker;
 
+import com.googlecode.japi.checker.model.ClassData;
+import com.googlecode.japi.checker.model.FieldData;
+import com.googlecode.japi.checker.model.MethodData;
+import com.googlecode.japi.checker.model.TypeParameterData;
+
+import org.objectweb.asm.ClassReader;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,66 +30,59 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.objectweb.asm.ClassReader;
-
-import com.googlecode.japi.checker.model.ClassData;
-import com.googlecode.japi.checker.model.FieldData;
-import com.googlecode.japi.checker.model.MethodData;
-import com.googlecode.japi.checker.model.TypeParameterData;
-
 
 public class JarReader<C extends ClassData> extends AbstractClassReader<C> {
-    private File file;
-    private ClassDumper<C> dumper;
-    
-    public JarReader(File file, ClassDataLoader<C> loader) {
-        this.file = file;
-        this.dumper = new ClassDumper<C>(loader);
-    }
-    
-    public JarReader(File file, ClassDataLoader<C> loader,
-    		Class<C> classClass, 
-    		Class<? extends FieldData> fieldClass, 
-    		Class<? extends MethodData> methodClass, 
-    		Class<? extends TypeParameterData> typeParameterClass) {
-    	this.file = file;
-    	this.dumper = new ClassDumper<C>(loader, classClass, fieldClass, methodClass, typeParameterClass);
-    }
+	private File file;
+	private ClassDumper<C> dumper;
+
+	public JarReader(File file, ClassDataLoader<C> loader) {
+		this.file = file;
+		this.dumper = new ClassDumper<C>(loader);
+	}
+
+	public JarReader(File file, ClassDataLoader<C> loader,
+					 Class<C> classClass,
+					 Class<? extends FieldData> fieldClass,
+					 Class<? extends MethodData> methodClass,
+					 Class<? extends TypeParameterData> typeParameterClass) {
+		this.file = file;
+		this.dumper = new ClassDumper<C>(loader, classClass, fieldClass, methodClass, typeParameterClass);
+	}
 
 	@Override
-    public void read() throws IOException {
-        this.clear();
-        FileInputStream fis = null;
-        ZipInputStream zis = null;
-        try {
-            fis = new FileInputStream(this.file);
-            zis = new ZipInputStream(new BufferedInputStream(fis));
-            ZipEntry entry = null;
-            byte buffer[] = new byte[2048];
-            int count = 0;
-            while ((entry = zis.getNextEntry()) != null) {
-                if (entry.getName().endsWith(".class")) {
+	public void read() throws IOException {
+		this.clear();
+		FileInputStream fis = null;
+		ZipInputStream zis = null;
+		try {
+			fis = new FileInputStream(this.file);
+			zis = new ZipInputStream(new BufferedInputStream(fis));
+			ZipEntry entry = null;
+			byte buffer[] = new byte[2048];
+			int count = 0;
+			while ((entry = zis.getNextEntry()) != null) {
+				if (entry.getName().endsWith(".class")) {
 
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    while ((count = zis.read(buffer)) != -1) {
-                        os.write(buffer, 0, count);
-                    }
-                    ClassReader cr = new ClassReader(os.toByteArray());
-                    cr.accept(dumper, 0);
-                    C clazz = dumper.getClazz();
-                    if (clazz != null) {
-                        this.put(entry.getName(), clazz);
-                    }
-                }
-            }
-        } finally {
-            if (fis != null) {
-                fis.close();
-            }
-            if (zis != null) {
-                zis.close();
-            }
-        }
-    }
+					ByteArrayOutputStream os = new ByteArrayOutputStream();
+					while ((count = zis.read(buffer)) != -1) {
+						os.write(buffer, 0, count);
+					}
+					ClassReader cr = new ClassReader(os.toByteArray());
+					cr.accept(dumper, 0);
+					C clazz = dumper.getClazz();
+					if (clazz != null) {
+						this.put(entry.getName(), clazz);
+					}
+				}
+			}
+		} finally {
+			if (fis != null) {
+				fis.close();
+			}
+			if (zis != null) {
+				zis.close();
+			}
+		}
+	}
 
 }

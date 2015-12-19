@@ -16,38 +16,37 @@
 package com.googlecode.japi.checker.model;
 
 public enum Scope {
-    PUBLIC(3, "public"),
-    PROTECTED(2, "protected"),
-    PACKAGE(1, "(package)"),
-    PRIVATE(0, "private");
-    
-    private final int value;
-    private final String name;
-    
-    Scope(int value, String name) {
-        this.value = value;
-        this.name = name;
-    }
-    
-    public int getValue() {
-        return value;
-    }
-    
-    public String getName() {
-    	return name;
-    }
-    
-    public boolean isMoreVisibleThan(Scope v)
-    {
-        return this.value > v.value;
-    }
-    
-    public boolean isLessVisibleThan(Scope v) {
-        return this.value < v.value;
-    }
-    
-    @Override
-    public String toString() {
-    	return name;
-    }
+	PUBLIC(3, "public"),
+	PROTECTED(2, "protected"),
+	PACKAGE(1, "(package)"),
+	PRIVATE(0, "private");
+
+	private final int value;
+	private final String name;
+
+	Scope(int value, String name) {
+		this.value = value;
+		this.name = name;
+	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public boolean isMoreVisibleThan(Scope v) {
+		return this.value > v.value;
+	}
+
+	public boolean isLessVisibleThan(Scope v) {
+		return this.value < v.value;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

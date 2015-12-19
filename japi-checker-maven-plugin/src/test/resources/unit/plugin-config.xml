@@ -18,21 +18,21 @@
  *
 -->
 <project>
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>japi-checker-maven-plugin</artifactId>
-          <configuration>
-            <reference>
-                <groupId>com.googlecode.japi-checker</groupId>
-                <artifactId>reference-test-jar</artifactId>
-                <version>0.1.0</version>
-            </reference>
-            <rules>
-                <rule>com.googlecode.japi.checker.rules.ClassChangedToFinal</rule>
-            </rules>
-          </configuration>
-      </plugin>
-    </plugins>
-  </build>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>japi-checker-maven-plugin</artifactId>
+				<configuration>
+					<reference>
+						<groupId>com.googlecode.japi-checker</groupId>
+						<artifactId>reference-test-jar</artifactId>
+						<version>0.1.0</version>
+					</reference>
+					<rules>
+						<rule>com.googlecode.japi.checker.rules.ClassChangedToFinal</rule>
+					</rules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

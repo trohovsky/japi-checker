@@ -23,14 +23,14 @@ import com.googlecode.japi.checker.model.Scope;
 // GENERAL
 public class CheckChangeOfScope implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-    	// API type or public or protected member
-        if ((reference.getOwner() == null && newItem.getOwner() == null) || 
-        	(reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
-        	reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE))) {
-        	        	
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		// API type or public or protected member
+		if ((reference.getOwner() == null && newItem.getOwner() == null) ||
+				(reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE) &&
+						reference.getOwner().getVisibility().isMoreVisibleThan(Scope.PACKAGE))) {
+
 			if (newItem.getVisibility().isLessVisibleThan(reference.getVisibility())) {
 				// lower visibility
 				reporter.report(reference, newItem,
@@ -43,6 +43,6 @@ public class CheckChangeOfScope implements Rule {
 						DifferenceType.GENERAL_INCREASED_VISIBILITY, reference,
 						reference.getVisibility(), newItem.getVisibility());
 			}
-        }
-    }
+		}
+	}
 }

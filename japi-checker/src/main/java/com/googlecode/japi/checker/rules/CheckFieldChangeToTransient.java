@@ -22,16 +22,16 @@ import com.googlecode.japi.checker.model.JavaItem;
 // FIELD
 public class CheckFieldChangeToTransient implements Rule {
 
-    @Override
-    public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
-    	
-        if (reference.isTransient() && !newItem.isTransient()) {
+	@Override
+	public void checkBackwardCompatibility(Reporter reporter, JavaItem reference, JavaItem newItem) {
+
+		if (reference.isTransient() && !newItem.isTransient()) {
 			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TO_NON_TRANSIENT, reference);
-        } else if (!reference.isTransient() && newItem.isTransient()) {
+		} else if (!reference.isTransient() && newItem.isTransient()) {
 			reporter.report(reference, newItem,
 					DifferenceType.FIELD_CHANGED_TO_TRANSIENT, reference);
-        }
-    }
+		}
+	}
 
 }
