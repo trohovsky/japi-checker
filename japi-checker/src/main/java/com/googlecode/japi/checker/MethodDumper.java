@@ -30,7 +30,7 @@ public class MethodDumper extends MethodVisitor {
 	private Logger logger = Logger.getLogger(MethodDumper.class.getName());
 
 	public MethodDumper(MethodData method) {
-		super(Opcodes.ASM4);
+		super(Opcodes.ASM6);
 		this.method = method;
 	}
 

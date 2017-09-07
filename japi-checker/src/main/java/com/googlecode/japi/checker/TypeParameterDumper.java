@@ -20,7 +20,7 @@ public class TypeParameterDumper extends SignatureVisitor {
 	private Constructor<? extends TypeParameterData> typeParameterConstructor;
 
 	public TypeParameterDumper(Parametrized item, Constructor<? extends TypeParameterData> typeParameterConstructor) {
-		super(Opcodes.ASM4);
+		super(Opcodes.ASM6);
 		this.item = item;
 		this.typeParameterConstructor = typeParameterConstructor;
 	}
