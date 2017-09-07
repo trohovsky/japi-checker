@@ -15,7 +15,7 @@ public class AnnotationDumper extends AnnotationVisitor {
 	private final MethodData method;
 
 	public AnnotationDumper(MethodData method) {
-		super(Opcodes.ASM4);
+		super(Opcodes.ASM6);
 		this.method = method;
 	}
 

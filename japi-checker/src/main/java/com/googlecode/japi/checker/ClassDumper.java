@@ -59,7 +59,7 @@ class ClassDumper<C extends ClassData> extends ClassVisitor {
 					   Class<? extends FieldData> fieldClass,
 					   Class<? extends MethodData> methodClass,
 					   Class<? extends TypeParameterData> typeParameterClass) {
-		super(Opcodes.ASM4);
+		super(Opcodes.ASM6);
 		this.loader = loader;
 		try {
 			this.classConstructor = classClass.getConstructor(ClassDataLoader.class, ClassData.class, int.class, String.class, String.class, String[].class, int.class);
